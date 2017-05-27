@@ -1,6 +1,8 @@
 #include <random>
 #include "vector.hpp"
+#include "randomer.hpp"
 #include "simulation_var.hpp"
+#include "initmode.hpp"
 #include "initstate_t.hpp"
 
 using namespace scatter;
@@ -20,11 +22,11 @@ std::vector<double>& initstate_t::get_rp_ref(void){
 }
 
 // setter
-void initstate_t::set_mode(const std::vector<int>& mode){
+void initstate_t::set_mode(const std::vector<scatter::mode::initmode>& mode){
 	_mode = mode; 
 }
 
-void initstate_t::set_mode(size_t d, int mode){
+void initstate_t::set_mode(size_t d, const scatter::mode::initmode& mode){
 	_mode.at(d) = mode; 
 }
 
@@ -45,11 +47,6 @@ void initstate_t::set_pavg(size_t d, double pavg){
 }
 
 void initstate_t::generate_rp(void){
-	// random related
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::normal_distribution<> norm_random(0, 1);
-	std::uniform_real_distribution<> uniform_random(0, 1);
 	// get simulation properties
 	const std::vector<double> sigmar = pow(_temp / omega.at(_elestate) / omega.at(_elestate) / mass, 0.5);
 	const std::vector<double> sigmap = pow(_temp * mass, 0.5);
@@ -63,22 +60,22 @@ void initstate_t::generate_rp(void){
 		p.clear();
 		// loop over dim
 		for(size_t d = 0; d < dim; d++){
-			if(_mode.at(d) == scatter::mode::INIT_MODE::DELTA){
+			if(_mode.at(d) == mode::initmode::DELTA){
 				r.push_back(_ravg.at(d));
 				p.push_back(_pavg.at(d));
 			}
-			else if(_mode.at(d) == scatter::mode::INIT_MODE::RING){
-				tmp = 2.0 * M_PI * uniform_random(gen);
+			else if(_mode.at(d) == mode::initmode::RING){
+				tmp = randomer::rand(0, 2 * M_PI);
 				r.push_back(sqrt(2 * _vibstate + 1.0) * cos(tmp) * sqrt(1.0 / mass.at(0) / omega.at(_elestate) / hbar));
 				p.push_back(sqrt(2 * _vibstate + 1.0) * sin(tmp) * sqrt(mass.at(0) * omega.at(_elestate) * hbar));
 			}
-			else if(_mode.at(d) == scatter::mode::INIT_MODE::RP_GAUSSIAN){
-				r.push_back(norm_random(gen) * sigmar.at(d) + _ravg.at(d));
-				p.push_back(norm_random(gen) * sigmap.at(d) + _pavg.at(d));
+			else if(_mode.at(d) == mode::initmode::RP_GAUSSIAN){
+				r.push_back(randomer::normrand(_ravg.at(d), sigmar.at(d)));
+				p.push_back(randomer::normrand(_pavg.at(d), sigmap.at(d)));
 			}
-			else if(_mode.at(d) == scatter::mode::INIT_MODE::P_GAUSSIAN){
+			else if(_mode.at(d) == mode::initmode::P_GAUSSIAN){
 				r.push_back(_ravg.at(d));
-				p.push_back(norm_random(gen) * sigmap.at(d) + _pavg.at(d));
+				p.push_back(randomer::normrand(_pavg.at(d), sigmap.at(d)));
 			}
 		}
 		// insert r, p for traj^th particle to _rp
@@ -100,7 +97,7 @@ double initstate_t::get_temp(void) const{
 	return _temp;
 }
 
-int initstate_t::get_mode(size_t d) const{
+mode::initmode initstate_t::get_mode(size_t d) const{
 	return _mode.at(d);
 }
 

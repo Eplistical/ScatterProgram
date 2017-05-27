@@ -5,6 +5,7 @@
 
 // job control parameters
 const std::string& scatter::rem::jobname = "test";
+const std::string& scatter::rem::jobtype = "simulation";
 const bool& scatter::rem::loaddat = true;
 const size_t& scatter::rem::threadNum = 1;
 

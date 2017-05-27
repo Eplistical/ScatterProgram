@@ -2,7 +2,6 @@ $rem
     jobname     test
     jobtype     simulation
     DIM         2
-    Ntraj       2000
 $end
 
 $system
@@ -13,11 +12,13 @@ $system
 $end
 
 $grid
-    dim1        -1      1   4000    # x
-    dim2        -20     0   10000   # z
+	rmin		-1		-20	
+	rmax		1		0
+	Nr			4000	10000
 $end
 
 $simulation
+    Ntraj       2000
     EndT        30000
     Nstep       450000
     Anastep     100

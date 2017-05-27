@@ -4,47 +4,31 @@
 // scatter related
 #include "scatter.hpp"
 #include "arg_parser.hpp"
+#include "runmode.hpp"
+#include <iostream>
+using namespace std;
 using namespace scatter;
 
 int main(int argc, char** argv){
 	timer::now();
 	timer::tic();
-	// parse arguments
+	// parse args
+	arg_parser(argc, argv);
 	// environment
-	cout.precision(8);
-	mkl_set_num_threads(rem::threadNum);
 	omp_set_num_threads(rem::threadNum);
-	IO::keyval("threadNum", threadNum, true);
-	IO::keyval("infile", infile, true);
+	cout << rem::threadNum << endl;
 	// run program
-	switch(runmode){
-		case RUNMODE::TEST :
-			test(para);
+	switch(mode::run_mode_dict.left.at(rem::jobtype))
+	{
+		case mode::runmode::SIMULATION: 
 			break;
-		case RUNMODE::PREP : 
-			para.prepr0p0();
+		case mode::runmode::SURFACE: 
 			break;
-		case RUNMODE::SIMULATION : 
-			para.loadr0p0();
-			runsimu(para);
-			break;
-		case RUNMODE::DAT : 
-			loaddat = 0;
-			para.prepdat();
-			FileMgr::savedat(para);
-			break;
-		case RUNMODE::SURF : 
-			shape(para, 0);
-			shape(para, 1);
-			xzshape(para);
-			break;
-		default : 
-			throw std::out_of_range("Unknown mode");
+		case mode::runmode::TEST: 
 			break;
 	}
 	// ending
-	IO::info("Program Ends");
-	Timer::toc();
+	timer::toc();
 	timer::now();
 	return 0;
 }

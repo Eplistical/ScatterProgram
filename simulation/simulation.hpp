@@ -4,6 +4,7 @@
 
 #include "simulation_var.hpp"
 #include "particle_t.hpp"
+#include "initmode.hpp"
 #include "initstate_t.hpp"
 #include "evolve.hpp"
 

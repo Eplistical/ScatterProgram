@@ -17,25 +17,19 @@ LINK_DIRECTORIES(${HOME}/lib ${HOME}/lib64)
 # openmp
 FIND_PACKAGE(OpenMP)
 IF(OpenMP_FOUND)
+    MESSAGE(STATUS "OpenMp found")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 ELSE (OpenMP_FOUND)
     MESSAGE(STATUS "OpenMP not found")
 ENDIF(OpenMP_FOUND)
 
-# MPI lib
-FIND_PACKAGE(MPI)
+# MPI
+FIND_PACKAGE(MPI REQUIRED)
 IF(MPI_FOUND)
     MESSAGE(STATUS "MPI found: ${MPI_COMPILER}")
-    INCLUDE_DIRECTORIES(${MPI_INCLUDE_PATH})
 ELSE (MPI_FOUND)
     MESSAGE(STATUS "MPI not found")
 ENDIF(MPI_FOUND)
-
-# mkl lib
-SET(MKLROOT $ENV{MKLROOT})
-INCLUDE_DIRECTORIES(${MKLROOT}/include)
-LINK_DIRECTORIES(${MKLROOT}/lib/intel64)
-SET(MKL_LIBRARIES m dl pthread  mkl_intel_lp64 mkl_intel_thread mkl_core iomp5)
 
 # debug/release
 IF(DEBUG)
@@ -51,3 +45,10 @@ ADD_SUBDIRECTORY(surfaces)
 ADD_SUBDIRECTORY(grid)
 ADD_SUBDIRECTORY(simulation)
 ADD_SUBDIRECTORY(io)
+
+# scatter
+SET(OBJNAME scatter)
+FILE(GLOB ${OBJNAME}_SRC *.cpp)
+SET(${OBJNAME}_LIB rem surfaces grid simulation io boost_program_options)
+ADD_EXECUTABLE(${OBJNAME} ${${OBJNAME}_SRC})
+TARGET_LINK_LIBRARIES(${OBJNAME} ${${OBJNAME}_LIB})

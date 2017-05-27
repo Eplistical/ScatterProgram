@@ -35,7 +35,7 @@ bool scatter::arg_parser(int argc, char** argv) noexcept{
 		return false;
 	}
 	else{
-		const_cast<std::string> io::infile = vm.["infile"].as<std::string>();
-		const_cast<size_t> rem::threadNum = vm.["threadNum"].as<size_t>();
+		const_cast<std::string&>(io::infile) = vm["infile"].as<std::string>();
+		const_cast<size_t&>(rem::threadNum) = vm["threadNum"].as<size_t>();
 	}
 }

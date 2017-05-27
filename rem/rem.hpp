@@ -7,6 +7,7 @@ namespace scatter{
 	namespace rem{
 		// job control parameters
 		extern const std::string& jobname;
+		extern const std::string& jobtype;
 		extern const bool& loaddat;
 		extern const size_t& threadNum;
 		// basic parameters for the system(useful both for structure & dynamics)
