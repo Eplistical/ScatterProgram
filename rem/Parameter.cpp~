@@ -1,0 +1,220 @@
+#include <sstream>
+#include <cmath>
+#include "vector.hpp"
+#include "surfaces.hpp"
+#include "get_fef.hpp"
+#include "filemgr.hpp"
+#include "iomgr.hpp"
+#include "generic.hpp"
+#include "initstate.hpp"
+#include "Parameter.hpp"
+
+// module for Parameter 
+Parameter::Parameter(void){}
+Parameter::~Parameter(void){}
+
+Parameter::Parameter(std::string infile, int runmode){
+	loadpara(infile);
+    init();
+}
+
+void Parameter::loadpara(std::string infile){
+	// load parameters from input file to para
+    omegax.assign(2, 0.0);
+    m.assign(scatter::rem::dim, 0.0);
+    scatter::grid::rmin.assign(scatter::rem::dim, 0.0);
+    scatter::grid::rmax.assign(scatter::rem::dim, 0.0);
+    Nr.assign(scatter::rem::dim, 0.0);
+    dr.assign(scatter::rem::dim, 0.0);
+    FileMgr::loadinfile(*this);
+    // pass para to surf
+    scatter::surf::init(); 
+}
+
+void Parameter::init(void){
+	// info from calc
+	dr = (scatter::grid::rmax - scatter::grid::rmin) / Nr;
+    Ntot = 1;
+    for(int d = 0;d < scatter::rem::dim; d++){
+        Ntot *= scatter::grid::Nr[d];
+    }
+	dt = EndT / Nstep;
+}
+
+void Parameter::showpara(void) const{
+    IO::info("parameters");
+    IO::drawline('-');
+    /*
+    // string
+    std::string str_para[] = {InitFile, datFile};
+    std::string str_namelist = "InitFile, datFile";
+    IO::keyval(str_namelist, str_para, ',', true);
+    // scaler
+    double scalar_para[] = {kT, Gamma, initTemp, Ntraj, Nstep, EndT, Nstate, Initz, Initpz};
+    std::string scalar_namelist = "kT, Gamma, initTemp, Ntraj, Nstep, EndT, Nstate, Initz, Initpz";
+    IO::keyval(scalar_namelist, scalar_para, ',',  true);
+    // vector
+    IO::veckeyval("omegax", omegax);
+    IO::veckeyval("scatter::grid::rmin", scatter::grid::rmin);
+    IO::veckeyval("scatter::grid::rmax", scatter::grid::rmax);
+    IO::veckeyval("Nr", Nr);
+    // end
+    */
+    IO::drawline('-');
+    //showsurfacepara();
+}
+
+void Parameter::showsurf(void) const{
+    int jx, jz, j;
+    std::vector<double> r, _force, _efric, _fBCME;
+    double deltaU = 0.0;
+
+    IO::tab("z, U0, U1, U0b, U1b, Gamma", ',');
+    IO::drawline('#');
+    for(jz = 0; jz < scatter::grid::Nr[1]; jz++){
+        r.clear();
+        r.push_back(0.0);
+        r.push_back(scatter::grid::rmin[1] + scatter::grid::dr[1] * jz);
+
+        _force = get_force(r);
+        _efric = get_efric(r);
+        _fBCME = get_fBCME(r);
+
+        deltaU += -_fBCME[1] * scatter::grid::dr[1];
+
+        IO::tab(r[1]);
+        IO::tab(scatter::surf::fU0(r));
+        IO::tab(scatter::surf::fU1(r));
+        IO::tab(scatter::surf::fU0(r) + deltaU);
+        IO::tab(scatter::surf::fU1(r) + deltaU);
+        IO::tab(scatter::surf::fGamma(r, scatter::system::Gamma0));
+        IO::newline();
+    }
+}
+
+void Parameter::alloc_space(void){
+    force.assign(Ntot * scatter::rem::dim, 0.0);
+    efric.assign(Ntot * scatter::rem::dim2, 0.0);
+    fBCME.assign(Ntot * scatter::rem::dim, 0.0);
+}
+
+void Parameter::prepdat(void){
+	// prepare the friction along x axis
+    // info
+    std::ostringstream buf;
+    buf << "preparing force, efric, fBCME ... " << std::endl
+        << "approx mem needed: "
+        << Ntot * (1 + 2 * scatter::rem::dim + scatter::rem::dim2) * sizeof(double) / pow(1024.0, 3.0)
+        << " GB";
+    IO::info(buf.str());
+    // space
+    alloc_space();
+    // load data from datFile
+    if(scatter::rem::loaddat != 0){
+        FileMgr::loaddat(*this);
+        return ;
+    }
+    int ijob;
+    std::vector<double> r;
+    std::vector<int> jr;
+#pragma omp parallel for if(scatter::rem::threadNum > 1)      \
+        default(shared)                         \
+        private(ijob, r, jr)                    \
+        schedule(dynamic)
+    for(ijob = 0;ijob < Ntot;ijob++){
+        // calc r
+        r.assign(scatter::rem::dim, 0.0);
+        jr.assign(scatter::rem::dim, 0);
+        jr[0] = ijob % scatter::grid::Nr[0];
+        jr[1] = ijob / scatter::grid::Nr[0];
+        r = scatter::grid::rmin + jr * dr;
+        // calc force, efric, fBCME for r
+        get_fef(r, kT, Gamma,
+                    &force[ijob * scatter::rem::dim], 
+                    &efric[ijob * scatter::rem::dim2],
+                    &fBCME[ijob * scatter::rem::dim]);
+    }
+}
+
+/*
+void Parameter::prepr0p0(void){
+	const std::vector<double> sigmar = pow(initTemp * kT / omegax[0] / omegax[0] / m, 0.5);
+	const std::vector<double> sigmap = pow(initTemp * kT * m, 0.5);
+    double tmp;
+    std::vector<double> rp(4);
+    r0p0.clear();
+    std::cout << x1 << std::endl;
+    std::cout << sigmar[0] << std::endl;
+	for(int traj = 0; traj < Ntraj;traj++){
+        // x
+        if(scatter::init::initmode[0] == scatter::init::RING){
+            tmp = 2.0 * M_PI * rand() / RAND_MAX;
+            rp[0] = sqrt(2 * Nstate + 1.0) * cos(tmp) * sqrt(1.0 / m[0] / omegax[0] * scatter::system::hbar);
+            rp[2] = sqrt(2 * Nstate + 1.0) * sin(tmp) * sqrt(m[0] * omegax[0] * scatter::system::hbar);
+        }
+        else if(scatter::init::initmode[0] == scatter::init::DELTA){
+            rp[0] = sqrt(2 * Nstate + 1.0) * sqrt(1.0 / m[0] / omegax[0] * scatter::system::hbar);
+            rp[2] = 0.0;
+        }
+        else if(scatter::init::initmode[0] == scatter::init::GAUSSIAN){
+            // NOTICE: centered @ x1
+            rp[0] = normrnd(1, sigmar[0]);
+            rp[2] = normrnd(0, sigmap[0]);
+        }
+        else{
+            throw std::out_of_range("scatter::init::initmode[0] not available");
+        }
+        // z
+        rp[1] = Initz;
+        if(scatter::init::initmode[1] == scatter::init::GAUSSIAN){
+            while(1){
+                tmp = normrnd(Initpz, sigmap[1]);
+                if(tmp > 0) break;
+            }
+            rp[3] = tmp;
+        }
+        else if(scatter::init::initmode[1] == scatter::init::DELTA){
+            rp[3] = Initpz;
+        }
+        else{
+            throw std::out_of_range("scatter::init::initmode[1] not available");
+        }
+        r0p0.insert(r0p0.end(), rp.begin(), rp.end());
+	}
+    // save
+    FileMgr::saveinit(*this);
+}
+*/
+
+void Parameter::loadr0p0(void){
+    r0p0.assign(Ntraj * scatter::rem::dim * 2, 0.0);
+    FileMgr::loadinit(*this);
+}
+
+int Parameter::r_to_index(const std::vector<double>& r) const{
+    if(r[0] < scatter::grid::rmin[0] or r[0] > scatter::grid::rmax[0]){
+        IO::keyval("x = ", r[0], true);
+        throw std::out_of_range("r_to_index: x out of range!");
+    }
+    const double x = r[0];
+    const double z = std::max(scatter::grid::rmin[1], std::min(r[1], scatter::grid::rmax[1] - scatter::grid::dr[1]));
+    const int jx = static_cast<int>( (x - scatter::grid::rmin[0]) / scatter::grid::dr[0] );
+    const int jz = static_cast<int>( (z - scatter::grid::rmin[1]) / scatter::grid::dr[1] );
+    const int j = jz * scatter::grid::Nr[0] + jx;
+    return j;
+}
+
+std::vector<double> Parameter::get_force(const std::vector<double>& r) const{
+    const int j = r_to_index(r);
+    return subvec(force, j * scatter::rem::dim, scatter::rem::dim);
+}
+
+std::vector<double> Parameter::get_efric(const std::vector<double>& r) const{
+    const int j = r_to_index(r);
+    return subvec(efric, j * scatter::rem::dim2, scatter::rem::dim2);
+}
+
+std::vector<double> Parameter::get_fBCME(const std::vector<double>& r) const{
+    const int j = r_to_index(r);
+    return subvec(fBCME, j * scatter::rem::dim, scatter::rem::dim);
+}

@@ -1,0 +1,42 @@
+$rem
+    jobname     test
+    jobtype     simulation
+    DIM         2
+    Ntraj       2000
+$end
+
+$system
+    kT          0.001
+    Gamma0      0.05
+    mass        13708   55076        
+    omegax      0.01024 0.00777
+$end
+
+$grid
+    dim1        -1      1   4000    # x
+    dim2        -20     0   10000   # z
+$end
+
+$simulation
+    EndT        30000
+    Nstep       450000
+    Anastep     100
+$end
+
+$init
+    prepInit    true
+    initTemp    1
+    vibstate    15
+    initmode    rint, delta
+$end
+
+$surface
+    surfmode    test
+    gammamode   const   step
+    para_A      1    0.3386
+    para_B      0   -0.005
+    para_C      1    0.36
+    para_z     -1   -2
+    para_G      1   -2
+    para_x      0.20987
+$end
