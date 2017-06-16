@@ -9,10 +9,10 @@
 
 namespace scatter{
 	namespace io{
-		void savedat(const scatter::surf_t& surf, scatter::grid_t& grid);
-		void loaddat(const scatter::surf_t& surf, scatter::grid_t& grid);
-		void saveinit(scatter::initstate_t& initstate);
-		void loadinit(scatter::initstate_t& initstate);
+		void savedat(const scatter::surfaces_t& surf, scatter::grid_t& grid);
+		void loaddat(const scatter::surfaces_t& surf, scatter::grid_t& grid);
+		void saveinit(void);
+		void loadinit(void);
 		void loadinfile(void);
 		void print_file(std::string file);
 	};

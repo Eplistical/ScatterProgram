@@ -3,8 +3,9 @@
 #include <stdexcept>
 #include "io_var.hpp"
 #include "rem.hpp"
-#include "iomgr.hpp"
 #include "fileio.hpp"
+#include "ioer.hpp"
+#include "simulation.hpp"
 
 using namespace scatter::rem;
 using namespace scatter::simulation;
@@ -62,15 +63,15 @@ static void rwfile( filemgr_t& filemgr,
 	}
 }
 
-void rwinit(scatter::initstate_t& initstate, char op){
+void rwinit(char op){
 	// construct header
 	std::vector<double> header;
 	header.push_back(dim);
 	header.insert(header.end(), mass.begin(), mass.end());
-	header.push_back(initstate.get_temp());
+	header.push_back(inittemp);
 	// construct/get data
 	const size_t datalen = dim * Ntraj * 2;
-	std::vector<double>& rp = initstate.get_rp_ref();
+	std::vector<double> rp = r0p0;
 	rp.resize(datalen);
 	// read/write
 	rwfile( filemgr, 
@@ -78,9 +79,12 @@ void rwinit(scatter::initstate_t& initstate, char op){
 			header, 
 			rp,
 			op);
+	if(op == 'r'){
+		const_cast<std::vector<double>&>(r0p0) = rp;
+	}
 }
 
-void rwdat(const scatter::surf_t& surf, scatter::grid_t& grid, char op){
+void rwdat(const scatter::surfaces_t& surf, scatter::grid_t& grid, char op){
 	const size_t surf_num = surf.get_surf_number();
 	// construct header
 	std::vector<double> header;
@@ -123,39 +127,39 @@ void rwdat(const scatter::surf_t& surf, scatter::grid_t& grid, char op){
 }
 
 // API
-void scatter::io::savedat(const scatter::surf_t& surf, scatter::grid_t& grid){
-    IO::info("saving data to " + scatter::io::datfile + " ...  ", true);
+void scatter::io::savedat(const scatter::surfaces_t& surf, scatter::grid_t& grid){
+    ioer::info("saving data to " + scatter::io::datfile + " ...  ", true);
     rwdat(surf, grid, 'w');
-    IO::info("done");
+    ioer::info("done");
 }
 
-void scatter::io::loaddat(const scatter::surf_t& surf, scatter::grid_t& grid){
-    IO::info("loading data from " + scatter::io::datfile + " ...  ", true);
+void scatter::io::loaddat(const scatter::surfaces_t& surf, scatter::grid_t& grid){
+    ioer::info("loading data from " + scatter::io::datfile + " ...  ", true);
     rwdat(surf, grid, 'r');
-    IO::info("done");
+    ioer::info("done");
 }
 
-void scatter::io::saveinit(scatter::initstate_t& initstate){
-    IO::info("saving r0p0 to " + scatter::io::initfile + " ...  ", true);
-    rwinit(initstate, 'w');
-    IO::info("done");
+void scatter::io::saveinit(void){
+    ioer::info("saving r0p0 to " + scatter::io::initfile + " ...  ", true);
+    rwinit('w');
+    ioer::info("done");
 }
 
-void scatter::io::loadinit(scatter::initstate_t& initstate){
-    IO::info("loading r0p0 to " + scatter::io::initfile + " ...  ", true);
-    rwinit(initstate, 'r');
-    IO::info("done");
+void scatter::io::loadinit(void){
+    ioer::info("loading r0p0 to " + scatter::io::initfile + " ...  ", true);
+    rwinit('r');
+    ioer::info("done");
 }
 
 void scatter::io::loadinfile(void){
-    IO::info("loading infile: " + scatter::io::infile + " ...  ", true);
+    ioer::info("loading infile: " + scatter::rem::infile + " ...  ", true);
     rinfile();
-    IO::info("done");
+    ioer::info("done");
 }
 
 void scatter::io::print_file(std::string file){
     // copy infile content to output
-    IO::info("infile:");
-    IO::drawline('-');
-    IO::drawline('-');
+    ioer::info("infile:");
+    ioer::drawline('-');
+    ioer::drawline('-');
 }

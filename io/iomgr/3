@@ -1,0 +1,49 @@
+In file included from ioer_t.hpp:10:0,
+                 from 1.cpp:3:
+ioer_functors.hpp:20:13: error: default argument missing for parameter 2 of 'ioer::keyval_functor::keyval_functor(std::ostream&, const string&, size_t, bool)'
+    explicit keyval_functor(std::ostream& dest = std::cout, const std::string& dlm, const size_t width, const bool keyfirst)
+             ^~~~~~~~~~~~~~
+ioer_functors.hpp:20:13: error: default argument missing for parameter 3 of 'ioer::keyval_functor::keyval_functor(std::ostream&, const string&, size_t, bool)'
+ioer_functors.hpp:20:13: error: default argument missing for parameter 4 of 'ioer::keyval_functor::keyval_functor(std::ostream&, const string&, size_t, bool)'
+ioer_functors.hpp: In member function 'const ioer::keyval_functor& ioer::keyval_functor::operator()(const KeyType&, const ValType&, bool) const':
+ioer_functors.hpp:26:28: error: there are no arguments to 'setw' that depend on a template parameter, so a declaration of 'setw' must be available [-fpermissive]
+      if(_keyfirst) buf <<  setw(_width) << key << _dlm << setw(_width) << val;
+                            ^~~~
+ioer_functors.hpp:26:28: note: (if you use '-fpermissive', G++ will accept your code, but allowing the use of an undeclared name is deprecated)
+ioer_functors.hpp:26:59: error: there are no arguments to 'setw' that depend on a template parameter, so a declaration of 'setw' must be available [-fpermissive]
+      if(_keyfirst) buf <<  setw(_width) << key << _dlm << setw(_width) << val;
+                                                           ^~~~
+ioer_functors.hpp:27:19: error: there are no arguments to 'setw' that depend on a template parameter, so a declaration of 'setw' must be available [-fpermissive]
+      else buf <<  setw(_width) << val << _dlm << setw(_width) << key;
+                   ^~~~
+ioer_functors.hpp:27:50: error: there are no arguments to 'setw' that depend on a template parameter, so a declaration of 'setw' must be available [-fpermissive]
+      else buf <<  setw(_width) << val << _dlm << setw(_width) << key;
+                                                  ^~~~
+ioer_functors.hpp: In member function 'const ioer::keyval_functor& ioer::keyval_functor::operator()(const KeyType&, const std::vector<ValType>&, bool) const':
+ioer_functors.hpp:37:15: error: there are no arguments to 'setw' that depend on a template parameter, so a declaration of 'setw' must be available [-fpermissive]
+       buf <<  setw(_width) << key << _dlm;
+               ^~~~
+ioer_functors.hpp:38:35: error: there are no arguments to 'setw' that depend on a template parameter, so a declaration of 'setw' must be available [-fpermissive]
+       for(auto& it : val) buf <<  setw(_width) << it;
+                                   ^~~~
+ioer_functors.hpp:41:35: error: there are no arguments to 'setw' that depend on a template parameter, so a declaration of 'setw' must be available [-fpermissive]
+       for(auto& it : val) buf <<  setw(_width) << it;
+                                   ^~~~
+ioer_functors.hpp:42:23: error: there are no arguments to 'setw' that depend on a template parameter, so a declaration of 'setw' must be available [-fpermissive]
+       buf <<  _dlm << setw(_width) << key ;
+                       ^~~~
+In file included from 1.cpp:3:0:
+ioer_t.hpp: In member function 'void ioer::ioer_t::info(const string&, T, bool)':
+ioer_t.hpp:40:18: error: 's' was not declared in this scope
+      at(path) << s;
+                  ^
+ioer_t.hpp:41:6: error: 'else' without a previous 'if'
+      else(not noendl) newline(path);
+      ^~~~
+ioer_t.hpp:41:23: error: expected ';' before 'newline'
+      else(not noendl) newline(path);
+                       ^~~~~~~
+ioer_t.hpp: In member function 'ioer::keyval_functor& ioer::ioer_t::keyval(const string&, const string&, bool)':
+ioer_t.hpp:49:12: error: cannot bind non-const lvalue reference of type 'ioer::keyval_functor&' to an rvalue of type 'ioer::keyval_functor'
+     return keyval_functor(static_cast<std::ostream&>(at(path)), dlm, _width, keyfirst);
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

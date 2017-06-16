@@ -23,7 +23,10 @@ namespace scatter{
 			size_t r_to_index(const std::vector<double>& r) const;
 		public:
 			// constructor
-			explicit grid_t();
+			grid_t() = default;
+			~grid_t() = default;
+			grid_t(const grid_t&) = default;
+			grid_t& operator=(const grid_t&) = default;
 			explicit grid_t(const std::vector<double>& rmin, const std::vector<double>& rmax, const std::vector<size_t>& Nr);
 			// getter & setter
 			std::vector<double>& get_fef_ref(void);

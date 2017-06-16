@@ -3,12 +3,18 @@
 /* module for random
  * require C++11
  * written based on <random> and <vector>
+ * using external lib: 
+ * 	boost/type_traits.hpp
+ * 	boost/spirit/home/support/container.hpp
  *
  * Gaohan
  */
 #include <cmath>
 #include <random>
 #include <vector>
+
+#include <boost/type_traits.hpp>
+#include <boost/spirit/home/support/container.hpp>
 
 namespace randomer{
 	static std::random_device ran_dev;
@@ -27,12 +33,12 @@ namespace randomer{
 		return rst;
 	}
 
-	inline double normrand(double mu = 0.0, double sigma = 1.0) noexcept{
+	inline double normal(double mu = 0.0, double sigma = 1.0) noexcept{
 		std::normal_distribution<double> dis(mu, sigma);
 		return dis(gen);
 	}
 
-	inline std::vector<double> vnormrand(size_t N, double mu = 0.0, double sigma = 1.0) noexcept{
+	inline std::vector<double> vnormal(size_t N, double mu = 0.0, double sigma = 1.0) noexcept{
 		std::normal_distribution<double> dis(mu, sigma);
 		std::vector<double> rst(N);
 		for(size_t j = 0; j < N; ++j)

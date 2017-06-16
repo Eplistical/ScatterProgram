@@ -1,8 +1,7 @@
-#include "grid/grid.hpp"
-#include "surfaces/surfaces.hpp"
-#include "simulation/simulation.hpp"
+#include "grid.hpp"
+#include "surfaces.hpp"
+#include "simulation.hpp"
 #include "scatter_var.hpp"
 
-scatter::grid_t scatter::grid;
-scatter::surf_t scatter::surf;
-scatter::initstate_t scatter::initstate;
+scatter::grid_t scatter::mesh;
+scatter::surfaces_t scatter::surf;

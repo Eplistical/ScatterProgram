@@ -2,14 +2,15 @@
 #include "rem.hpp"
 #include "fermi.hpp"
 #include "lorentian.hpp"
-#include "surf_t.hpp"
+#include "surfaces_collection.hpp"
+#include "surfaces_t.hpp"
+#include "surfaces_var.hpp"
 
 #ifdef __cpluscplus
 extern "C"{
 #endif
-const double BANDWIDTH = 1.5;
-
 static void _electronic_fef(const double hbar,
+							const double BANDWIDTH,
 							const int dim, 
                             const double kT,
                             const double h,     
@@ -76,8 +77,9 @@ static void _electronic_fef(const double hbar,
 using namespace scatter;
 
 // calc fef
-void surf_t::fef(const std::vector<double>& r, double *force, double *efric, double *fBCME){
+void surfaces_t::fef(const std::vector<double>& r, double *force, double *efric, double *fBCME){
 	using namespace scatter::rem;
+	using namespace scatter::surfaces;
     // h, h'
     const double h = fU1(r) - fU0(r);
     const std::vector<double> nabla_h = fF0(r) - fF1(r);
@@ -98,7 +100,8 @@ void surf_t::fef(const std::vector<double>& r, double *force, double *efric, dou
         const double gamma = fGamma(r, Gamma0);
         const std::vector<double> nabla_gamma = fGammader(r, Gamma0);
         // integrate calc electronic force(r), efric(r), fBCME(r)
-        _electronic_fef(hbar, dim, kT,
+        _electronic_fef(hbar, bandwidth, 
+						dim, kT,
                         h, &nabla_h[0], 
                         gamma, &nabla_gamma[0],
                         force, efric, fBCME);

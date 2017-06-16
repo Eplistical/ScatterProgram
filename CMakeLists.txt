@@ -10,9 +10,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 SET(HOME /data/home/Eplistical)
 INCLUDE_DIRECTORIES(${HOME}/include)
-INCLUDE_DIRECTORIES(${HOME}/code/Ccode/include)
-LINK_DIRECTORIES(${HOME}/code/Ccode/lib)
-LINK_DIRECTORIES(${HOME}/lib ${HOME}/lib64)
 
 # openmp
 FIND_PACKAGE(OpenMP)
@@ -30,6 +27,7 @@ IF(MPI_FOUND)
 ELSE (MPI_FOUND)
     MESSAGE(STATUS "MPI not found")
 ENDIF(MPI_FOUND)
+
 
 # debug/release
 IF(DEBUG)
@@ -49,6 +47,7 @@ ADD_SUBDIRECTORY(io)
 # scatter
 SET(OBJNAME scatter)
 FILE(GLOB ${OBJNAME}_SRC *.cpp)
-SET(${OBJNAME}_LIB rem surfaces grid simulation io boost_program_options)
+SET(${OBJNAME}_LIB rem surfaces grid simulation io)
 ADD_EXECUTABLE(${OBJNAME} ${${OBJNAME}_SRC})
-TARGET_LINK_LIBRARIES(${OBJNAME} ${${OBJNAME}_LIB})
+TARGET_LINK_LIBRARIES(${OBJNAME} PUBLIC ${${OBJNAME}_LIB})
+TARGET_INCLUDE_DIRECTORIES(${OBJNAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)

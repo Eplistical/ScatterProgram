@@ -11,22 +11,15 @@ namespace scatter{
 			std::vector<double> ranforce;
 			size_t surf;
 
-			// constructor
-			explicit particle_t(void) : surf(0){}
-			explicit particle_t(size_t s) : surf(s){}
+			// big five
+			explicit particle_t(void) : surf(0) {}
+			explicit particle_t(size_t s) : surf(s) {}
+			particle_t(const particle_t& other) = default; 
+			particle_t& operator=(const particle_t& other) = default;
+			~particle_t() = default;
 
 			// setter
 			void hop(size_t s){surf = s;}
-
-			// operator
-			particle_t& operator=(const particle_t& other){
-				if(this != &other){
-					r = other.r;
-					p = other.p;
-					surf = other.surf;
-				}
-				return *this;
-			}
 	};
 };
 

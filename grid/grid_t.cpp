@@ -6,9 +6,7 @@
 using namespace scatter;
 using scatter::rem::dim;
 using scatter::rem::dim2;
-
 // constructor
-grid_t::grid_t(){}
 grid_t::grid_t( const std::vector<double>& rmin, 
 				const std::vector<double>& rmax, 
 				const std::vector<size_t>& Nr) :
@@ -27,73 +25,42 @@ grid_t::grid_t( const std::vector<double>& rmin,
 }
 
 // getter & setter
-std::vector<double>& grid_t::get_fef_ref(void) {
-	return _fef;
-}
-
+std::vector<double>& grid_t::get_fef_ref(void) 
+{ return _fef; }
 // getter
-std::vector<double> grid_t::get_rmin(void) const{
-	return _rmin;
-}
-
-std::vector<double> grid_t::get_rmax(void) const{
-	return _rmax;
-}
-
-std::vector<double> grid_t::get_dr(void) const{
-	return _dr;
-}
-
-std::vector<size_t> grid_t::get_Nr(void) const{
-	return _Nr;
-}
-
-double grid_t::get_rmin(size_t i) const{
-	return _rmin.at(i);
-}
-
-double grid_t::get_rmax(size_t i) const{
-	return _rmax.at(i);
-}
-
-double grid_t::get_dr(size_t i) const{
-	return _dr.at(i);
-}
-
-size_t grid_t::get_Nr(size_t i) const{
-	return _Nr.at(i);
-}
-
-size_t grid_t::get_Ntot(void) const{
-	return product(_Nr);
-}
-
-size_t grid_t::get_forcelen(void) const{
-	return _forcelen;
-}
-
-size_t grid_t::get_efriclen(void) const{
-	return _efriclen;
-}
-
-size_t grid_t::get_fBCMElen(void) const{
-	return _fBCMElen;
-}
-
-std::vector<double> grid_t::get_force(const std::vector<double>& r) const{ 
-	return subvec(_fef, r_to_index(r) * dim, dim);
-}
-
-std::vector<double> grid_t::get_efric(const std::vector<double>& r) const{
-	return subvec(_fef, _efricoffset + r_to_index(r) * dim2, dim2);
-}
-
-std::vector<double> grid_t::get_fBCME(const std::vector<double>& r) const{
-	return subvec(_fef, _fBCMEoffset + r_to_index(r) * dim, dim);
-}
+std::vector<double> grid_t::get_rmin(void) const
+{ return _rmin; }
+std::vector<double> grid_t::get_rmax(void) const
+{ return _rmax; }
+std::vector<double> grid_t::get_dr(void) const
+{ return _dr; }
+std::vector<size_t> grid_t::get_Nr(void) const
+{ return _Nr; }
+double grid_t::get_rmin(size_t i) const
+{ return _rmin.at(i); }
+double grid_t::get_rmax(size_t i) const
+{ return _rmax.at(i); }
+double grid_t::get_dr(size_t i) const
+{ return _dr.at(i); }
+size_t grid_t::get_Nr(size_t i) const
+{ return _Nr.at(i); }
+size_t grid_t::get_Ntot(void) const
+{ return product(_Nr); }
+size_t grid_t::get_forcelen(void) const
+{ return _forcelen; }
+size_t grid_t::get_efriclen(void) const
+{ return _efriclen; }
+size_t grid_t::get_fBCMElen(void) const
+{ return _fBCMElen; }
+std::vector<double> grid_t::get_force(const std::vector<double>& r) const
+{ return subvec(_fef, r_to_index(r) * dim, dim); }
+std::vector<double> grid_t::get_efric(const std::vector<double>& r) const
+{ return subvec(_fef, _efricoffset + r_to_index(r) * dim2, dim2); }
+std::vector<double> grid_t::get_fBCME(const std::vector<double>& r) const
+{ return subvec(_fef, _fBCMEoffset + r_to_index(r) * dim, dim); }
 
 // helper
-size_t grid_t::r_to_index(const std::vector<double>& r) const{
+size_t grid_t::r_to_index(const std::vector<double>& r) const{	
 	if(r.at(0) < _rmin.at(0) or r.at(0) > _rmax.at(0)){
 		std::stringstream errmsg;
 		errmsg 

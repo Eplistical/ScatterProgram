@@ -1,12 +1,14 @@
 #include <iostream>
-#include "randomer.hpp"
+#include "matrixop.hpp"
+#include "ioer.hpp"
 using namespace std;
 
 int main(void){
-	std::vector<double> rnd = randomer::vrand(20000);
-	for(size_t j = 0, N = 200; j < N; ++j){
-		cout << rnd.at(j) << endl;
-	}
-
+	std::vector<double> a{1,2,3,2,5,4,3,4,8};
+	std::vector<double> v{4,5,6};
+	std::vector<double> eva, evt;
+	ioer::info(a);
+	ioer::info(v);
+	ioer::info(matrixop::dmv(a,v));
 	return 0;
 }

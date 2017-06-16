@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+import json
+import os
+import argparse
+from pprint import pprint
+from qctojson import *
+import logging
+from datetime import datetime
+
+FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+TIMEFMT = ' %Y-%m-%d %H:%M:%S'
+
+def now():
+    t = datetime.now()
+    return t.strftime(TIMEFMT)
+
+
+def parsearg():
+    """parse commandline arguments
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('infile', type=str, help='input file name')
+    parser.add_argument('--cfgfile', type=str, default=FILE_DIR + '/config/remlist.cfg', help='config file name')
+    parser.add_argument('--prepinit', type=bool, default=False,
+                            help='whether to prepare a new init file')
+    args = parser.parse_args()
+    return args
+
+
+def prepinit(jsondata):
+    """prepare init file for given json data"""
+
+
+def validinitfile(initfile, jsondata):
+    """check if an init file is valid"""
+
+
+def main():
+    args = parsearg()
+    infile = os.path.abspath(args.infile)
+    infile_DIR = os.path.dirname(infile)
+    jsonfile = infile + '.json'
+    # parse infile, transfer to json
+    dataframe = parse_config_file(args.cfgfile)
+    jsondata = parse_infile(args.infile, dataframe)
+    with open(jsonfile, 'w') as f:
+        json.dump(jsondata, f, indent=4)
+
+    # paths
+    jobname = jsondata['rem']['jobname']['value'][0]
+    initfile = infile_DIR + '/.' + jobname + '.init'
+    datfile = infile_DIR + '/.' + jobname + '.dat'
+    logfile = infile_DIR + '/.' + jobname + '.log'
+    outfile = infile_DIR + '/' + jobname + '.out'
+
+    # preprocessor
+    os.remove(logfile)
+    logging.basicConfig(filename=logfile, level=logging.INFO)
+    logging.info(now() + ' complete loading infile & translate to json.')
+
+    # job analysis
+    jobtype = jsondata['rem']['jobtype']['value'][0]
+
+    if jobtype == 'simulation':
+        # make sure one has init file
+        if args.prepinit:
+            logging.info(now() + ' preparing init file: ' + initfile)
+            prepinit(jsondata)
+        assert(os.path.exists(initfile))
+        assert(validinitfile(initfile, jsondata))
+
+        # if outfile exists, make a backup
+        if os.path.exists(outfile):
+            logging.info(now() + ' existing output file detected, backed up.')
+            os.rename(outfile, infile_DIR + '.' + jobname + '.last.out')
+
+
+if __name__ == '__main__':
+    main()

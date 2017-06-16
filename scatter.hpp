@@ -3,9 +3,10 @@
 // main module for Scatter
 
 #include "scatter_var.hpp"
-#include "grid/grid.hpp"
-#include "surfaces/surfaces.hpp"
-#include "simulation/simulation.hpp"
-#include "io/io.hpp"
+#include "rem.hpp"
+#include "grid.hpp"
+#include "surfaces.hpp"
+#include "simulation.hpp"
+#include "io.hpp"
 
 #endif

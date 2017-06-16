@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+import os
+import sys
+from Eplib import runcmd, tostr
+
+out, err = runcmd("cd ../aux; ls *.hpp")
+flist = tuple(tostr(out).split('\n'))
+
+text = """
+#ifndef _SCATTER_{TITLE}_HPP
+#define _SCATTER_{TITLE}_HPP
+
+#include "../aux/{title}.hpp"
+
+#endif
+"""
+text = text[1:-1]
+
+for fname in flist:
+    if fname:
+        title = fname[:-4]
+        with open(fname, 'w') as f:
+            f.write(text.format(TITLE=title.upper(), title=title))
