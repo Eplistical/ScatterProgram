@@ -31,6 +31,7 @@ namespace scatter{
 			// getter & setter
 			std::vector<double>& get_fef_ref(void);
 			// getter
+			std::vector<double> get_grid(size_t d) const;
 			std::vector<double> get_rmin(void) const;
 			std::vector<double> get_rmax(void) const;
 			std::vector<double> get_dr(void) const;

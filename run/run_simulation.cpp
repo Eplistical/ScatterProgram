@@ -24,6 +24,7 @@ static void assign_initstate(std::vector<particle_t>& swarm){
 }
 
 void scatter::run_simulation(){
+	/*
 	const size_t Nswarm = 3;
 	std::vector<std::vector<particle_t>> swarms(Nswarm);
 	std::vector<std::vector<particle_t>> records(Nswarm);
@@ -66,4 +67,5 @@ void scatter::run_simulation(){
 			++step;
 		}
 	}
+	*/
 }

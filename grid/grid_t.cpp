@@ -28,6 +28,13 @@ grid_t::grid_t( const std::vector<double>& rmin,
 std::vector<double>& grid_t::get_fef_ref(void) 
 { return _fef; }
 // getter
+std::vector<double> grid_t::get_grid(size_t d) const{
+	std::vector<double> rst(_Nr.at(d));
+	for(size_t i = 0, N = _Nr.at(d); i < N; ++i){
+		rst[d] = _rmin[d] + i * _dr[d];
+	}
+	return rst;
+}
 std::vector<double> grid_t::get_rmin(void) const
 { return _rmin; }
 std::vector<double> grid_t::get_rmax(void) const

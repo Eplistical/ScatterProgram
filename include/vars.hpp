@@ -6,6 +6,5 @@
 #include "../grid/grid_var.hpp"
 #include "../surfaces/surfaces_var.hpp"
 #include "../simulation/simulation_var.hpp"
-#include "../scatter_var.hpp"
 
 #endif

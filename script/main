@@ -20,7 +20,7 @@ def parsearg():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('infile', type=str, help='input file name')
-    parser.add_argument('--cfgfile', type=str, default=FILE_DIR + '/config/remlist.cfg', help='config file name')
+    parser.add_argument('--cfgfile', type=str, default=FILE_DIR + '/../config/remlist.cfg', help='config file name')
     parser.add_argument('--prepinit', type=bool, default=False,
                             help='whether to prepare a new init file')
     args = parser.parse_args()
@@ -54,7 +54,10 @@ def main():
     outfile = infile_DIR + '/' + jobname + '.out'
 
     # preprocessor
-    os.remove(logfile)
+    try:
+        os.remove(logfile)
+    except FileNotFoundError:
+        pass
     logging.basicConfig(filename=logfile, level=logging.INFO)
     logging.info(now() + ' complete loading infile & translate to json.')
 

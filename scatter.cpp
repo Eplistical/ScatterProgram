@@ -1,9 +1,9 @@
 #include <iostream>
 #include "ioer.hpp"
 #include "timer.hpp"
-#include "scatter.hpp"
-#include "runmode.hpp"
 #include "run.hpp"
+#include "vars.hpp"
+#include "io.hpp"
 using namespace std;
 using namespace scatter;
 
@@ -19,7 +19,6 @@ void print_vars(void){
 	simulation::print_var();
 }
 
-
 int main(int argc, char** argv){
 	timer::now();
 	timer::tic();
@@ -34,7 +33,7 @@ int main(int argc, char** argv){
 	switch(enumspace::runmode_dict.left.at(rem::jobtype))
 	{
 		case enumspace::runmode_enum::SIMULATION: 
-			run_simulation();
+			//run_simulation();
 			break;
 		case enumspace::runmode_enum::SURFACE: 
 			run_surface();
@@ -45,5 +44,4 @@ int main(int argc, char** argv){
 	// ending
 	timer::toc();
 	timer::now();
-	return 0;
 }
