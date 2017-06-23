@@ -2,3 +2,4 @@ v0.2
 - now surfaces can reproduce results from the old code
 - removed fU0, fU1, fF0, fF1 functions in surfaces, will use fU and fF consistently 
 - add 1D version fU, fF, etc to calc energy/force/.. for given surf on a specific dimension
+- added VERSION, UPDATE, README.md

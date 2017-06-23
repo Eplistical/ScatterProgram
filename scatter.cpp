@@ -20,6 +20,14 @@ void print_vars(void){
 }
 
 int main(int argc, char** argv){
+	// No argument list
+	if(argc == 1){
+		std::cout 
+			<< "No input, use -h to see help info"
+			<< std::endl;
+		return 0;
+	}
+	// program begin
 	timer::now();
 	timer::tic();
 	// parse args
