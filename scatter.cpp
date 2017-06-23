@@ -4,6 +4,7 @@
 #include "run.hpp"
 #include "vars.hpp"
 #include "io.hpp"
+#include <Eigen/Core>
 using namespace std;
 using namespace scatter;
 
