@@ -23,7 +23,7 @@ namespace scatter{
 			explicit surfaces_t(size_t Nsurf);
 			// setter
 			void set_gamma(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double>>& paras);
-			void set_energy(size_t i, const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double>>& paras);
+			void set_energy(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double>>& paras);
 			void set_abs_gamma_threash(double x);
 			// getter
 			size_t get_surf_number(void) const;

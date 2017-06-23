@@ -11,9 +11,9 @@ namespace scatter{
 		using enumspace::surfmode_enum;
 		extern const size_t& surfnum;
 		extern const double& cutoff_gamma;
-		extern const std::vector<std::vector<surfmode_enum>>& surfmode;
+		extern const std::vector<surfmode_enum>& surfmode;
 		extern const std::vector<std::vector<double>>& surfpara;
-		extern const std::vector<std::vector<surfmode_enum>>& gammamode;
+		extern const std::vector<surfmode_enum>& gammamode;
 		extern const std::vector<std::vector<double>>& gammapara;
 
 		// fef related 

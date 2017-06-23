@@ -20,15 +20,19 @@ surfaces_t::surfaces_t(size_t Nsurf){
 // setter
 void surfaces_t::set_gamma(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double>>& paras){
 	_gamma.clear();
-	for(size_t d = 0, N = modes.size(); d < N; ++d){
+	for(size_t d = 0; d < rem::dim; ++d){
 		_gamma.append_dim(modes.at(d), paras.at(d));
 	}
 }
 
-void surfaces_t::set_energy(size_t i, const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double>>& paras){
-	_energy.at(i).clear();
-	for(size_t d = 0, N = modes.size(); d < N; ++d){
-		_energy.at(i).append_dim(modes.at(d), paras.at(d));
+void surfaces_t::set_energy(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double>>& paras){
+	size_t index = 0;
+	for(size_t i = 0; i < _Nsurf; ++i){
+		_energy.at(i).clear();
+		for(size_t d = 0; d < rem::dim; ++d){
+			index = i * rem::dim + d;
+			_energy.at(i).append_dim(modes.at(index), paras.at(index));
+		}
 	}
 }
 

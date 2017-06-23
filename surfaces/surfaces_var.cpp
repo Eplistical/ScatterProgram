@@ -13,9 +13,9 @@ const double& NS::bandwidth = 1.5;
 const std::vector<double>& NS::derange = std::vector<double>();
 
 const size_t& NS::surfnum = 0;
-const std::vector<std::vector<surfmode_enum>>& NS::surfmode = std::vector<std::vector<surfmode_enum>>();
+const std::vector<surfmode_enum>& NS::surfmode = std::vector<surfmode_enum>();
 const std::vector<std::vector<double>>& NS::surfpara = std::vector<std::vector<double>>();
-const std::vector<std::vector<surfmode_enum>>& NS::gammamode = std::vector<std::vector<surfmode_enum>>();
+const std::vector<surfmode_enum>& NS::gammamode = std::vector<surfmode_enum>();
 const std::vector<std::vector<double>>& NS::gammapara = std::vector<std::vector<double>>(); 
 
 // init surfaces parameters 
