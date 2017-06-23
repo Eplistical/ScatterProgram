@@ -81,8 +81,8 @@ void surfaces_t::fef(const std::vector<double>& r, double *force, double *efric,
 	using namespace scatter::rem;
 	using namespace scatter::surfaces;
     // h, h'
-    const double h = fU1(r) - fU0(r);
-    const std::vector<double> nabla_h = fF0(r) - fF1(r);
+    const double h = fU(1, r) - fU(0, r);
+    const std::vector<double> nabla_h = fF(0, r) - fF(1, r);
     if(small_gamma(r, Gamma0)){
         /* if smallgamma, A->delta function
          * force = -h'*f
@@ -108,6 +108,6 @@ void surfaces_t::fef(const std::vector<double>& r, double *force, double *efric,
     }
     // add nuclear force term
     for(int d = 0;d < dim;d++){
-        force[d] = force[d] + fF0(r)[d];
+        force[d] = force[d] + fF(0, r)[d];
     }
 }

@@ -32,17 +32,13 @@ namespace scatter{
 			std::vector<double> get_gamma_para(int d) const; 
 			std::vector<double> get_energy_para(int i, int d) const; 
 			// U
-			std::vector<double> vU(int i, const std::vector<double>& r) const; 
-			std::vector<double> vU0(const std::vector<double>& r) const; 
-			std::vector<double> vU1(const std::vector<double>& r) const;
-			double fU(int i, const std::vector<double>& r) const;
-			double fU0(const std::vector<double>& r) const ;
-			double fU1(const std::vector<double>& r) const ;
+			std::vector<double> vU(int i, const std::vector<double>& r) const; 		// energy as a vector @ surf i
+			double fU(int i, const std::vector<double>& r) const;					// total energy @ surf i
+			double fU(int i, int d, double x) const;								// energy @ surf i & dimension d
 			// F
-			std::vector<double> vdUdr(int i, const std::vector<double>& r) const; 
-			std::vector<double> vF(int i, const std::vector<double>& r) const; 
-			std::vector<double> fF0(const std::vector<double>& r) const; 
-			std::vector<double> fF1(const std::vector<double>& r) const; 
+			std::vector<double> vdUdr(int i, const std::vector<double>& r) const;  	// nablaU
+			std::vector<double> fF(int i, const std::vector<double>& r) const; 	   	// force
+			double fF(int i, int d, double x) const;								// force @ surf i & dimension d
 			// Gamma
 			std::vector<double> vGamma(const std::vector<double>& r) const; 
 			double fGamma(const std::vector<double>& r, double Gamma0) const;

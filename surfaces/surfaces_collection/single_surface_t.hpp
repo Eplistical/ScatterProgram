@@ -65,20 +65,28 @@ namespace surfaces_collection {
 				return expr.str();
 			}
 
-			// calc U(r)
+			// U(r) for given dimension
+			double get_U(int d, double x) const{
+				return surfptr[d]->U(x);
+			}
+			// U(r) as a vector
 			std::vector<double> get_U(const std::vector<double>& r) const{
 				std::vector<double> rst(dim());
 				for(size_t d = 0, N = dim() ; d < N; ++d){
-					rst[d] = surfptr[d]->U(r[d]);
+					rst[d] = get_U(d, r[d]);
 				}
 				return rst;
 			}
 
-			// calc U'(r)
+			// U'(r) for given dimension
+			double get_dUdx(int d, double x) const{
+				return surfptr[d]->dUdx(x);
+			}
+			// U'(r) as a vector
 			std::vector<double> get_dUdx(const std::vector<double>& r) const{
 				std::vector<double> rst(dim());
 				for(size_t d = 0, N = dim() ; d < N; ++d){
-					rst[d] = surfptr[d]->dUdx(r[d]);
+					rst[d] = get_dUdx(d, r[d]);
 				}
 				return rst;
 			}

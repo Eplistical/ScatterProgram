@@ -49,25 +49,17 @@ std::vector<double> surfaces_t::get_energy_para(int i, int d) const
 // U
 std::vector<double> surfaces_t::vU(int i, const std::vector<double>& r) const
 { return _energy.at(i).get_U(r); }
-std::vector<double> surfaces_t::vU0(const std::vector<double>& r) const
-{ return vU(0, r); }
-std::vector<double> surfaces_t::vU1(const std::vector<double>& r) const
-{ return vU(1, r); }
+double surfaces_t::fU(int i, int d, double x) const
+{ return _energy.at(i).get_U(d, x); }
 double surfaces_t::fU(int i, const std::vector<double>& r) const
 { return sum(vU(i, r)); }
-double surfaces_t::fU0(const std::vector<double>& r) const
-{ return fU(0, r); }
-double surfaces_t::fU1(const std::vector<double>& r) const
-{ return fU(1, r); }
 // F
 std::vector<double> surfaces_t::vdUdr(int i, const std::vector<double>& r) const
 { return _energy.at(i).get_dUdx(r); }
-std::vector<double> surfaces_t::vF(int i, const std::vector<double>& r) const
+std::vector<double> surfaces_t::fF(int i, const std::vector<double>& r) const
 { return -1.0 * vdUdr(i, r); }
-std::vector<double> surfaces_t::fF0(const std::vector<double>& r) const
-{ return vF(0, r); }
-std::vector<double> surfaces_t::fF1(const std::vector<double>& r) const
-{ return vF(1, r); }
+double surfaces_t::fF(int i, int d, double x) const
+{ return _energy.at(i).get_dUdx(d, x); }
 // Gamma
 std::vector<double> surfaces_t::vGamma(const std::vector<double>& r) const
 { return _gamma.get_U(r); }
