@@ -14,26 +14,69 @@
 namespace ioer{
 	using namespace std;
 
-	inline void newline(void){
-		cout << endl;
-	}
+	inline void newline(void){ cout << endl; }
 
-	inline void drawline(char c, size_t len = 32){
-		cout << string(len, c) << endl;
-	}
+	inline void drawline(char c, size_t len = 32){ cout << string(len, c) << endl; }
 
+	template<typename ParamType>
+		inline void _tabout(ParamType x){
+			cout << std::setw(16) << x;
+		}
+
+	template<typename ParamType, typename ... Types>
+		inline void _tabout(ParamType x, Types ... otherx){
+			_tabout(x);
+			_tabout(otherx ...);
+		}
+
+	template<typename ... Types>
+		inline void tabout(Types ... x){
+			_tabout(x ...);
+			newline();
+		}
+
+	template<typename ... Types>
+		inline void tabout_nonewline(Types ... x){
+			_tabout(x ...);
+		}
+
+	template<typename ParamType>
+		inline void _info(ParamType x){
+			cout << x;
+		}
+
+	template<typename ParamType, typename ... Types>
+		inline void _info(ParamType x, Types ... otherx){
+			_info(x);
+			_info(otherx ...);
+		}
+
+	template<typename ... Types>
+		inline void info(Types ... x){
+			_info(x ...);
+			newline();
+		}
+
+	template<typename ... Types>
+		inline void info_nonewline(Types ... x){
+			_info(x ...);
+		}
+
+
+	/*
 	template <typename T> 
-	inline void info(T s, bool noendl = false){
-		cout << s;
-		if(not noendl) newline();
-	}
+		inline void info(T s, bool noendl = false){
+			cout << s;
+			if(not noendl) newline();
+		}
+		*/
 
 	template <typename T>
-	inline void info(const std::vector<T>& s){
-		for(size_t j = 0, N = s.size(); j < N; j++){
-			cout << s[j] << endl;
+		inline void info(const std::vector<T>& s){
+			for(size_t j = 0, N = s.size(); j < N; j++){
+				cout << s[j] << endl;
+			}
 		}
-	}
 
 	class keyval{
 		private:
