@@ -23,9 +23,10 @@ void scatter::run_surface(void){
 
 	for(size_t i = 0; i < surfnum; ++i){
 		for(size_t d = 0, Ndim = rem::dim; d < Ndim; ++d){
+			ioer::drawline('#');
 			ioer::info("i = ", i, "d = ", d);
 			for(auto& x : mesh.get_grid(d)){
-				ioer::tabout(x, surf.fU(i, d, x));
+				ioer::tabout(x, surf.fU(i, d, x), surf.fGamma(d, x), surf.fF(i, d, x), surf.fGammader(d, x));
 			}
 		}
 	}

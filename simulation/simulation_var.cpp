@@ -11,10 +11,10 @@ using enumspace::initmode_enum;
 
 const std::vector<double>& NS::mass = std::vector<double>();
 const std::vector<double>& NS::omega = std::vector<double>();
-const size_t& NS::Ntraj = 0;
-const size_t& NS::Nstep = 0;
-const double& NS::EndT = 0;
-const double& NS::dt = 0;
+const size_t& NS::Ntraj = -1;
+const size_t& NS::Nstep = -1;
+const double& NS::EndT = -1;
+const double& NS::dt = -1;
 const size_t& NS::Anastep = 100;
 
 // for init state

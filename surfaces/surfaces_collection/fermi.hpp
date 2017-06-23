@@ -35,7 +35,7 @@ namespace surfaces_collection{
 
         double U(double x) const{
             double tmp = exp(-C * (x - D));
-            return B + isinf(tmp)?0.0:A / tmp;
+            return B + isinf(tmp)?0.0:A / (1.0 + tmp);
         }
 
         double dUdx(double x) const{

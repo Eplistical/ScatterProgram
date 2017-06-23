@@ -63,12 +63,14 @@ std::vector<double> surfaces_t::vdUdr(int i, const std::vector<double>& r) const
 std::vector<double> surfaces_t::fF(int i, const std::vector<double>& r) const
 { return -1.0 * vdUdr(i, r); }
 double surfaces_t::fF(int i, int d, double x) const
-{ return _energy.at(i).get_dUdx(d, x); }
+{ return -1.0 * _energy.at(i).get_dUdx(d, x); }
 // Gamma
 std::vector<double> surfaces_t::vGamma(const std::vector<double>& r) const
 { return _gamma.get_U(r); }
 double surfaces_t::fGamma(const std::vector<double>& r, double Gamma0) const
 { return product(vGamma(r)) * Gamma0; }
+double surfaces_t::fGamma(int d, double x) const
+{ return _gamma.get_U(d, x); }
 std::vector<double> surfaces_t::vGammader(const std::vector<double>& r) const
 { return _gamma.get_dUdx(r); }
 std::vector<double> surfaces_t::fGammader(const std::vector<double>& r, double Gamma0) const
@@ -86,6 +88,8 @@ std::vector<double> surfaces_t::fGammader(const std::vector<double>& r, double G
 	}
 	return rst;
 }
+double surfaces_t::fGammader(int d, double x) const
+{ return _gamma.get_dUdx(d, x); }
 
 bool surfaces_t::small_gamma(const std::vector<double>& r, double Gamma0) const
 { return (fGamma(r, Gamma0) < _abs_gamma_threash); }
