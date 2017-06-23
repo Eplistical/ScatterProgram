@@ -33,7 +33,7 @@ int main(int argc, char** argv){
 	switch(enumspace::runmode_dict.left.at(rem::jobtype))
 	{
 		case enumspace::runmode_enum::SIMULATION: 
-			//run_simulation();
+			run_simulation();
 			break;
 		case enumspace::runmode_enum::SURFACE: 
 			run_surface();
