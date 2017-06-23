@@ -1,6 +1,7 @@
 #ifndef _JSON_TOOLKIT_HPP
 #define _JSON_TOOLKIT_HPP
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <locale>
@@ -47,7 +48,8 @@ namespace json{
 			const load_param& operator()(const std::string& key, const ParamType& param) const{
 				// load paramter, scalar version
 				const char* tag = lower(key).c_str();
-				const_cast<ParamType&>(param) = boost::lexical_cast<ParamType>(Obj[tag]["value"][0].GetString());
+				const std::string tmpstr = Obj[tag]["value"][0].GetString();
+				const_cast<ParamType&>(param) = boost::lexical_cast<ParamType>(tmpstr);
 				return *this;
 			}
 
@@ -55,7 +57,8 @@ namespace json{
 			const load_param& operator()(const std::string& key, const ParamType& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, scalar version
 				const char* tag = lower(key).c_str();
-				const_cast<ParamType&>(param) = Dict.left.at(Obj[tag]["value"][0].GetString());
+				const std::string tmpstr = Obj[tag]["value"][0].GetString();
+				const_cast<ParamType&>(param) = Dict.left.at(tmpstr);
 				return *this;
 			}
 
@@ -64,9 +67,11 @@ namespace json{
 				// load paramter, vector version
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
+				std::string tmpstr;
 				std::vector<ParamType> rst;
 				for(size_t j = 0, N = data.Size(); j < N; ++j){
-					rst.push_back(boost::lexical_cast<ParamType>(data[j].GetString()));
+					tmpstr = data[j].GetString();
+					rst.push_back(boost::lexical_cast<ParamType>(tmpstr));
 				}
 				const_cast<std::vector<ParamType>&>(param) = rst;
 				return *this;
@@ -77,9 +82,11 @@ namespace json{
 				// load parameter & convert to enum class according to Dict, vector version
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
+				std::string tmpstr;
 				std::vector<ParamType> rst;
 				for(size_t j = 0, N = data.Size(); j < N; ++j){
-					rst.push_back(Dict.left.at(data[j].GetString()));
+					tmpstr = data[j].GetString();
+					rst.push_back(Dict.left.at(tmpstr));
 				}
 				const_cast<std::vector<ParamType>&>(param) = rst;
 				return *this;
@@ -90,11 +97,13 @@ namespace json{
 				// load paramter, multiple-vector version
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
+				std::string tmpstr;
 				std::vector<std::vector<ParamType>> rst;
 				for(size_t ivec = 0, Nvec = data.Size(); ivec < Nvec; ++ivec){
 					rst.push_back(std::vector<ParamType>());
 					for (size_t j = 0, N = data[ivec].Size(); j < N; ++j){
-						rst[ivec].push_back(boost::lexical_cast<ParamType>(data[ivec][j].GetString()));
+						tmpstr = data[ivec][j].GetString();
+						rst[ivec].push_back(boost::lexical_cast<ParamType>(tmpstr));
 					}
 				}
 				const_cast<std::vector<std::vector<ParamType>>&>(param) = rst;
@@ -106,11 +115,13 @@ namespace json{
 				// load parameter & convert to enum class according to Dict, multiple-vector version
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
+				std::string tmpstr;
 				std::vector<std::vector<ParamType>> rst;
 				for(size_t ivec = 0, Nvec = data.Size(); ivec < Nvec; ++ivec){
 					rst.push_back(std::vector<ParamType>());
 					for (size_t j = 0, N = data[ivec].Size(); j < N; j++){
-						rst[ivec].push_back(Dict.left.at(data[ivec][j].GetString()));
+						tmpstr = data[ivec][j].GetString();
+						rst[ivec].push_back(Dict.left.at(tmpstr));
 					}
 				}
 				const_cast<std::vector<std::vector<ParamType>>&>(param) = rst;
