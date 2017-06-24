@@ -1,3 +1,7 @@
+#ifdef _DEBUG
+#include "debugtools.hpp"
+#endif
+
 #include "vector.hpp"
 #include "rem.hpp"
 #include "io.hpp"
@@ -24,6 +28,9 @@ static void assign_initstate(std::vector<particle_t>& swarm){
 }
 
 void scatter::run_simulation(){
+#ifdef _DEBUG
+	cout << "run_simulation: begin" << "\n";
+#endif
 	const size_t Nswarm = 3;
 	std::vector<std::vector<particle_t>> swarms(Nswarm);
 	std::vector<std::vector<particle_t>> records(Nswarm);
@@ -35,6 +42,9 @@ void scatter::run_simulation(){
 		assign_initstate(swarms.at(i));
 		records.at(i) = std::vector<particle_t>(static_cast<size_t>((Nstep / Anastep) + 1) * Ntraj) ;
 	}
+#ifdef _DEBUG
+	cout << "run_simulation: evolve particles ... " << "\n";
+#endif
 	size_t traj, step, irecord;
 #if defined(_OPENMP)
 	omp_set_num_threads(threadNum);
@@ -61,4 +71,7 @@ void scatter::run_simulation(){
 			++step;
 		}
 	}
+#ifdef _DEBUG
+	cout << "run_simulation: done" << "\n";
+#endif
 }

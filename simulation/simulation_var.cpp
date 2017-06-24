@@ -1,5 +1,10 @@
+#ifdef _DEBUG
+#include "debugtools.hpp"
+#endif
+
 #include <string>
 #include <vector>
+#include "rem.hpp"
 #include "ioer.hpp"
 #include "string_mode_conversion.hpp"
 #include "surfaces.hpp"
@@ -29,6 +34,22 @@ const std::vector<initmode_enum>& NS::initmode = std::vector<initmode_enum>();
 
 const std::vector<double>& NS::r0p0 = std::vector<double>();
 
+
+// helper function
+static void extract_omega(void){
+	// extract omega for all harmonic surfaces
+	using namespace scatter;
+	std::vector<double> tmp;
+	for(size_t i = 0; i < surfaces::surfnum; ++i){
+		for(size_t d = 0; d < rem::dim; ++d){
+			if(surfaces::surfmode.at(d + i * rem::dim) == enumspace::surfmode_enum::HARMONIC){
+				tmp.push_back( pow(surfaces::surfpara.at(d + i * rem::dim).at(0) / simulation::mass.at(d), 0.5) );
+			}
+		}
+	}
+	const_cast<std::vector<double>&>(scatter::simulation::omega) = tmp;
+}
+
 // init simulation parameters 
 void scatter::simulation::load_var(const rapidjson::Document& doc){
 	using namespace scatter::simulation;
@@ -48,11 +69,8 @@ void scatter::simulation::load_var(const rapidjson::Document& doc){
 		("initmode", initmode, enumspace::initmode_dict)
 		;
 	const_cast<double&>(dt) = EndT / Nstep;
-	// specific omega-init for 2d scatter
-	std::vector<double> _omega(surfaces::surfnum);
-	_omega[0] = pow(surfaces::surfpara[0][0] / mass[0], 0.5);
-	_omega[1] = pow(surfaces::surfpara[2][0] / mass[0], 0.5);
-	const_cast<std::vector<double>&>(omega) = _omega;
+	// init omega
+	extract_omega();
 }
 
 // print out simulation parameters
