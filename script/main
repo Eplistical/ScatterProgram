@@ -33,6 +33,7 @@ def prepinit(jsondata):
 
 def validinitfile(initfile, jsondata):
     """check if an init file is valid"""
+    return True
 
 
 def main():

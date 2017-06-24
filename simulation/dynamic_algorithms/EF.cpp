@@ -5,7 +5,6 @@
 #include "simulation.hpp"
 #include "evolve.hpp"
 #include "dynamics_mode.hpp"
-#include <mkl.h>
 
 using namespace scatter;
 using namespace scatter::simulation;
@@ -16,7 +15,7 @@ static std::vector<double> _EF_get_Force(particle_t& ptcl, enumspace::dynamics_m
     const std::vector<double> force;// = para.get_force(ptcl.r);
     const std::vector<double> efric;// = para.get_efric(ptcl.r);
     // efric_p = [efric] * [p]
-    std::vector<double>&& efric_p = matrixop::dmv(efric, ptcl.p);
+    std::vector<double>&& efric_p = matrixop::matvec(efric, ptcl.p);
     return force - efric_p / mass + ptcl.ranforce;
 }
 
@@ -49,7 +48,7 @@ static std::vector<double> _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamic
     for(int d = 0; d < dim; ++d){
 		eva[0] = randomer::normal(0.0, sqrt(2.0 * rem::kT * eva[d] / dt));
     }
-    ranforce =  matrixop::dmv(evt, eva);
+    ranforce =  matrixop::matvec(evt, eva);
 	*/
     return ranforce;
 }

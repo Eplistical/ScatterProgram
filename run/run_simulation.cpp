@@ -24,22 +24,16 @@ static void assign_initstate(std::vector<particle_t>& swarm){
 }
 
 void scatter::run_simulation(){
-	/*
 	const size_t Nswarm = 3;
 	std::vector<std::vector<particle_t>> swarms(Nswarm);
 	std::vector<std::vector<particle_t>> records(Nswarm);
-	// get init file
-	if(prepinit){
-		generate_initstate();
-		io::saveinit();
-	}
-	else{
-		io::loadinit();
-	}
+	// load init file
+	io::loadinit();
 	// init swarms
 	for(size_t i = 0; i < Nswarm; ++i){
 		swarms.at(i) = std::vector<particle_t>(Ntraj);
 		assign_initstate(swarms.at(i));
+		records.at(i) = std::vector<particle_t>(static_cast<size_t>((Nstep / Anastep) + 1) * Ntraj) ;
 	}
 	size_t traj, step, irecord;
 #if defined(_OPENMP)
@@ -56,16 +50,15 @@ void scatter::run_simulation(){
 			// store anastep data
 			if(step % Anastep == 0){
 				records[0][traj + irecord * Ntraj] = swarms[0][traj];
-				records[1][traj + irecord * Ntraj] = swarms[1][traj];
-				records[2][traj + irecord * Ntraj] = swarms[2][traj];
+				//records[1][traj + irecord * Ntraj] = swarms[1][traj];
+				//records[2][traj + irecord * Ntraj] = swarms[2][traj];
 				++irecord;
 			}
 			// evolve
 			CME(swarms[0][traj], traj);
-			BCME(swarms[1][traj], traj);
-			EF(swarms[2][traj], traj);
+			//BCME(swarms[1][traj], traj);
+			//EF(swarms[2][traj], traj);
 			++step;
 		}
 	}
-	*/
 }

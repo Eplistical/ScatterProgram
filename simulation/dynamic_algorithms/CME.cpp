@@ -1,3 +1,4 @@
+#include "ioer.hpp"
 #include "vector.hpp"
 #include "rem.hpp"
 #include "simulation.hpp"
@@ -18,7 +19,7 @@ static int _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dynamic
 
 static std::vector<double> _CME_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
 	// calc force for given particle
-	std::vector<double> force;
+	std::vector<double> force(rem::dim);
 	return force;
 }
 
