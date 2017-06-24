@@ -1,6 +1,10 @@
 #ifndef _JSON_TOOLKIT_HPP
 #define _JSON_TOOLKIT_HPP
 
+#ifdef _DEBUG
+#include "debugtools.hpp"
+#endif
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -42,11 +46,19 @@ namespace json{
 
 		public:
 			explicit load_param(const rapidjson::Document& doc, const std::string& category) 
-				: Obj(doc[category.c_str()]) {}
+				: Obj(doc[category.c_str()]) 
+			{ 
+#ifdef _DEBUG
+				cout << "load_param: the category now is " << category << "\n"; 
+#endif
+			}
 
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const ParamType& param) const{
 				// load paramter, scalar version
+#ifdef _DEBUG
+				cout << "    loading " << key << "\n"; 
+#endif
 				const char* tag = lower(key).c_str();
 				const std::string tmpstr = Obj[tag]["value"][0].GetString();
 				const_cast<ParamType&>(param) = boost::lexical_cast<ParamType>(tmpstr);
@@ -56,6 +68,9 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const ParamType& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, scalar version
+#ifdef _DEBUG
+				cout << "    loading " << key << "\n"; 
+#endif
 				const char* tag = lower(key).c_str();
 				const std::string tmpstr = Obj[tag]["value"][0].GetString();
 				const_cast<ParamType&>(param) = Dict.left.at(tmpstr);
@@ -65,6 +80,9 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param) const{
 				// load paramter, vector version
+#ifdef _DEBUG
+				cout << "    loading " << key << "\n"; 
+#endif
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
@@ -80,6 +98,9 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, vector version
+#ifdef _DEBUG
+				cout << "    loading " << key << "\n"; 
+#endif
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
@@ -95,6 +116,9 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType>>& param) const{
 				// load paramter, multiple-vector version
+#ifdef _DEBUG
+				cout << "    loading " << key << "\n"; 
+#endif
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
@@ -113,6 +137,9 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType>>& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, multiple-vector version
+#ifdef _DEBUG
+				cout << "    loading " << key << "\n"; 
+#endif
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
