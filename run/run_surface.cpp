@@ -20,13 +20,16 @@ void scatter::run_surface(void){
 	surfaces_t surf(surfnum);
 	surf.set_gamma(gammamode, gammapara);
 	surf.set_energy(surfmode, surfpara);
-
+	ioer::info("surfaces:\n", "i^th surf & d^dimension");
+	ioer::tabout("x", "U(x)", "F(x)", "gamma(x)", "gamma'(x)");
+	// loop output
 	for(size_t i = 0; i < surfnum; ++i){
 		for(size_t d = 0, Ndim = rem::dim; d < Ndim; ++d){
 			ioer::drawline('#');
 			ioer::info("i = ", i, "d = ", d);
 			for(auto& x : mesh.get_grid(d)){
-				ioer::tabout(x, surf.fU(i, d, x), surf.fGamma(d, x), surf.fF(i, d, x), surf.fGammader(d, x));
+				ioer::tabout(x, surf.fU(i, d, x), surf.fF(i, d, x), 
+								surf.fGamma(d, x), surf.fGammader(d, x));
 			}
 		}
 	}
