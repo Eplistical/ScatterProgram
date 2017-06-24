@@ -13,7 +13,7 @@ namespace scatter{
         extern const std::string& outfile;
 		extern iomgr::filemgr_t filemgr;
 
-		void load_var(const rapidjson::Document& doc);
+		void load_var(void);
 		void print_var(void);
     };
 };

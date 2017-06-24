@@ -128,7 +128,7 @@ void rwdat(const scatter::surfaces_t& surf, scatter::grid_t& grid, char op){
 
 // API
 void scatter::io::savedat(const scatter::surfaces_t& surf, scatter::grid_t& grid){
-    ioer::info("saving data to " + scatter::io::datfile + " ...  ", true);
+    ioer::info("saving data to " + scatter::io::datfile + " ...  ");
     rwdat(surf, grid, 'w');
     ioer::info("done");
 }

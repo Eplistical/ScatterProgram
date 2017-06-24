@@ -1,3 +1,7 @@
+#ifdef _DEBUG
+#include "debugtools.hpp"
+#endif
+
 #include <iostream>
 #include <string>
 #include <stdexcept>
@@ -53,10 +57,10 @@ bool scatter::arg_parser(int argc, char** argv){
 }
 
 void scatter::infile_parser(void){
-	const std::string jsonfile = rem::infile + ".json";
-	rapidjson::Document&& doc = json::load_json_file(jsonfile);
+	io::load_var();
+
+	rapidjson::Document&& doc = json::load_json_file(io::jsonfile);
 	rem::load_var(doc);
-	io::load_var(doc);
 	grid::load_var(doc);
 	surfaces::load_var(doc);
 	simulation::load_var(doc);

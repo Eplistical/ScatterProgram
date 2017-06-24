@@ -13,10 +13,9 @@ const std::string& scatter::io::outfile = "INVALID";
 iomgr::filemgr_t scatter::io::filemgr;
 
 // init io parameters 
-void scatter::io::load_var(const rapidjson::Document& doc){
+void scatter::io::load_var(void){
 	namespace fs = boost::filesystem;
 	using namespace scatter::io;
-	using json::load_param;
 
 	fs::path infile(rem::infile);
 	infile = fs::absolute(infile);
