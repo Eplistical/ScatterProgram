@@ -14,6 +14,7 @@
 #include <complex>
 #include <mkl.h>
 #include "vector.hpp"
+#include "Eigen/Eigenvalues"
 #include "Eigen/Core"
 
 namespace matrixop{
@@ -21,10 +22,15 @@ namespace matrixop{
 	using namespace std;
 
 	inline void Hdiag(const vector<double>& MatrixToDiag, vector<double>& EigenVal, vector<double>& EigenVec){
+		/* diag a real-symmetric matrix
+		 *
+		 * 	param MatrixToDiag: matrix to be diag, column-major, must have N*N elements
+		 * 	param EignVal, EigenVac: vector to store results
+		 * */ 
 		const int N = static_cast<size_t>(sqrt(MatrixToDiag.size()));
 		Map<MatrixXd> A(MatrixToDiag.data(), N, N);
+		SelfAdjointEigenSolver<MatrixXd> es(A);
 	}
-
 
 	inline void hdiag(const vector<double>& MatrixToDiag, vector<double>& EigenVal, vector<double>& EigenVec){
 		/* diag a real-symmetric matrix
