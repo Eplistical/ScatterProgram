@@ -1,3 +1,8 @@
+v0.3
+(in progress)
+- add a local cmake module directory
+- introduce Eigen3, now Eigen3 is required
+
 v0.2
 - now surfaces can reproduce results from the old code
 - removed fU0, fU1, fF0, fF1 functions in surfaces, will use fU and fF consistently 
