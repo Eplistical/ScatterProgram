@@ -45,5 +45,11 @@ namespace randomer{
 			rst[j] = dis(gen);
 		return rst;
 	}
+
+	inline double discrete(std::vector<double> prob) noexcept{
+		std::discrete_distribution<int> dis(prob.begin(), prob.end());
+		double rst = dis(gen);
+		return rst;
+	}
 };
 #endif
