@@ -9,7 +9,6 @@
 #include "grid.hpp"
 #include "run.hpp"
 #include "ioer.hpp"
-#include "run_var.hpp"
 
 using namespace scatter;
 
