@@ -4,6 +4,7 @@ v0.3
 - introduce Eigen3, now Eigen3 is required
 - no longer use mkl lib to perform matrix operation
 - add a few debug mode output
+- add several test cases
 
 v0.2
 - now surfaces can reproduce results from the old code
