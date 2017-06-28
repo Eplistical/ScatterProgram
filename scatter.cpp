@@ -52,19 +52,34 @@ int main(int argc, char** argv){
 	infile_parser();
 	print_vars();
 	// run program
+#ifdef _DEBUG
+	cout << "move to the switch " << "\n";
+#endif
 	switch(enumspace::runmode_dict.left.at(rem::jobtype))
 	{
 		case enumspace::runmode_enum::SIMULATION: 
 			if(simulation::prepinit){
+#ifdef _DEBUG
+	cout << "preparing init state " << "\n";
+#endif
 				simulation::generate_initstate();
 				io::saveinit();
 			}
+#ifdef _DEBUG
+	cout << "switch to run_simulation" << "\n";
+#endif
 			run_simulation();
 			break;
 		case enumspace::runmode_enum::SURFACE: 
+#ifdef _DEBUG
+	cout << "switch to run_surface " << "\n";
+#endif
 			run_surface();
 			break;
 		case enumspace::runmode_enum::PREPAREINIT: 
+#ifdef _DEBUG
+	cout << "preparing init state " << "\n";
+#endif
 			simulation::generate_initstate();
 			io::saveinit();
 			break;

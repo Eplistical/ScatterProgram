@@ -1,3 +1,7 @@
+#ifdef _DEBUG
+#include "debugtools.hpp"
+#endif
+
 #include <iostream>
 #include "vector.hpp"
 #include "rem.hpp"
