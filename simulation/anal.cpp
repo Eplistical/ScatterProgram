@@ -10,6 +10,7 @@ using namespace scatter::simulation;
 
 static std::vector<double> _rp(const std::vector<particle_t>& swarm) {
 	// <r> and <p>
+    /*
 	std::vector<double> rp;
 	rp.assign(rem::dim * 2, 0);
 	for(size_t traj = 0; traj < simulation::Ntraj; ++traj){
@@ -19,42 +20,54 @@ static std::vector<double> _rp(const std::vector<particle_t>& swarm) {
 		}
 	}
 	return rp / simulation::Ntraj;
+    */
+    return std::vector<double>(rem::dim * 2, 0.0);
 }
 
 static double _surf(const std::vector<particle_t>& swarm) {
 	// <n1>
+    /*
 	size_t surf = 0;
 	for(size_t traj = 0; traj < simulation::Ntraj; traj++){
 		surf += swarm[traj].surf;
 	}
 	return 1.0 * surf / simulation::Ntraj;
+    */
+    return 0.0;
 }
 
 static std::vector<double> _Ep(const std::vector<particle_t>& swarm) {
 	// potential energy
+    /*
 	std::vector<double> Ep(rem::dim, 0);
 	double x, x0;
 	for(int traj = 0; traj < simulation::Ntraj; traj++){
 		if(swarm[traj].surf == 0){
-			Ep = Ep + vU0(swarm[traj].r);
+			Ep = Ep + vU(0, swarm[traj].r);
 		}
 		else if(swarm[traj].surf == 1){
-			Ep = Ep + vU1(swarm[traj].r);
+			Ep = Ep + vU(1, swarm[traj].r);
 		}
 	}
 	return Ep / simulation::Ntraj;
+    */
+    return std::vector<double>(rem::dim, 0.0);
 }
 
 static std::vector<double> _Ek(const std::vector<particle_t>& swarm) {
 	// kinetic energy
+    /*
 	std::vector<double> Ek(rem::dim, 0);
 	for(size_t traj = 0; traj < simulation::Ntraj; ++traj){
 		Ek = Ek + 0.5 * pow(swarm[traj].p, 2) / mass;
 	}
 	return Ek / simulation::Ntraj;
+    */
+    return std::vector<double>(rem::dim, 0.0);
 }
 
 static void _default_anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode) {
+    /*
 	const std::vector<double> rp = _rp(swarm);
 	const std::vector<double> Ek = _Ek(swarm);
 	const double surf = _surf(swarm);
@@ -70,9 +83,11 @@ static void _default_anal(const std::vector<particle_t>& swarm, enumspace::analm
 		}
 	}
 	ioer::tabout_nonewline(Nout);
+    */
 }
 
 static void _final_dist_anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode) {
+    /*
 	double Omega, Ekx, Epx;
 	int n_vib;
 	// header
@@ -95,11 +110,13 @@ static void _final_dist_anal(const std::vector<particle_t>& swarm, enumspace::an
 		ioer::newline();
 	}
 	ioer::drawline('#');
+    */
 }
 
-static void _hop_anal_para(const Particle* swarm, enumspace::analmode_enum mode){
+static void _hop_anal_para(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode){
 	/* analyze hoppings in CME/BCME
 	 */
+    /*
 	std::vector<hop_t> hop_recorder;
 	if(mode == enumspace::analmode_enum::HOP_ANAL_CME){
 		hop_recorder = CME_hop_recorder;
@@ -125,6 +142,7 @@ static void _hop_anal_para(const Particle* swarm, enumspace::analmode_enum mode)
 		ioer::newline();
 	}
 	ioer::drawline('#');
+    */
 }
 
 // API

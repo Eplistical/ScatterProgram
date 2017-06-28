@@ -40,7 +40,7 @@ void scatter::run_simulation(){
 	for(size_t i = 0; i < Nswarm; ++i){
 		swarms.at(i) = std::vector<particle_t>(Ntraj);
 		assign_initstate(swarms.at(i));
-		records.at(i) = std::vector<particle_t>(static_cast<size_t>((Nrecord + 1) * Ntraj) ;
+		records.at(i) = std::vector<particle_t>(static_cast<size_t>((Nrecord + 1) * Ntraj));
 	}
 #ifdef _DEBUG
 	cout << "run_simulation: evolve particles ... " << "\n";
@@ -75,7 +75,6 @@ void scatter::run_simulation(){
 	cout << "run_simulation: finished dynamics, now anal & output section ... " << "\n";
 #endif
 	for(irecord = 0; irecord < Nrecord; ++irecord){
-		anal
 	}
 #ifdef _DEBUG
 	cout << "run_simulation: done" << "\n";
