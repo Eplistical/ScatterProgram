@@ -128,31 +128,31 @@ void rwdat(const scatter::surfaces_t& surf, scatter::grid_t& grid, char op){
 
 // API
 void scatter::io::savedat(const scatter::surfaces_t& surf, scatter::grid_t& grid){
-    ioer::info("saving data to " + scatter::io::datfile + " ...  ");
+    ioer::info_nonewline("saving data to " + scatter::io::datfile + " ...  ");
     rwdat(surf, grid, 'w');
-    ioer::info("done");
+    ioer::info_nonewline("done");
 }
 
 void scatter::io::loaddat(const scatter::surfaces_t& surf, scatter::grid_t& grid){
-    ioer::info("loading data from " + scatter::io::datfile + " ...  ", true);
+    ioer::info_nonewline("loading data from " + scatter::io::datfile + " ...  ");
     rwdat(surf, grid, 'r');
     ioer::info("done");
 }
 
 void scatter::io::saveinit(void){
-    ioer::info("saving r0p0 to " + scatter::io::initfile + " ...  ", true);
+    ioer::info_nonewline("saving r0p0 to " + scatter::io::initfile + " ...  ");
     rwinit('w');
     ioer::info("done");
 }
 
 void scatter::io::loadinit(void){
-    ioer::info("loading r0p0 to " + scatter::io::initfile + " ...  ", true);
+    ioer::info_nonewline("loading r0p0 to " + scatter::io::initfile + " ...  ");
     rwinit('r');
     ioer::info("done");
 }
 
 void scatter::io::loadinfile(void){
-    ioer::info("loading infile: " + scatter::rem::infile + " ...  ", true);
+    ioer::info_nonewline("loading infile: " + scatter::rem::infile + " ...  ", true);
     rinfile();
     ioer::info("done");
 }

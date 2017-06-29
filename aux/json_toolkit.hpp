@@ -48,7 +48,7 @@ namespace json{
 			explicit load_param(const rapidjson::Document& doc, const std::string& category) 
 				: Obj(doc[category.c_str()]) 
 			{ 
-#ifdef _DEBUG
+#if _DEBUG >= 2
 				cout << "load_param: the category now is " << category << "\n"; 
 #endif
 			}
@@ -56,7 +56,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const ParamType& param) const{
 				// load paramter, scalar version
-#ifdef _DEBUG
+#if _DEBUG >= 3
 				cout << "    loading " << key << "\n"; 
 #endif
 				const char* tag = lower(key).c_str();
@@ -68,7 +68,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const ParamType& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, scalar version
-#ifdef _DEBUG
+#if _DEBUG >= 3
 				cout << "    loading " << key << "\n"; 
 #endif
 				const char* tag = lower(key).c_str();
@@ -80,7 +80,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param) const{
 				// load paramter, vector version
-#ifdef _DEBUG
+#if _DEBUG >= 3
 				cout << "    loading " << key << "\n"; 
 #endif
 				const char* tag = lower(key).c_str();
@@ -98,7 +98,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, vector version
-#ifdef _DEBUG
+#if _DEBUG >= 3
 				cout << "    loading " << key << "\n"; 
 #endif
 				const char* tag = lower(key).c_str();
@@ -116,7 +116,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType>>& param) const{
 				// load paramter, multiple-vector version
-#ifdef _DEBUG
+#if _DEBUG >= 3
 				cout << "    loading " << key << "\n"; 
 #endif
 				const char* tag = lower(key).c_str();
@@ -137,7 +137,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType>>& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, multiple-vector version
-#ifdef _DEBUG
+#if _DEBUG >= 3
 				cout << "    loading " << key << "\n"; 
 #endif
 				const char* tag = lower(key).c_str();

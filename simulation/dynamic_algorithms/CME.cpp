@@ -30,10 +30,10 @@ std::vector<hop_t> scatter::simulation::CME_hop_recorder;
 std::vector<hop_t> scatter::simulation::BCME_hop_recorder;
 
 static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dynamics_mode_enum mode){
-#ifdef _DEBUG
-	cout << "CME hopper begin" << "\n";
-#endif
 	// deal with hopping & ptclomentum adjustment
+#if _DEBUG >= 4
+	cout << "debug: Now hopping ... ";
+#endif 
 	const double gamma = surfaces_obj.fGamma(ptcl.r, Gamma0);
 	const size_t hop_from = ptcl.surf;
 	const double from_energy = surfaces_obj.fU(hop_from, ptcl.r);
@@ -62,6 +62,9 @@ static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dyna
 	// get hop_to according to the probabilities
 	const size_t hop_to = randomer::discrete(Phop);
 	if (hop_from != hop_to) {
+#if _DEBUG >= 4
+	cout << hop_from << " -> " << hop_to << "! ";
+#endif 
 		double to_energy = surfaces_obj.fU(hop_to, ptcl.r);
 		// hopping happens
 		if(mode == enumspace::dynamics_mode_enum::CME){
@@ -71,24 +74,38 @@ static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dyna
 			BCME_hop_recorder.push_back(hop_t(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p));
 		}
 	}
+#if _DEBUG >= 4
+	cout << "done. ";
+#endif 
 	return hop_to;
 }
 
 static std::vector<double> _CME_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
-#ifdef _DEBUG
-	cout << "CME_get_Force begin" << "\n";
-#endif
 	// calc force on the particle
+#if _DEBUG >= 4
+	cout << "Getting force ... ";
+#endif 
 	std::vector<double> force = surfaces_obj.fF(ptcl.surf, ptcl.r);
 	if(mode == enumspace::dynamics_mode_enum::BCME) {
 		force = force + grid_obj.get_fBCME(ptcl.r);
 	}
 	return force;
+#if _DEBUG >= 4
+	cout << "done. ";
+#endif 
 }
 
 static void _CME(particle_t& ptcl, size_t trajID, enumspace::dynamics_mode_enum mode) {
+#if _DEBUG >= 4
+	cout << "debug: _CME: dynamic mode is " << enumspace::dynamics_mode_dict.right.at(mode) << ". ";
+#endif
+
  	ptcl.hop( _CME_hopper(ptcl, trajID, mode) );
     velocity_verlet(ptcl, mode, _CME_get_Force);
+
+#if _DEBUG >= 4
+	cout << "\n";
+#endif 
 }
 
 // API

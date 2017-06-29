@@ -13,8 +13,8 @@ using namespace std;
 using namespace scatter;
 
 void print_vars(void){
-#ifdef _DEBUG
-	cout << "print_vars begin" << "\n";
+#if _DEBUG >= 1
+	cout << "debug: print_vars begin" << "\n";
 #endif
 	ioer::keyval()
 		("threadNum", rem::threadNum)
@@ -38,47 +38,47 @@ int main(int argc, char** argv){
 	// program begin
 	timer::now();
 	timer::tic();
-#ifdef _DEBUG
-	cout << "main: debug version" << "\n\n";
+#if _DEBUG >= 1
+	cout << "debug: debug level " << _DEBUG << "\n\n";
 #endif
 	// parse args
 	if(arg_parser(argc, argv) == false){
 		return 0;
 	}
-#ifdef _DEBUG
-	cout << "parsing infile ..." << "\n\n";
+#if _DEBUG >= 1
+	cout << "debug: parsing infile ..." << "\n\n";
 #endif
 	// parse infile 
 	infile_parser();
 	print_vars();
 	// run program
-#ifdef _DEBUG
-	cout << "move to the switch " << "\n";
+#if _DEBUG >= 1
+	cout << "debug: move to the switch " << "\n";
 #endif
 	switch(enumspace::runmode_dict.left.at(rem::jobtype))
 	{
 		case enumspace::runmode_enum::SIMULATION: 
 			if(simulation::prepinit){
-#ifdef _DEBUG
-	cout << "preparing init state " << "\n";
+#if _DEBUG >= 1
+	cout << "debug: preparing init state " << "\n";
 #endif
 				simulation::generate_initstate();
 				io::saveinit();
 			}
-#ifdef _DEBUG
-	cout << "switch to run_simulation" << "\n";
+#if _DEBUG >= 1
+	cout << "debug: switch to run_simulation" << "\n";
 #endif
 			run_simulation();
 			break;
 		case enumspace::runmode_enum::SURFACE: 
-#ifdef _DEBUG
-	cout << "switch to run_surface " << "\n";
+#if _DEBUG >= 1
+	cout << "debug: switch to run_surface " << "\n";
 #endif
 			run_surface();
 			break;
 		case enumspace::runmode_enum::PREPAREINIT: 
-#ifdef _DEBUG
-	cout << "preparing init state " << "\n";
+#if _DEBUG >= 1
+	cout << "debug: preparing init state " << "\n";
 #endif
 			simulation::generate_initstate();
 			io::saveinit();

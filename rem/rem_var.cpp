@@ -28,10 +28,6 @@ const double& scatter::rem::Gamma0 = 0;
 
 // load rem parameters from Document Obj
 void scatter::rem::load_var(const rapidjson::Document& doc){
-#ifdef _DEBUG
-	cout << "rem::load_var begin" << "\n";
-#endif
-
 	using namespace scatter::rem;
 	using json::load_param;
 	load_param(doc, "rem")

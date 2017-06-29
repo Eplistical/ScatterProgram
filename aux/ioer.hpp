@@ -69,7 +69,6 @@ namespace ioer{
 			cout << s;
 			if(not noendl) newline();
 		}
-		*/
 
 	template <typename T>
 		inline void info(const std::vector<T>& s){
@@ -77,6 +76,7 @@ namespace ioer{
 				cout << s[j] << endl;
 			}
 		}
+	*/
 
 	class keyval{
 		private:
