@@ -6,6 +6,8 @@
 #include "rem.hpp"
 #include "io.hpp"
 #include "simulation.hpp"
+#include "surfaces.hpp"
+#include "grid.hpp"
 #include "run.hpp"
 
 #if defined(_OPENMP)
@@ -13,6 +15,8 @@
 #endif
 
 using namespace scatter;
+using namespace scatter::grid;
+using namespace scatter::surfaces;
 using namespace scatter::simulation;
 using namespace scatter::rem;
 
@@ -31,6 +35,11 @@ void scatter::run_simulation(){
 #ifdef _DEBUG
 	cout << "run_simulation: begin" << "\n";
 #endif
+
+	grid_obj = grid_t(rmin, rmax, Nr);
+	surfaces_obj = surfaces_t(surfnum);
+	surfaces_obj.set_gamma(gammamode, gammapara);
+	surfaces_obj.set_energy(surfmode, surfpara);
 	const size_t Nswarm = 3, Nrecord = Nstep / Anastep;
 	std::vector<std::vector<particle_t>> swarms(Nswarm);
 	std::vector<std::vector<particle_t>> records(Nswarm);
@@ -43,7 +52,7 @@ void scatter::run_simulation(){
 		records.at(i) = std::vector<particle_t>(static_cast<size_t>((Nrecord + 1) * Ntraj));
 	}
 #ifdef _DEBUG
-	cout << "run_simulation: evolve particles ... " << "\n";
+	cout << "run_simulation: go! " << "\n";
 #endif
 	size_t traj, step, irecord;
 #if defined(_OPENMP)
@@ -56,19 +65,35 @@ void scatter::run_simulation(){
 	for(traj = 0; traj < Ntraj; ++traj){
 		step = 0;
 		irecord = 0;
+
+#ifdef _DEBUG
+#if defined(_OPENMP)
+	cout << "thread " << omp_get_thread_num() << ": ";
+#endif
+	cout << "now on particle " << traj << " ... ";
+#endif
 		while(step < Nstep){
 			// store anastep data
 			if(step % Anastep == 0){
+#ifdef _DEBUG
+				cout << "analyzing ... ";
+#endif
 				records[0][traj + irecord * Ntraj] = swarms[0][traj];
 				//records[1][traj + irecord * Ntraj] = swarms[1][traj];
 				//records[2][traj + irecord * Ntraj] = swarms[2][traj];
 				++irecord;
 			}
+#ifdef _DEBUG
+				cout << "evolving ... ";
+#endif
 			// evolve
 			CME(swarms[0][traj], traj);
 			//BCME(swarms[1][traj], traj);
 			//EF(swarms[2][traj], traj);
 			++step;
+#ifdef _DEBUG
+	cout << "\n";
+#endif
 		}
 	}
 #ifdef _DEBUG

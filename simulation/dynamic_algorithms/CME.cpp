@@ -1,3 +1,7 @@
+#ifdef _DEBUG
+#include "debugtools.hpp"
+#endif
+
 #include "ioer.hpp"
 #include "randomer.hpp"
 #include "vector.hpp"
@@ -16,6 +20,7 @@ using scatter::grid_obj;
 using rem::hbar;
 using rem::kT;
 using rem::Gamma0;
+using rem::dim;
 
 using simulation::dt;
 using surfaces::surfnum;
@@ -25,6 +30,9 @@ std::vector<hop_t> scatter::simulation::CME_hop_recorder;
 std::vector<hop_t> scatter::simulation::BCME_hop_recorder;
 
 static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dynamics_mode_enum mode){
+#ifdef _DEBUG
+	cout << "CME hopper begin" << "\n";
+#endif
 	// deal with hopping & ptclomentum adjustment
 	const double gamma = surfaces_obj.fGamma(ptcl.r, Gamma0);
 	const size_t hop_from = ptcl.surf;
@@ -34,6 +42,7 @@ static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dyna
 
 	Phop[hop_from] = hbar / dt / gamma;
 	h[hop_from] = 0.0;
+
 	for(size_t i = 0; i < surfnum; ++i){
 		if(i == hop_from) {
 			continue;
@@ -66,8 +75,14 @@ static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dyna
 }
 
 static std::vector<double> _CME_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
-	// calc force for given particle
-	std::vector<double> force(rem::dim);
+#ifdef _DEBUG
+	cout << "CME_get_Force begin" << "\n";
+#endif
+	// calc force on the particle
+	std::vector<double> force = surfaces_obj.fF(ptcl.surf, ptcl.r);
+	if(mode == enumspace::dynamics_mode_enum::BCME) {
+		force = force + grid_obj.get_fBCME(ptcl.r);
+	}
 	return force;
 }
 
