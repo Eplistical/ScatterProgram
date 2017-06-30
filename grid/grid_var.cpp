@@ -7,6 +7,10 @@ const std::vector<double>& scatter::grid::rmin = std::vector<double>();
 const std::vector<double>& scatter::grid::rmax = std::vector<double>();
 const std::vector<size_t>& scatter::grid::Nr  = std::vector<size_t>();
 
+// fef related
+const double& scatter::grid::bandwidth = 1.5;
+const std::vector<double>& scatter::grid::derange = std::vector<double>();
+
 // init grid parameters 
 void scatter::grid::load_var(const rapidjson::Document& doc){
 	using namespace scatter::grid;
@@ -15,6 +19,8 @@ void scatter::grid::load_var(const rapidjson::Document& doc){
 		("rmin", rmin)
 		("rmax", rmax)
 		("Nr", Nr)
+		("bandwidth", bandwidth)
+		("derange", derange)
 		;
 	std::vector<double> _omega;
 }
@@ -28,6 +34,9 @@ void scatter::grid::print_var(void){
 		("rmin", rmin)
 		("rmax", rmax)
 		("Nr", Nr)
+		("bandwidth", bandwidth)
+		("derange", derange)
 		;
+
 	ioer::drawline('-');
 }

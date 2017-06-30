@@ -10,6 +10,10 @@ namespace scatter{
 		extern const std::vector<double>& rmax;
 		extern const std::vector<size_t>& Nr;
 
+		// fef related 
+		extern const double& bandwidth;
+		extern const std::vector<double>& derange;
+
 		void load_var(const rapidjson::Document& doc);
 		void print_var(void);
     };

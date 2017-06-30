@@ -12,6 +12,11 @@ $grid
 	rmin		-2		
 	rmax		2		
 	Nr			10000
+
+	#-- fef related --#
+
+	bandwidth	1.5
+	derange		3e-5	3e-6
 $end
 
 $simulation
@@ -47,8 +52,4 @@ $surfaces
 		1
 	@end
 
-	#-- fef related --#
-
-	bandwidth	1.5
-	derange		3e-5	3e-6
 $end

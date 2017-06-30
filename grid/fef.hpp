@@ -2,9 +2,8 @@
 #include "rem.hpp"
 #include "fermi.hpp"
 #include "lorentian.hpp"
-#include "surfaces_collection.hpp"
-#include "surfaces_t.hpp"
-#include "surfaces_var.hpp"
+#include "surfaces.hpp"
+#include "grid_t.hpp"
 
 #ifdef __cpluscplus
 extern "C"{
@@ -74,10 +73,8 @@ static void _electronic_fef(const double hbar,
 }
 #endif
 
-using namespace scatter;
-
 // calc fef
-void surfaces_t::fef(const std::vector<double>& r, double *force, double *efric, double *fBCME){
+void fef(const std::vector<double>& r, double *force, double *efric, double *fBCME){
 	using namespace scatter::rem;
 	using namespace scatter::surfaces;
     // h, h'
@@ -107,7 +104,8 @@ void surfaces_t::fef(const std::vector<double>& r, double *force, double *efric,
                         force, efric, fBCME);
     }
     // add nuclear force term
-    for(int d = 0;d < dim;d++){
+    for(size_t d = 0;d < dim;d++){
         force[d] = force[d] + fF(0, r)[d];
     }
 }
+

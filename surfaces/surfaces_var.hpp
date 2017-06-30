@@ -16,10 +16,6 @@ namespace scatter{
 		extern const std::vector<surfmode_enum>& gammamode;
 		extern const std::vector<std::vector<double>>& gammapara;
 
-		// fef related 
-		extern const double& bandwidth;
-		extern const std::vector<double>& derange;
-
 		void load_var(const rapidjson::Document& doc);
 		void print_var(void);
 	};

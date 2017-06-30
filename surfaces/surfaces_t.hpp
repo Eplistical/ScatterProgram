@@ -47,8 +47,6 @@ namespace scatter{
 			std::vector<double> fGammader(const std::vector<double>& r, double Gamma0) const;
 			double fGammader(int d, double x) const;
 			bool small_gamma(const std::vector<double>& r, double Gamma0) const;
-			// calc fef
-			void fef(const std::vector<double>& r, double *force, double *efric, double *fBCME);
 	};
 };
 #endif

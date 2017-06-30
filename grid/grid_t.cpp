@@ -82,3 +82,7 @@ size_t grid_t::r_to_index(const std::vector<double>& r) const{
 	const size_t index = jz * _Nr.at(0) + jx;
 	return index;
 }
+
+void grid_t::calc_fef(void) {
+	return;
+}

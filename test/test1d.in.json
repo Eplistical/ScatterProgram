@@ -71,6 +71,21 @@
             ],
             "datatype": "i",
             "datamodel": "v"
+        },
+        "bandwidth": {
+            "value": [
+                "1.5"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
+        },
+        "derange": {
+            "value": [
+                "3e-5",
+                "3e-6"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
         }
     },
     "simulation": {
@@ -213,21 +228,6 @@
             ],
             "datatype": "d",
             "datamodel": "s"
-        },
-        "bandwidth": {
-            "value": [
-                "1.5"
-            ],
-            "datatype": "d",
-            "datamodel": "s"
-        },
-        "derange": {
-            "value": [
-                "3e-5",
-                "3e-6"
-            ],
-            "datatype": "d",
-            "datamodel": "v"
         }
     }
 }

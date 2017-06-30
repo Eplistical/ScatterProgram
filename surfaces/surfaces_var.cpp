@@ -9,8 +9,6 @@ namespace NS = scatter::surfaces;
 using enumspace::surfmode_enum;
 
 const double& NS::cutoff_gamma = 0.0;
-const double& NS::bandwidth = 1.5;
-const std::vector<double>& NS::derange = std::vector<double>();
 
 const size_t& NS::surfnum = 0;
 const std::vector<surfmode_enum>& NS::surfmode = std::vector<surfmode_enum>();
@@ -25,8 +23,6 @@ void scatter::surfaces::load_var(const rapidjson::Document& doc){
 	load_param(doc, "surfaces")
 		("surfnum", surfnum)
 		("cutoff_gamma", cutoff_gamma)
-		("bandwidth", bandwidth)
-		("derange", derange)
 		("surfmode", surfmode, enumspace::surfmode_dict)
 		("surfpara", surfpara)
 		("gammamode", gammamode, enumspace::surfmode_dict)
@@ -63,11 +59,6 @@ void scatter::surfaces::print_var(void){
 	for(auto& it : gammapara){
 		ioer::keyval(std::cout, "   ")("", it);
 	}
-
-	ioer::keyval()
-		("bandwidth", bandwidth)
-		("derange", derange)
-		;
 
 	ioer::drawline('-');
 }

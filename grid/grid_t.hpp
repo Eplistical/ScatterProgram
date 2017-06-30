@@ -28,8 +28,9 @@ namespace scatter{
 			grid_t(const grid_t&) = default;
 			grid_t& operator=(const grid_t&) = default;
 			explicit grid_t(const std::vector<double>& rmin, const std::vector<double>& rmax, const std::vector<size_t>& Nr);
-			// getter & setter
+			// setter
 			std::vector<double>& get_fef_ref(void);
+			void calc_fef(void);
 			// getter
 			std::vector<double> get_grid(size_t d) const;
 			std::vector<double> get_rmin(void) const;
