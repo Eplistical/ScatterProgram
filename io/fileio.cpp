@@ -6,6 +6,7 @@
 #include "fileio.hpp"
 #include "ioer.hpp"
 #include "simulation.hpp"
+#include "run.hpp"
 
 using namespace scatter::rem;
 using namespace scatter::simulation;
@@ -64,6 +65,7 @@ static void rwfile( filemgr_t& filemgr,
 }
 
 void rwinit(char op){
+	using scatter::simulation::r0p0;
 	// construct header
 	std::vector<double> header;
 	header.push_back(dim);
@@ -84,39 +86,46 @@ void rwinit(char op){
 	}
 }
 
-void rwdat(const scatter::surfaces_t& surf, scatter::grid_t& grid, char op){
-	const size_t surf_num = surf.get_surf_number();
+void rwdat(char op){
+	using scatter::surfaces_obj;
+	using scatter::grid_obj;
+	using scatter::surfaces::surfnum;
+	using scatter::simulation::mass;
+	using scatter::rem::dim;
+	using scatter::rem::kT;
+	using scatter::rem::Gamma0;
+
 	// construct header
 	std::vector<double> header;
 	std::vector<double> tmp;
 	// dimension info
 	header.push_back(dim);
-	header.push_back(surf_num);
+	header.push_back(surfnum);
 	// system info
 	header.push_back(kT);
 	header.push_back(Gamma0);
 	header.insert(header.end(), mass.begin(), mass.end());
-	// surf para info
+	// surfaces para info
 	for(size_t d = 0; d < dim; d++){
-		tmp = surf.get_gamma_para(d);
+		tmp = surfaces_obj.get_gamma_para(d);
 		header.insert(header.end(), tmp.begin(), tmp.end());
 	}
-	for(size_t i = 0; i < surf_num; i++){
+	for(size_t i = 0; i < surfnum; i++){
 		for(size_t d = 0; d < dim; d++){
-			tmp = surf.get_energy_para(i, d);
+			tmp = surfaces_obj.get_energy_para(i, d);
 			header.insert(header.end(), tmp.begin(), tmp.end());
 		}
 	}
 	// grid info
-	tmp = grid.get_rmin();
+	tmp = grid_obj.get_rmin();
 	header.insert(header.end(), tmp.begin(), tmp.end());
-	tmp = grid.get_rmax();
+	tmp = grid_obj.get_rmax();
 	header.insert(header.end(), tmp.begin(), tmp.end());
-	tmp = grid.get_dr();
+	tmp = grid_obj.get_dr();
 	header.insert(header.end(), tmp.begin(), tmp.end());
 	// construct/get data
-	const size_t datalen = grid.get_forcelen() + grid.get_efriclen() + grid.get_fBCMElen();
-	std::vector<double>& fef = grid.get_fef_ref();
+	const size_t datalen = grid_obj.get_forcelen() + grid_obj.get_efriclen() + grid_obj.get_fBCMElen();
+	std::vector<double>& fef = grid_obj.get_fef_ref();
 	fef.resize(datalen);
 	// read/write
 	rwfile( filemgr, 
@@ -127,15 +136,15 @@ void rwdat(const scatter::surfaces_t& surf, scatter::grid_t& grid, char op){
 }
 
 // API
-void scatter::io::savedat(const scatter::surfaces_t& surf, scatter::grid_t& grid){
+void scatter::io::savedat(void){
     ioer::info_nonewline("saving data to " + scatter::io::datfile + " ...  ");
-    rwdat(surf, grid, 'w');
+    rwdat('w');
     ioer::info_nonewline("done");
 }
 
-void scatter::io::loaddat(const scatter::surfaces_t& surf, scatter::grid_t& grid){
+void scatter::io::loaddat(void){
     ioer::info_nonewline("loading data from " + scatter::io::datfile + " ...  ");
-    rwdat(surf, grid, 'r');
+    rwdat('r');
     ioer::info("done");
 }
 

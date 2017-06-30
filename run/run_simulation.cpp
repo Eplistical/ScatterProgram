@@ -44,6 +44,8 @@ void scatter::run_simulation(){
 	std::vector<std::vector<particle_t>> records(Nswarm);
 	// load init file
 	io::loadinit();
+	// load fef data file
+	io::loaddat();
 	// init swarms
 	for(size_t i = 0; i < Nswarm; ++i){
 		swarms.at(i) = std::vector<particle_t>(Ntraj);
@@ -66,34 +68,25 @@ void scatter::run_simulation(){
 		irecord = 0;
 
 #if _DEBUG >= 2
-	cout << "debug: "
+	cout << "debug: ";
 #if defined(_OPENMP)
 	cout << "thread " << omp_get_thread_num() << ": ";
 #endif
-	cout << "now on particle " << traj << " ... ";
+	cout << "now on particle " << traj << "\n";
 #endif
 		while(step < Nstep){
 			// store anastep data
 			if(step % Anastep == 0){
-#if _DEBUG >= 3
-				cout << "analyzing ... ";
-#endif
 				records[0][traj + irecord * Ntraj] = swarms[0][traj];
 				//records[1][traj + irecord * Ntraj] = swarms[1][traj];
 				//records[2][traj + irecord * Ntraj] = swarms[2][traj];
 				++irecord;
 			}
-#if _DEBUG >= 3
-				cout << "evolving ... ";
-#endif
 			// evolve
 			CME(swarms[0][traj], traj);
 			//BCME(swarms[1][traj], traj);
 			//EF(swarms[2][traj], traj);
 			++step;
-#if _DEBUG >= 3
-	cout << "\n";
-#endif
 		}
 	}
 #if _DEBUG >= 2

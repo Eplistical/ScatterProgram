@@ -8,6 +8,7 @@
 #include "run.hpp"
 #include "vars.hpp"
 #include "io.hpp"
+#include "simulation.hpp"
 #include <Eigen/Core>
 using namespace std;
 using namespace scatter;

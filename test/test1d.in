@@ -15,7 +15,7 @@ $grid
 $end
 
 $simulation
-    Ntraj       1
+    Ntraj       20
     mass        14000
     EndT        100
     Nstep       10000

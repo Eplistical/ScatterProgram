@@ -2,15 +2,12 @@
 #define _SCATTER_FILEIO_HPP
 // API module for file io in Scatter
 
-#include "filemgr/filemgr.hpp"
-#include "surfaces.hpp"
-#include "grid.hpp"
-#include "simulation.hpp"
+#include <string>
 
 namespace scatter{
 	namespace io{
-		void savedat(const scatter::surfaces_t& surf, scatter::grid_t& grid);
-		void loaddat(const scatter::surfaces_t& surf, scatter::grid_t& grid);
+		void savedat(void);
+		void loaddat(void);
 		void saveinit(void);
 		void loadinit(void);
 		void loadinfile(void);
