@@ -5,10 +5,10 @@
 #include "ioer.hpp"
 #include "io_var.hpp"
 
-const std::string& scatter::io::jsonfile = "INVALID";
-const std::string& scatter::io::datfile = "INVALID";
-const std::string& scatter::io::initfile = "INVALID";
-const std::string& scatter::io::outfile = "INVALID";
+std::string scatter::io::jsonfile;
+std::string scatter::io::datfile;
+std::string scatter::io::initfile;
+std::string scatter::io::outfile;
 
 iomgr::filemgr_t scatter::io::filemgr;
 
@@ -26,10 +26,10 @@ void scatter::io::load_var(void){
 	const std::string fname = infile.filename().string();
 	const std::string stem = infile.stem().string();
 
-	const_cast<std::string&>(jsonfile) = parent + fname + ".json";
-	const_cast<std::string&>(datfile) = parent + "." + rem::jobname + ".dat";
-	const_cast<std::string&>(initfile) = parent + "." + rem::jobname +  ".init";
-	const_cast<std::string&>(outfile) = parent + rem::jobname + ".out";
+	jsonfile = parent + fname + ".json";
+	datfile = parent + "." + rem::jobname + ".dat";
+	initfile = parent + "." + rem::jobname +  ".init";
+	outfile = parent + rem::jobname + ".out";
 }
 
 // print out io parameters

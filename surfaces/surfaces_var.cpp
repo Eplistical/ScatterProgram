@@ -8,13 +8,13 @@
 namespace NS = scatter::surfaces;
 using enumspace::surfmode_enum;
 
-const double& NS::cutoff_gamma = 0.0;
+double NS::cutoff_gamma;
 
-const size_t& NS::surfnum = 0;
-const std::vector<surfmode_enum>& NS::surfmode = std::vector<surfmode_enum>();
-const std::vector<std::vector<double>>& NS::surfpara = std::vector<std::vector<double>>();
-const std::vector<surfmode_enum>& NS::gammamode = std::vector<surfmode_enum>();
-const std::vector<std::vector<double>>& NS::gammapara = std::vector<std::vector<double>>(); 
+size_t NS::surfnum;
+std::vector<surfmode_enum> NS::surfmode;
+std::vector<std::vector<double>> NS::surfpara;
+std::vector<surfmode_enum> NS::gammamode;
+std::vector<std::vector<double>> NS::gammapara; 
 
 // init surfaces parameters 
 void scatter::surfaces::load_var(const rapidjson::Document& doc){

@@ -10,20 +10,20 @@
 
 
 // args passed by command line
-const size_t& scatter::rem::threadNum = 1;
-const std::string& scatter::rem::infile = "test.in";
+size_t scatter::rem::threadNum;
+std::string scatter::rem::infile;
 
 // job control parameters
-const std::string& scatter::rem::jobname = "test";
-const std::string& scatter::rem::jobtype = "simulation";
-const bool& scatter::rem::loaddat = true;
+std::string scatter::rem::jobname;
+std::string scatter::rem::jobtype;
+bool scatter::rem::loaddat;
 
 // basic parameters for the system(useful both for structure & dynamics)
-const size_t& scatter::rem::dim = 1;
-const size_t& scatter::rem::dim2 = scatter::rem::dim * scatter::rem::dim;
-const double& scatter::rem::hbar = 1.0;
-const double& scatter::rem::kT = 0;
-const double& scatter::rem::Gamma0 = 0;
+size_t scatter::rem::dim;
+size_t scatter::rem::dim2;
+double scatter::rem::hbar;
+double scatter::rem::kT;
+double scatter::rem::Gamma0;
 
 
 // load rem parameters from Document Obj
@@ -39,7 +39,7 @@ void scatter::rem::load_var(const rapidjson::Document& doc){
 		("kT", kT)
 		("Gamma0", Gamma0)
 		;
-	const_cast<size_t&>(dim2) = dim * dim;
+	dim2 = dim * dim;
 }
 
 // print out rem parameters

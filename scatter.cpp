@@ -6,34 +6,44 @@
 #include "ioer.hpp"
 #include "timer.hpp"
 #include "run.hpp"
-#include "vars.hpp"
 #include "io.hpp"
 #include "simulation.hpp"
-#include <Eigen/Core>
+#include "vars.hpp"
+#include "json_toolkit.hpp"
+
 using namespace std;
 using namespace scatter;
 
-void print_vars(void){
+void infile_parser(void){
 #if _DEBUG >= 1
-	cout << "debug: print_vars begin" << "\n";
+	cout << "debug: infile_parser begin" << "\n";
 #endif
-	ioer::keyval()
-		("threadNum", rem::threadNum)
-		("infile", rem::infile) 
-		;
-	rem::print_var();
+	io::load_var();
 	io::print_var();
+
+	rapidjson::Document&& doc = json::load_json_file(io::jsonfile);
+
+	rem::load_var(doc);
+	rem::print_var();
+
+	grid::load_var(doc);
 	grid::print_var();
+
+	surfaces::load_var(doc);
 	surfaces::print_var();
+
+	simulation::load_var(doc);
 	simulation::print_var();
 }
 
+void print_vars(void){
+}
+
 int main(int argc, char** argv){
+	ioer::info("Program: scatter-prepfef");
 	// No argument list
 	if(argc == 1){
-		std::cout 
-			<< "No input, use -h to see help info"
-			<< std::endl;
+		ioer::info("No input, use -h to see help info");
 		return 0;
 	}
 	// program begin
@@ -46,12 +56,17 @@ int main(int argc, char** argv){
 	if(arg_parser(argc, argv) == false){
 		return 0;
 	}
+	ioer::keyval()
+		("infile", rem::infile) 
+		("threadNum", rem::threadNum)
+		;
+
 #if _DEBUG >= 1
 	cout << "debug: parsing infile ..." << "\n\n";
 #endif
 	// parse infile 
 	infile_parser();
-	print_vars();
+
 	// run program
 #if _DEBUG >= 1
 	cout << "debug: move to the switch " << "\n";

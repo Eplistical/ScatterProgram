@@ -7,10 +7,10 @@
 
 namespace scatter{
     namespace io{
-        extern const std::string& jsonfile;
-        extern const std::string& datfile;
-        extern const std::string& initfile;
-        extern const std::string& outfile;
+        extern std::string jsonfile;
+        extern std::string datfile;
+        extern std::string initfile;
+        extern std::string outfile;
 		extern iomgr::filemgr_t filemgr;
 
 		void load_var(void);

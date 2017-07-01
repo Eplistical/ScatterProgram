@@ -82,7 +82,7 @@ void rwinit(char op){
 			rp,
 			op);
 	if(op == 'r'){
-		const_cast<std::vector<double>&>(r0p0) = rp;
+		r0p0 = rp;
 	}
 }
 
@@ -161,7 +161,7 @@ void scatter::io::loadinit(void){
 }
 
 void scatter::io::loadinfile(void){
-    ioer::info_nonewline("loading infile: " + scatter::rem::infile + " ...  ", true);
+    ioer::info_nonewline("loading infile: " + scatter::rem::infile + " ...  ");
     rinfile();
     ioer::info("done");
 }

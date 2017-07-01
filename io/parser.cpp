@@ -5,10 +5,9 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include "boost/program_options.hpp"
 #include "vars.hpp"
 #include "parser.hpp"
-#include "json_toolkit.hpp"
+#include "boost/program_options.hpp"
 #include "boost/filesystem.hpp"
 
 namespace po = boost::program_options;
@@ -43,7 +42,7 @@ bool scatter::arg_parser(int argc, char** argv){
 		return false;
 	}
 	if(vm.count("infile")){
-		const_cast<std::string&>(rem::infile) = vm["infile"].as<std::string>();
+		rem::infile = vm["infile"].as<std::string>();
 		// check if infile exists
 		fs::path tmp(rem::infile);
 		if(not fs::exists(tmp)){
@@ -51,17 +50,7 @@ bool scatter::arg_parser(int argc, char** argv){
 		}
 	}
 	if(vm.count("nproc")){
-		const_cast<size_t&>(rem::threadNum) = vm["nproc"].as<size_t>();
+		rem::threadNum = vm["nproc"].as<size_t>();
 	}
 	return true;
-}
-
-void scatter::infile_parser(void){
-	io::load_var();
-
-	rapidjson::Document&& doc = json::load_json_file(io::jsonfile);
-	rem::load_var(doc);
-	grid::load_var(doc);
-	surfaces::load_var(doc);
-	simulation::load_var(doc);
 }

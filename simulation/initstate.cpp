@@ -48,5 +48,5 @@ void simulation::generate_initstate(void){
 		rp.insert(rp.end(), p.begin(), p.end());
 	}
 
-	const_cast<std::vector<double>&>(r0p0) = rp;
+	r0p0 = rp;
 }

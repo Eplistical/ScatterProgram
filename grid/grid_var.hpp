@@ -6,13 +6,13 @@
 
 namespace scatter{
     namespace grid{
-		extern const std::vector<double>& rmin;
-		extern const std::vector<double>& rmax;
-		extern const std::vector<size_t>& Nr;
+		extern std::vector<double> rmin;
+		extern std::vector<double> rmax;
+		extern std::vector<size_t> Nr;
 
 		// fef related 
-		extern const double& bandwidth;
-		extern const std::vector<double>& derange;
+		extern double bandwidth;
+		extern std::vector<double> derange;
 
 		void load_var(const rapidjson::Document& doc);
 		void print_var(void);

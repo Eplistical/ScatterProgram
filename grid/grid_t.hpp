@@ -50,5 +50,4 @@ namespace scatter{
 			std::vector<double> get_fBCME(const std::vector<double>& r) const;
 	};
 };
-
 #endif

@@ -4,7 +4,6 @@
 
 namespace scatter{
 	bool arg_parser(int argc, char** argv);
-	void infile_parser(void);
 }
 
 #endif 

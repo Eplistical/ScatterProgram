@@ -14,25 +14,24 @@
 namespace NS = scatter::simulation;
 using enumspace::initmode_enum;
 
-const std::vector<double>& NS::mass = std::vector<double>();
-const std::vector<double>& NS::omega = std::vector<double>();
-const size_t& NS::Ntraj = -1;
-const size_t& NS::Nstep = -1;
-const double& NS::EndT = -1;
-const double& NS::dt = -1;
-const size_t& NS::Anastep = 100;
+std::vector<double> NS::mass;
+std::vector<double> NS::omega;
+size_t NS::Ntraj;
+size_t NS::Nstep;
+double NS::EndT;
+double NS::dt;
+size_t NS::Anastep;
 
 // for init state
-const bool& NS::prepinit = false;
-const double& NS::inittemp = 1.0;
-const size_t& NS::vibstate = 0;
-const size_t& NS::elestate = 0;
-const std::vector<double>& NS::initravg = std::vector<double>{0, 0};
-const std::vector<double>& NS::initpavg = std::vector<double>{0, 0};
+bool NS::prepinit;
+double NS::inittemp;
+size_t NS::vibstate;
+size_t NS::elestate;
+std::vector<double> NS::initravg;
+std::vector<double> NS::initpavg;
 
-const std::vector<initmode_enum>& NS::initmode = std::vector<initmode_enum>();
-
-const std::vector<double>& NS::r0p0 = std::vector<double>();
+std::vector<initmode_enum> NS::initmode;
+std::vector<double> NS::r0p0;
 
 
 // helper function
@@ -47,7 +46,7 @@ static void extract_omega(void){
 			}
 		}
 	}
-	const_cast<std::vector<double>&>(scatter::simulation::omega) = tmp;
+	scatter::simulation::omega = tmp;
 }
 
 // init simulation parameters 
@@ -68,7 +67,7 @@ void scatter::simulation::load_var(const rapidjson::Document& doc){
 		("elestate", elestate)
 		("initmode", initmode, enumspace::initmode_dict)
 		;
-	const_cast<double&>(dt) = EndT / Nstep;
+	dt = EndT / Nstep;
 	// init omega
 	extract_omega();
 }

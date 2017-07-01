@@ -45,7 +45,7 @@ void scatter::run_simulation(){
 	// load init file
 	io::loadinit();
 	// load fef data file
-	io::loaddat();
+	//io::loaddat();
 	// init swarms
 	for(size_t i = 0; i < Nswarm; ++i){
 		swarms.at(i) = std::vector<particle_t>(Ntraj);

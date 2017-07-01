@@ -7,18 +7,18 @@
 namespace scatter{
 	namespace rem{
 		// args passed by command line
-		extern const std::string& infile;
-		extern const size_t& threadNum;
+		extern std::string infile;
+		extern size_t threadNum;
 		// job control parameters
-		extern const std::string& jobname;
-		extern const std::string& jobtype;
-		extern const bool& loaddat;
+		extern std::string jobname;
+		extern std::string jobtype;
+		extern bool loaddat;
 		// basic parameters for the system(useful both for structure & dynamics)
-		extern const size_t& dim;
-		extern const size_t& dim2;
-		extern const double& hbar;
-		extern const double& kT;
-		extern const double& Gamma0;
+		extern size_t dim;
+		extern size_t dim2;
+		extern double hbar;
+		extern double kT;
+		extern double Gamma0;
 
 
 		void load_var(const rapidjson::Document& doc);

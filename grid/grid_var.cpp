@@ -3,13 +3,13 @@
 #include "ioer.hpp"
 #include "grid_var.hpp"
 
-const std::vector<double>& scatter::grid::rmin = std::vector<double>();
-const std::vector<double>& scatter::grid::rmax = std::vector<double>();
-const std::vector<size_t>& scatter::grid::Nr  = std::vector<size_t>();
+std::vector<double> scatter::grid::rmin;
+std::vector<double> scatter::grid::rmax;
+std::vector<size_t> scatter::grid::Nr;
 
 // fef related
-const double& scatter::grid::bandwidth = 1.5;
-const std::vector<double>& scatter::grid::derange = std::vector<double>();
+double scatter::grid::bandwidth;
+std::vector<double> scatter::grid::derange;
 
 // init grid parameters 
 void scatter::grid::load_var(const rapidjson::Document& doc){
