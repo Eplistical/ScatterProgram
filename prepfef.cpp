@@ -75,9 +75,7 @@ int main(int argc, char** argv){
 	}
 	// run program
 	mpier::bcast(0, rem::kT, rem::jobname, grid::rmin);
-	cout << rem::kT << endl;
-	cout << rem::jobname << endl;
-	cout << grid::rmin[0] << endl;
+	ioer::info(rem::kT, rem::jobname, grid::rmin);
 	
 	// ending
 	if(mpier::master) {
