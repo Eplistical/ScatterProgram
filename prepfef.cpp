@@ -22,7 +22,7 @@ void infile_parser(void){
 	rapidjson::Document&& doc = json::load_json_file(io::jsonfile);
 
 	rem::load_var(doc);
-	const_cast<string&>(rem::jobtype) = string("prepfef");
+	rem::jobtype = string("prepfef");
 	rem::print_var();
 
 	grid::load_var(doc);
@@ -74,9 +74,10 @@ int main(int argc, char** argv){
 		infile_parser();
 	}
 	// run program
-	mpier::bcast(0, rem::kT, rem::dim);
+	mpier::bcast(0, rem::kT, rem::jobname, grid::rmin);
 	cout << rem::kT << endl;
-	cout << rem::dim << endl;
+	cout << rem::jobname << endl;
+	cout << grid::rmin[0] << endl;
 	
 	// ending
 	if(mpier::master) {
