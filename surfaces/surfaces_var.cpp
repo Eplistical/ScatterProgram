@@ -42,22 +42,22 @@ void scatter::surfaces::print_var(void){
 
 	ioer::keyval()("surfmode", "");
 	for(auto& it : surfmode){
-		ioer::keyval(std::cout, "   ")("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
+		ioer::keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
 	}
 
 	ioer::keyval()("surfpara", "");
 	for(auto& it : surfpara){
-		ioer::keyval(std::cout, "   ")("", it);
+		ioer::keyval()("", it);
 	}
 
 	ioer::keyval()("gammamode", "");
 	for(auto& it : gammamode){
-		ioer::keyval(std::cout, "   ")("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
+		ioer::keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
 	}
 
 	ioer::keyval()("gammapara", "");
 	for(auto& it : gammapara){
-		ioer::keyval(std::cout, "   ")("", it);
+		ioer::keyval()("", it);
 	}
 
 	ioer::drawline('-');
