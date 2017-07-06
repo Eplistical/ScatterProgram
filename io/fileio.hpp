@@ -10,8 +10,6 @@ namespace scatter{
 		void loaddat(void);
 		void saveinit(void);
 		void loadinit(void);
-		void loadinfile(void);
-		void print_file(std::string file);
 	};
 };
 

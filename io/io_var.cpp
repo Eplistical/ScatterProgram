@@ -1,5 +1,4 @@
 #include <string>
-#include "filemgr/filemgr.hpp"
 #include "boost/filesystem.hpp"
 #include "vars.hpp"
 #include "ioer.hpp"
@@ -9,8 +8,6 @@ std::string scatter::io::jsonfile;
 std::string scatter::io::datfile;
 std::string scatter::io::initfile;
 std::string scatter::io::outfile;
-
-iomgr::filemgr_t scatter::io::filemgr;
 
 // init io parameters 
 void scatter::io::load_var(void){

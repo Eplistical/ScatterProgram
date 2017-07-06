@@ -71,7 +71,6 @@ namespace ioer {
 				}
 	}; // class _pair_output_functor_t
 
-
 	class output_t {
 		protected:
 			const string _path;
@@ -93,7 +92,7 @@ namespace ioer {
 			// no copy or assign
 			output_t(const output_t&) = delete;
 			output_t& operator=(const output_t&) = delete;
-
+			
 			// getter
 			size_t width(void) { return _width; }
 			string dlm(void) { return _dlm; }
@@ -102,11 +101,27 @@ namespace ioer {
 			size_t set_width(size_t width) { _width = width; }
 			string set_dlm(const string& dlm) { _dlm = dlm; }
 
+			// open/close
+			void open(const string& path, ios::openmode mode = ios::out) 
+			{
+				io_base_obj.open(path, mode);
+			}
+			void close(const string& path) 
+			{
+				io_base_obj.close(path);
+			}
+
 			// utilities
 
 			// -- basic -- //
-			void newline(void) {  io_base_obj.at(_path) << "\n"; }
-			void drawline(char c, size_t len = 32) { io_base_obj.at(_path) << string(len, c) << "\n"; }
+			void newline(void)
+			{
+				io_base_obj.at(_path) << "\n"; 
+			}
+			void drawline(char c, size_t len = 32) 
+			{
+				io_base_obj.at(_path) << string(len, c) << "\n"; 
+			}
 
 			// -- info -- //
 			template<typename ParamType>
@@ -195,8 +210,8 @@ namespace ioer {
 				typename enable_if<is_fundamental<ParamType>::value, void>::type
 				_write(const ParamType& x)
 				{
-					const char* offset = reinterpret_cast<const char*>(&x);
-					io_base_obj.at(_path).write(offset, sizeof(x) * 8);
+					io_base_obj.at(_path).write
+						(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(sizeof(x) * 8));
 				}
 
 			template<typename ParamType>
@@ -206,17 +221,17 @@ namespace ioer {
 					using ValType = typename ParamType::value_type;
 					ValType tmp[] = {x.real(), x.imag()};
 					io_base_obj.at(_path).write
-						(reinterpret_cast<const char*>(tmp), 2 * sizeof(ValType) * 8);
+						(reinterpret_cast<const char*>(tmp), static_cast<std::streamsize>(2 * sizeof(ValType) * 8));
 				}
 
 			template<typename ParamType>
 				typename enable_if<is_c_string<ParamType>::value, void>::type
 				_write(const ParamType& x)
 				{
-					const char* cp = x;
 					size_t N = 0;
-					while(*cp != '\0') ++cp;
-					io_base_obj.at(_path).write(cp, N * sizeof(char) * 8);
+					while(x[N] != '\0') ++N;
+					io_base_obj.at(_path).write
+						(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(N * sizeof(char) * 8));
 				}
 
 			template<typename ParamType>
@@ -226,8 +241,8 @@ namespace ioer {
 				void>::type
 					_write(const ParamType& x)
 					{
-						const char* offset = reinterpret_cast<const char*>(x.data());
-						io_base_obj.at(_path).write(offset, x.size() * sizeof(typename ParamType::value_type) * 8);
+						io_base_obj.at(_path).write
+							(reinterpret_cast<const char*>(x.data()), static_cast<std::streamsize>(x.size() * sizeof(typename ParamType::value_type) * 8));
 					}
 
 			template<typename ParamType>
@@ -239,7 +254,7 @@ namespace ioer {
 				{
 					for(auto& it : x) {
 						io_base_obj.at(_path).write
-							(reinterpret_cast<const char*>(&x), sizeof(typename ParamType::value_type) * 8);
+							(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(sizeof(typename ParamType::value_type) * 8));
 					}
 				}
 
