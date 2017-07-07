@@ -1,3 +1,6 @@
+v0.4
+(in progress)
+
 v0.3
 - add a local cmake module directory
 - introduce Eigen3, now Eigen3 is required
