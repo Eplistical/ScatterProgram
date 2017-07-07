@@ -11,6 +11,7 @@ namespace enumspace{
 		SIMULATION, 
 		SURFACE,
 		PREPAREINIT,
+		PREPAREDAT,
 	};
 	const boost::bimap<std::string, runmode_enum> runmode_dict = 
 		boost::assign::list_of<boost::bimap<std::string, runmode_enum>::relation>
@@ -18,6 +19,7 @@ namespace enumspace{
 		("simulation", runmode_enum::SIMULATION)
 		("surface", runmode_enum::SURFACE)
 		("prepareinit", runmode_enum::PREPAREINIT)
+		("preparedat", runmode_enum::PREPAREDAT)
 		;
 };
 #endif

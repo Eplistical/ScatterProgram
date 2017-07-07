@@ -23,6 +23,7 @@ namespace scatter{
 
 		void load_var(const rapidjson::Document& doc);
 		void print_var(void);
+		void bcast_var(void);
 	};
 };
 #endif

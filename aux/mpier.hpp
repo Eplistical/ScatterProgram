@@ -76,9 +76,17 @@ namespace mpier{
 	inline void bcast(int& root){  }
 
 	template<typename ParamType>
-		inline typename enable_if<is_fundamental<ParamType>::value, void>::type
+		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), void>::type
 		bcast(int root, ParamType& x){
 			MPI::COMM_WORLD.Bcast(&x, 1, typemap[typeid(ParamType)], root);
+		}
+
+	template<typename ParamType>
+		inline typename enable_if<is_bool<ParamType>::value, void>::type
+		bcast(int root, ParamType& x){
+			int tmp = static_cast<int>(x);
+			MPI::COMM_WORLD.Bcast(&tmp, 1, MPI_INT, root);
+			x = static_cast<bool>(tmp);
 		}
 
 	template<typename ParamType>

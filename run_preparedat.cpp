@@ -25,7 +25,7 @@ int main(int argc, char** argv){
 	if(mpier::master) {
 		// parse infile 
 		if(setup(argc, argv) != 0) return 0; 
-		assert(rem::jobtype == "prepfef");
+		assert(rem::jobtype == "preparedat");
 		// parse arg again to override infile
 		arg_parser(argc, argv);
 		// assign output/log destination
@@ -34,7 +34,7 @@ int main(int argc, char** argv){
 
 	// -- program begin -- //
 	if (mpier::master) {
-		out_handler.info("Program: scatter-prepfef");
+		out_handler.info("Program: scatter-preparedat");
 		out_handler.info(timer::now());
 		timer::tic();
 #if _DEBUG >= 1
@@ -47,10 +47,8 @@ int main(int argc, char** argv){
 	}
 
 	// run program
-	mpier::bcast(0, rem::kT, rem::jobname, grid::rmin);
-	if(mpier::master) {
-		out_handler.info(rem::kT, rem::jobname, grid::rmin);
-	}
+	rem::bcast_var();
+	rem::print_var();
 	
 	// ending
 	if(mpier::master) {
