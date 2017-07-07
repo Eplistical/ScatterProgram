@@ -281,8 +281,7 @@ namespace ioer {
 	}; // class output_t
 
 	// non-class functions for standard output
-	/*
-	static output_t STDOUT;
+	extern output_t STDOUT;
 
 	inline void newline(void) 
 	{
@@ -324,6 +323,5 @@ namespace ioer {
 		{
 			return STDOUT.keyval(_keyfirst, _nonewline);
 		}
-		*/
 };
 #endif
