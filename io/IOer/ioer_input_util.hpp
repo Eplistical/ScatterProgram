@@ -20,7 +20,7 @@ namespace ioer {
 
 	class input_t {
 		protected:
-			const string _path;
+			string _path;
 
 			size_t _width = 16;
 			string _dlm = " ";
@@ -49,10 +49,12 @@ namespace ioer {
 			void open(const string& path, ios::openmode mode = ios::in) 
 			{
 				io_base_obj.open(path, mode);
+				_path = path;
 			}
 			void close(void) 
 			{
 				io_base_obj.close(_path);
+				_path = STDIO_PATH;
 			}
 
 			// utilities
