@@ -22,7 +22,6 @@ void run_surface(void){
 	 * 	that can be used to plot out surfaces.
 	 *
 	 */
-	using namespace ioer;
 	using namespace grid;
 	using namespace surfaces;
 	double U, F, G, Gder;
@@ -71,7 +70,9 @@ int main(int argc, char** argv){
 #if _DEBUG >= 1
 	log_handler.info( "debug: start running core part");
 #endif
+
 	run_surface();
+
 #if _DEBUG >= 1
 	log_handler.info( "debug: ending");
 #endif

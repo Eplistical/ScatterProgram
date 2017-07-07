@@ -19,8 +19,27 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
+void run_preparedat(void)
+{
+	/* preparedat run: prepare force & efric & fBCME 
+	 * 	for given grid & surfaces.
+	 * 	save data to datfile
+	 *
+	 */
+	using namespace grid;
+	using namespace surfaces;
 
-int main(int argc, char** argv){
+	// setup objs using paras 
+	grid_obj = grid_t(rmin, rmax, Nr);
+	surfaces_obj = surfaces_t(surfnum);
+	surfaces_obj.set_gamma(gammamode, gammapara);
+	surfaces_obj.set_energy(surfmode, surfpara);
+
+	// 
+}
+
+int main(int argc, char** argv)
+{
 	// MPI setup
 	mpier::setup();
 
@@ -37,11 +56,12 @@ int main(int argc, char** argv){
 
 	// -- program begin -- //
 	if (mpier::master) {
+		// parameter output
 		out_handler.info("Program: scatter-preparedat");
 		out_handler.info(timer::now());
 		timer::tic();
 #if _DEBUG >= 1
-		log_handler.info( "debug: debug level ", _DEBUG, "\n");
+		if (mpier::master) log_handler.info( "debug: debug level ", _DEBUG, "\n");
 #endif
 		out_handler.keyval()
 			("infile", rem::infile) 
@@ -51,9 +71,17 @@ int main(int argc, char** argv){
 
 	// bcast vars
 	scatter::bcast_vars();
-	rem::print_var();
-	grid::print_var();
-	surfaces::print_var();
+
+	// run program
+#if _DEBUG >= 1
+	if (mpier::master) log_handler.info( "debug: start running core part");
+#endif
+
+	run_preparedat();
+
+#if _DEBUG >= 1
+	if (mpier::master) log_handler.info( "debug: ending");
+#endif
 
 	// ending
 	if(mpier::master) {
