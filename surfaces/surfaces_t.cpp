@@ -8,7 +8,8 @@
 using namespace scatter;
 
 // constructor and para initializer
-surfaces_t::surfaces_t(size_t Nsurf){
+surfaces_t::surfaces_t(size_t Nsurf) 
+{
 	_Nsurf = Nsurf;
 	_gamma = single_surf_t();
 	_energy.resize(_Nsurf);
@@ -18,18 +19,22 @@ surfaces_t::surfaces_t(size_t Nsurf){
 }
 
 // setter
-void surfaces_t::set_gamma(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double>>& paras){
+void surfaces_t::set_gamma(const std::vector<enumspace::surfmode_enum>& modes, 
+							const std::vector<std::vector<double> >& paras)
+{
 	_gamma.clear();
 	for(size_t d = 0; d < rem::dim; ++d){
 		_gamma.append_dim(modes.at(d), paras.at(d));
 	}
 }
 
-void surfaces_t::set_energy(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double>>& paras){
+void surfaces_t::set_energy(const std::vector<enumspace::surfmode_enum>& modes, 
+								const std::vector<std::vector<double> >& paras)
+{
 	size_t index = 0;
-	for(size_t i = 0; i < _Nsurf; ++i){
+	for(size_t i = 0; i < _Nsurf; ++i) {
 		_energy.at(i).clear();
-		for(size_t d = 0; d < rem::dim; ++d){
+		for(size_t d = 0; d < rem::dim; ++d) {
 			index = i * rem::dim + d;
 			_energy.at(i).append_dim(modes.at(index), paras.at(index));
 		}
@@ -37,42 +42,115 @@ void surfaces_t::set_energy(const std::vector<enumspace::surfmode_enum>& modes, 
 }
 
 void surfaces_t::set_abs_gamma_threash(double x)
-{ _abs_gamma_threash = x; }
+{
+	_abs_gamma_threash = x; 
+}
 
 // getter
-size_t surfaces_t:: get_surf_number(void) const
-{ return _Nsurf; }
+size_t surfaces_t::get_surf_number(void) const
+{
+	return _Nsurf; 
+}
+
 single_surf_t surfaces_t::get_gamma(void) const
-{ return _gamma; }
+{
+	return _gamma; 
+}
+
 single_surf_t surfaces_t::get_energy(int i) const
-{ return _energy.at(i); }
+{
+	return _energy.at(i);
+}
+
 std::vector<double> surfaces_t::get_gamma_para(int d) const
-{  return _gamma.get_para(d); }
+{
+	 return _gamma.get_para(d);
+}
+
 std::vector<double> surfaces_t::get_energy_para(int i, int d) const
-{ return _energy.at(i).get_para(d); }
+{
+	return _energy.at(i).get_para(d);
+}
+
+std::vector<std::vector<double> > surfaces_t::get_gamma_para_blank(void) const
+{
+	std::vector<std::vector<double> > rst(1);
+	size_t N = 0;
+	for (size_t d = 0; d < rem::dim; ++d) {
+		N += _gamma.get_Npara(d);
+	}
+	rst[0].resize(N);
+	return rst;
+}
+
+std::vector<std::vector<double> > surfaces_t::get_energy_para_blank(void) const
+{
+	std::vector<std::vector<double> > rst(_Nsurf);
+	size_t N = 0;
+	for(size_t i = 0; i < _Nsurf; ++i) {
+		N = 0;
+		for (size_t d = 0; d < rem::dim; ++d) {
+			N += _energy.at(i).get_Npara(d);
+		}
+		rst[i].resize(N);
+	}
+	return rst;
+}
+
+
 // U
 std::vector<double> surfaces_t::vU(int i, const std::vector<double>& r) const
-{ return _energy.at(i).get_U(r); }
+{
+	return _energy.at(i).get_U(r);
+}
+
 double surfaces_t::fU(int i, int d, double x) const
-{ return _energy.at(i).get_U(d, x); }
+{
+	return _energy.at(i).get_U(d, x);
+}
+
 double surfaces_t::fU(int i, const std::vector<double>& r) const
-{ return sum(vU(i, r)); }
+{
+	return sum(vU(i, r));
+}
+
 // F
 std::vector<double> surfaces_t::vdUdr(int i, const std::vector<double>& r) const
-{ return _energy.at(i).get_dUdx(r); }
+{
+	return _energy.at(i).get_dUdx(r);
+}
+
 std::vector<double> surfaces_t::fF(int i, const std::vector<double>& r) const
-{ return -1.0 * vdUdr(i, r); }
+{
+	return -1.0 * vdUdr(i, r);
+}
+
 double surfaces_t::fF(int i, int d, double x) const
-{ return -1.0 * _energy.at(i).get_dUdx(d, x); }
+{
+	return -1.0 * _energy.at(i).get_dUdx(d, x);
+}
+
 // Gamma
 std::vector<double> surfaces_t::vGamma(const std::vector<double>& r) const
-{ return _gamma.get_U(r); }
+{
+	return _gamma.get_U(r);
+}
+
 double surfaces_t::fGamma(const std::vector<double>& r, double Gamma0) const
-{ return product(vGamma(r)) * Gamma0; }
+{
+	return product(vGamma(r)) * Gamma0;
+}
+
 double surfaces_t::fGamma(int d, double x) const
-{ return _gamma.get_U(d, x); }
+{
+	return _gamma.get_U(d, x);
+}
+
 std::vector<double> surfaces_t::vGammader(const std::vector<double>& r) const
-{ return _gamma.get_dUdx(r); }
+{
+	return _gamma.get_dUdx(r);
+}
+
 std::vector<double> surfaces_t::fGammader(const std::vector<double>& r, double Gamma0) const
 {
 	const std::vector<double> tmp_gamma = vGamma(r);
@@ -81,15 +159,20 @@ std::vector<double> surfaces_t::fGammader(const std::vector<double>& r, double G
 	std::vector<double> rst(dim);
 	// tmp = (g1,g2,..)
 	std::vector<double> tmp = tmp_gamma;
-	for(size_t d = 0;d < dim;d++){
+	for(size_t d = 0; d < dim; ++d) {
 		tmp.at(d) = tmp_gammader.at(d);
 		rst.at(d) = product(tmp) * Gamma0;
 		tmp.at(d) = tmp_gamma.at(d);
 	}
 	return rst;
 }
+
 double surfaces_t::fGammader(int d, double x) const
-{ return _gamma.get_dUdx(d, x); }
+{
+	return _gamma.get_dUdx(d, x);
+}
 
 bool surfaces_t::small_gamma(const std::vector<double>& r, double Gamma0) const
-{ return (fGamma(r, Gamma0) < _abs_gamma_threash); }
+{
+	return (fGamma(r, Gamma0) < _abs_gamma_threash);
+}

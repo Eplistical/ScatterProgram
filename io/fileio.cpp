@@ -103,7 +103,7 @@ void scatter::io::saveinit(void){
 }
 
 void scatter::io::loadinit(void){
-    ioer::info_nonewline("loading r0p0 to " + scatter::io::initfile + " ...  ");
+    ioer::info_nonewline("loading r0p0 from " + scatter::io::initfile + " ...  ");
     rwinit('r');
     ioer::info("done");
 }

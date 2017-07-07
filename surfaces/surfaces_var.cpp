@@ -17,7 +17,8 @@ std::vector<surfmode_enum> NS::gammamode;
 std::vector<std::vector<double>> NS::gammapara; 
 
 // init surfaces parameters 
-void scatter::surfaces::load_var(const rapidjson::Document& doc){
+void scatter::surfaces::load_var(const rapidjson::Document& doc)
+{
 	using namespace scatter::surfaces;
 	using json::load_param;
 	load_param(doc, "surfaces")
@@ -31,7 +32,8 @@ void scatter::surfaces::load_var(const rapidjson::Document& doc){
 }
 
 // print out surfaces parameters
-void scatter::surfaces::print_var(void){
+void scatter::surfaces::print_var(void)
+{
 	using namespace scatter::surfaces;
 	ioer::info("surfaces info");
 	ioer::drawline('-');
@@ -41,22 +43,22 @@ void scatter::surfaces::print_var(void){
 		;
 
 	ioer::keyval()("surfmode", "");
-	for(auto& it : surfmode){
+	for(auto& it : surfmode) {
 		ioer::keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
 	}
 
 	ioer::keyval()("surfpara", "");
-	for(auto& it : surfpara){
+	for(auto& it : surfpara) {
 		ioer::keyval()("", it);
 	}
 
 	ioer::keyval()("gammamode", "");
-	for(auto& it : gammamode){
+	for(auto& it : gammamode) {
 		ioer::keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
 	}
 
 	ioer::keyval()("gammapara", "");
-	for(auto& it : gammapara){
+	for(auto& it : gammapara) {
 		ioer::keyval()("", it);
 	}
 

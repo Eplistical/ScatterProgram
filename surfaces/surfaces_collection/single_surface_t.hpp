@@ -45,18 +45,40 @@ namespace surfaces_collection {
 				}
 			}
 
-			void clear(void){ surfptr.clear(); }
+			void clear(void)
+			{ 
+				surfptr.clear(); 
+			}
 
 			// --- getters --- //
+			
 			// dimension num
-			size_t dim(void) const{	return surfptr.size(); }
+			size_t dim(void) const 
+			{ 
+				return surfptr.size(); 
+			}
+
 			// mode for d^th dimension
-			enumspace::surfmode_enum get_mode(int d) const{ return enumspace::surfmode_dict.left.at(surfptr.at(d)->get_mode()); }
+			enumspace::surfmode_enum get_mode(int d) const 
+			{ 
+				return enumspace::surfmode_dict.left.at(surfptr.at(d)->get_mode()); 
+			}
+
+			// para number for d^th dimension
+			size_t get_Npara(int d) const 
+			{ 
+				return surfptr.at(d)->get_Npara();
+			}
+
 			// para for d^th dimension
-			std::vector<double> get_para(int d) const{ return surfptr.at(d)->get_para(); }
+			std::vector<double> get_para(int d) const
+			{
+				return surfptr.at(d)->get_para(); 
+			}
 
 			// string for all dimensions
-			std::string get_expr(void) const{
+			std::string get_expr(void) const
+			{
 				std::stringstream expr;
 				for(size_t d = 0; d < dim(); ++d){
 					expr << "dim " << d << ":" << std::endl;
@@ -66,11 +88,13 @@ namespace surfaces_collection {
 			}
 
 			// U(r) for given dimension
-			double get_U(int d, double x) const{
+			double get_U(int d, double x) const
+			{
 				return surfptr[d]->U(x);
 			}
 			// U(r) as a vector
-			std::vector<double> get_U(const std::vector<double>& r) const{
+			std::vector<double> get_U(const std::vector<double>& r) const
+			{
 				std::vector<double> rst(dim());
 				for(size_t d = 0, N = dim() ; d < N; ++d){
 					rst[d] = get_U(d, r[d]);
@@ -83,7 +107,8 @@ namespace surfaces_collection {
 				return surfptr[d]->dUdx(x);
 			}
 			// U'(r) as a vector
-			std::vector<double> get_dUdx(const std::vector<double>& r) const{
+			std::vector<double> get_dUdx(const std::vector<double>& r) const
+			{
 				std::vector<double> rst(dim());
 				for(size_t d = 0, N = dim() ; d < N; ++d){
 					rst[d] = get_dUdx(d, r[d]);

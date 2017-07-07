@@ -55,7 +55,7 @@ namespace mpier{
 
 	int size;
 	int rank;
-	int master;
+	bool master;
 
 	inline void setup(void) {
 		MPI::Init();
