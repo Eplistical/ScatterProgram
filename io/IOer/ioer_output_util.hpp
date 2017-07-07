@@ -27,8 +27,10 @@ namespace ioer {
 			bool _nonewline;
 		public:
 			explicit _pair_output_functor_t(const string& path, const string& dlm, size_t width, bool keyfirst, bool nonewline) 
-				: _path(path), _dlm(dlm), _width(width), _keyfirst(keyfirst), _nonewline(nonewline) {}
-			~_pair_output_functor_t() = default;
+				: _path(path), _dlm(dlm), _width(width), _keyfirst(keyfirst), _nonewline(nonewline) {
+				}
+			~_pair_output_functor_t() {
+			};
 
 			// no copy or assign
 			_pair_output_functor_t(const _pair_output_functor_t&) = delete;
@@ -87,7 +89,10 @@ namespace ioer {
 			{ 
 				io_base_obj.open(path, mode | ios::out);
 			}
-			virtual ~output_t() = default;
+
+			~output_t() { 
+				close();
+			};
 
 			// no copy or assign
 			output_t(const output_t&) = delete;
@@ -276,6 +281,7 @@ namespace ioer {
 	}; // class output_t
 
 	// non-class functions for standard output
+	/*
 	static output_t STDOUT;
 
 	inline void newline(void) 
@@ -318,5 +324,6 @@ namespace ioer {
 		{
 			return STDOUT.keyval(_keyfirst, _nonewline);
 		}
+		*/
 };
 #endif

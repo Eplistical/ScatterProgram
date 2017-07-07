@@ -5,7 +5,6 @@
 #include <string>
 #include "json_toolkit.hpp"
 #include "io.hpp"
-#include "mpier.hpp"
 #include "rem_var.hpp"
 // variables in scatter::rem
 
@@ -59,10 +58,4 @@ void scatter::rem::print_var(void){
 		("Gamma0", Gamma0)
 		;
 	out_handler.drawline('-');
-}
-
-// broadcast rem parameters in MPI
-void scatter::rem::bcast_var(void)
-{
-	mpier::bcast(0, jobname, jobtype, loaddat, dim, hbar, kT, Gamma0);
 }

@@ -31,12 +31,17 @@ namespace ioer {
 			}
 
 		public:
-			explicit io_base_t() = default;
+			explicit io_base_t() {
+			};
 			explicit io_base_t(const string& path, ios::openmode mode)
 			{ 
 				open(path, mode);	
 			}
-			virtual ~io_base_t() {  }
+			~io_base_t() { 
+				for (auto& it : _fpdict) {
+					it.second.close();
+				}
+			}
 			// no copy or assign
 			io_base_t(const io_base_t& other) = delete;
 			io_base_t& operator=(const io_base_t& other) = delete;
@@ -59,6 +64,7 @@ namespace ioer {
 				if (path != STDIO_PATH) {
 					auto it = _fpdict.find(path);
 					if (it != _fpdict.end()) {
+						it->second.close();
 						_fpdict.erase(it);
 					}
 				}

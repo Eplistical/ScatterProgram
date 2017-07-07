@@ -25,6 +25,7 @@ void run_surface(void){
 	using namespace ioer;
 	using namespace grid;
 	using namespace surfaces;
+	double U, F, G, Gder;
 	grid_obj = grid_t(rmin, rmax, Nr);
 	surfaces_obj = surfaces_t(surfnum);
 	surfaces_obj.set_gamma(gammamode, gammapara);
@@ -37,8 +38,11 @@ void run_surface(void){
 			out_handler.drawline('#');
 			out_handler.info("i = ", i, "d = ", d);
 			for(auto& x : grid_obj.get_grid(d)){
-				out_handler.tabout(x, surfaces_obj.fU(i, d, x), surfaces_obj.fF(i, d, x), 
-								surfaces_obj.fGamma(d, x), surfaces_obj.fGammader(d, x));
+				U = surfaces_obj.fU(i, d, x);
+				F = surfaces_obj.fF(i, d, x);
+				G = surfaces_obj.fGamma(d, x);
+				Gder = surfaces_obj.fGammader(d, x);
+				out_handler.tabout(x, U, F, G, Gder);
 			}
 		}
 	}

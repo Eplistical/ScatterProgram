@@ -42,3 +42,4 @@ void scatter::grid::print_var(void){
 
 	out_handler.drawline('-');
 }
+
