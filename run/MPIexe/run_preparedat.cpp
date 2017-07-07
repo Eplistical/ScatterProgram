@@ -8,7 +8,10 @@
 #include "run.hpp"
 #include "vars.hpp"
 #include "json_toolkit.hpp"
+#include "grid.hpp"
+#include "surfaces.hpp"
 #include "mpier.hpp"
+#include "MPI_helper.hpp"
 
 using scatter::io::out_handler;
 using scatter::io::log_handler;
@@ -46,10 +49,12 @@ int main(int argc, char** argv){
 			;
 	}
 
-	// run program
-	// broadcast rem
+	// bcast vars
+	scatter::bcast_vars();
 	rem::print_var();
-	
+	grid::print_var();
+	surfaces::print_var();
+
 	// ending
 	if(mpier::master) {
 		out_handler.info(timer::toc());

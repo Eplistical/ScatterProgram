@@ -12,9 +12,9 @@ namespace scatter{
 		extern size_t surfnum;
 		extern double cutoff_gamma;
 		extern std::vector<surfmode_enum> surfmode;
-		extern std::vector<std::vector<double>> surfpara;
+		extern std::vector<std::vector<double> > surfpara;
 		extern std::vector<surfmode_enum> gammamode;
-		extern std::vector<std::vector<double>> gammapara;
+		extern std::vector<std::vector<double> > gammapara;
 
 		void load_var(const rapidjson::Document& doc);
 		void print_var(void);

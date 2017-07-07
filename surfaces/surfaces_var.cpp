@@ -14,9 +14,9 @@ double NS::cutoff_gamma;
 
 size_t NS::surfnum;
 std::vector<surfmode_enum> NS::surfmode;
-std::vector<std::vector<double>> NS::surfpara;
+std::vector<std::vector<double> > NS::surfpara;
 std::vector<surfmode_enum> NS::gammamode;
-std::vector<std::vector<double>> NS::gammapara; 
+std::vector<std::vector<double> > NS::gammapara; 
 
 // init surfaces parameters 
 void scatter::surfaces::load_var(const rapidjson::Document& doc)
