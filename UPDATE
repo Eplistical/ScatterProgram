@@ -1,10 +1,10 @@
 v0.3
-(in progress)
 - add a local cmake module directory
 - introduce Eigen3, now Eigen3 is required
 - no longer use mkl lib to perform matrix operation
 - add a few debug mode output
-- add several test cases
+- redirect output & log to seperate files
+- now each runmode will have an executable
 
 v0.2
 - now surfaces can reproduce results from the old code
