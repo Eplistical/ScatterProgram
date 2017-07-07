@@ -2,19 +2,24 @@
 #include "debugtools.hpp"
 #endif
 
-#include "vector.hpp"
-#include "rem.hpp"
-#include "io.hpp"
-#include "simulation.hpp"
-#include "surfaces.hpp"
-#include "grid.hpp"
-#include "run.hpp"
-
 #if defined(_OPENMP)
 #include "omp.h"
 #endif
 
+#include <iostream>
+#include <cassert>
+#include "timer.hpp"
+#include "io.hpp"
+#include "run.hpp"
+#include "simulation.hpp"
+#include "vars.hpp"
+#include "json_toolkit.hpp"
+
+using scatter::io::out_handler;
 using scatter::io::log_handler;
+
+using namespace std;
+using namespace scatter;
 
 using namespace scatter;
 using namespace scatter::grid;
@@ -22,7 +27,8 @@ using namespace scatter::surfaces;
 using namespace scatter::simulation;
 using namespace scatter::rem;
 
-static void assign_initstate(std::vector<particle_t>& swarm){
+void assign_initstate(std::vector<particle_t>& swarm)
+{
 	for(size_t traj = 0; traj < Ntraj; ++traj){
 		swarm.at(traj).ranforce = std::vector<double>(dim, 0.0);
 		swarm.at(traj).surf = 0;
@@ -33,7 +39,8 @@ static void assign_initstate(std::vector<particle_t>& swarm){
 	}
 }
 
-void scatter::run_simulation(){
+void run_simulation()
+{
 #if _DEBUG >= 1
 	log_handler.info( "debug: run_simulation: begin");
 #endif
@@ -96,4 +103,36 @@ void scatter::run_simulation(){
 #endif
 	for(irecord = 0; irecord < Nrecord; ++irecord){
 	}
+}
+
+int main(int argc, char** argv){
+	if(setup(argc, argv) != 0) return 0; 
+	assert(rem::jobtype == "simulation");
+	// -- program begin -- //
+	out_handler.info(timer::now());
+	timer::tic();
+#if _DEBUG >= 1
+	log_handler.info( "debug: debug level ", _DEBUG, "\n");
+#endif
+	// parameter output
+	out_handler.info("Program: scatter-simulation");
+	out_handler.keyval()
+		("infile", rem::infile) 
+		("threadNum", rem::threadNum)
+		;
+	rem::print_var();
+	io::print_var();
+	grid::print_var();
+	surfaces::print_var();
+	// run program
+#if _DEBUG >= 1
+	log_handler.info( "debug: start running core part");
+#endif
+	run_simulation();
+#if _DEBUG >= 1
+	log_handler.info( "debug: ending");
+#endif
+	// ending
+	out_handler.info(timer::toc());
+	out_handler.info(timer::now());
 }
