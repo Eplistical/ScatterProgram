@@ -21,6 +21,7 @@ static po::variables_map _parse_arg(int argc, char** argv){
 		("help,h", "print help message")
 		("infile,i", po::value<std::string>(), "input file path")
 		("nproc,n", po::value<size_t>(), "# of processors" )
+		("jobtype,t", po::value<std::string>(), "jobtype to overide infile")
 		;
 	// parse and store rst to vm, may throw
 	po::variables_map vm; 
@@ -51,6 +52,9 @@ bool scatter::arg_parser(int argc, char** argv){
 	}
 	if(vm.count("nproc")){
 		rem::threadNum = vm["nproc"].as<size_t>();
+	}
+	if(vm.count("jobtype")){
+		rem::jobtype = vm["jobtype"].as<std::string>();
 	}
 	return true;
 }

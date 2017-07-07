@@ -4,10 +4,11 @@
 
 #include <string>
 #include "json_toolkit.hpp"
-#include "ioer.hpp"
+#include "io.hpp"
 #include "rem_var.hpp"
 // variables in scatter::rem
 
+using scatter::io::out_handler;
 
 // args passed by command line
 size_t scatter::rem::threadNum;
@@ -45,9 +46,9 @@ void scatter::rem::load_var(const rapidjson::Document& doc){
 // print out rem parameters
 void scatter::rem::print_var(void){
 	using namespace scatter::rem;
-	ioer::info("rem info");
-	ioer::drawline('-');
-	ioer::keyval()
+	out_handler.info("rem info");
+	out_handler.drawline('-');
+	out_handler.keyval()
 		("jobname", jobname)
 		("jobtype", jobtype)
 		("loaddat", loaddat)
@@ -56,5 +57,5 @@ void scatter::rem::print_var(void){
 		("kT", kT)
 		("Gamma0", Gamma0)
 		;
-	ioer::drawline('-');
+	out_handler.drawline('-');
 }

@@ -78,7 +78,6 @@ namespace mpier{
 	template<typename ParamType>
 		inline typename enable_if<is_fundamental<ParamType>::value, void>::type
 		bcast(int root, ParamType& x){
-			cout << "is_fundamental" << "\n";
 			MPI::COMM_WORLD.Bcast(&x, 1, typemap[typeid(ParamType)], root);
 		}
 

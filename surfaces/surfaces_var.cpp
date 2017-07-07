@@ -1,9 +1,11 @@
 #include <vector>
-#include "ioer.hpp"
+#include "io.hpp"
 #include "json_toolkit.hpp"
 #include "surfaces_collection.hpp"
 #include "string_mode_conversion.hpp"
 #include "surfaces_var.hpp"
+
+using scatter::io::out_handler;
 
 namespace NS = scatter::surfaces;
 using enumspace::surfmode_enum;
@@ -35,32 +37,32 @@ void scatter::surfaces::load_var(const rapidjson::Document& doc)
 void scatter::surfaces::print_var(void)
 {
 	using namespace scatter::surfaces;
-	ioer::info("surfaces info");
-	ioer::drawline('-');
-	ioer::keyval()
+	out_handler.info("surfaces info");
+	out_handler.drawline('-');
+	out_handler.keyval()
 		("surfnum", surfnum)
 		("cutoff_gamma", cutoff_gamma)
 		;
 
-	ioer::keyval()("surfmode", "");
+	out_handler.keyval()("surfmode", "");
 	for(auto& it : surfmode) {
-		ioer::keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
+		out_handler.keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
 	}
 
-	ioer::keyval()("surfpara", "");
+	out_handler.keyval()("surfpara", "");
 	for(auto& it : surfpara) {
-		ioer::keyval()("", it);
+		out_handler.keyval()("", it);
 	}
 
-	ioer::keyval()("gammamode", "");
+	out_handler.keyval()("gammamode", "");
 	for(auto& it : gammamode) {
-		ioer::keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
+		out_handler.keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
 	}
 
-	ioer::keyval()("gammapara", "");
+	out_handler.keyval()("gammapara", "");
 	for(auto& it : gammapara) {
-		ioer::keyval()("", it);
+		out_handler.keyval()("", it);
 	}
 
-	ioer::drawline('-');
+	out_handler.drawline('-');
 }

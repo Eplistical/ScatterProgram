@@ -3,98 +3,104 @@
 #endif
 
 #include <iostream>
-#include "ioer.hpp"
 #include "timer.hpp"
-#include "run.hpp"
 #include "io.hpp"
+#include "run.hpp"
 #include "simulation.hpp"
 #include "vars.hpp"
 #include "json_toolkit.hpp"
+
+using scatter::io::out_handler;
+using scatter::io::log_handler;
 
 using namespace std;
 using namespace scatter;
 
 void infile_parser(void){
-#if _DEBUG >= 1
-	cout << "debug: infile_parser begin" << "\n";
-#endif
+	// load path of infile & init rapidjson obj first
 	io::load_var();
-	io::print_var();
-
 	rapidjson::Document&& doc = json::load_json_file(io::jsonfile);
-
 	rem::load_var(doc);
-	rem::print_var();
-
+	// this time load datfile, initfile, etc
+	io::load_var();
 	grid::load_var(doc);
-	grid::print_var();
-
 	surfaces::load_var(doc);
-	surfaces::print_var();
-
 	simulation::load_var(doc);
-	simulation::print_var();
-}
-
-void print_vars(void){
 }
 
 int main(int argc, char** argv){
-	ioer::info("Program: scatter-prepfef");
 	// No argument list
 	if(argc == 1){
-		ioer::info("No input, use -h to see help info");
+		cout << "No input, use -h to see help info" << "\n";
 		return 0;
 	}
-	// program begin
-	timer::now();
-	timer::tic();
-#if _DEBUG >= 1
-	cout << "debug: debug level " << _DEBUG << "\n\n";
-#endif
-	// parse args
 	if(arg_parser(argc, argv) == false){
 		return 0;
 	}
-	ioer::keyval()
+
+	// parse infile 
+	infile_parser();
+	// parse arg again to override infile
+	arg_parser(argc, argv);
+	// assign output/log destination
+	io::handler_init();
+
+	// -- program begin -- //
+	out_handler.info(timer::now());
+	timer::tic();
+#if _DEBUG >= 1
+	log_handler.info( "debug: debug level ", _DEBUG, "\n");
+#endif
+	out_handler.info("Program: scatter");
+	out_handler.keyval()
 		("infile", rem::infile) 
 		("threadNum", rem::threadNum)
 		;
-
-#if _DEBUG >= 1
-	cout << "debug: parsing infile ..." << "\n\n";
-#endif
-	// parse infile 
-	infile_parser();
+	rem::print_var();
+	io::print_var();
 
 	// run program
 #if _DEBUG >= 1
-	cout << "debug: move to the switch " << "\n";
+	log_handler.info( "debug: move to the switch ");
 #endif
 	switch(enumspace::runmode_dict.left.at(rem::jobtype))
 	{
 		case enumspace::runmode_enum::SIMULATION: 
+			// print vars for the mode
+			grid::print_var();
+			surfaces::print_var();
+			simulation::print_var();
+
 			if(simulation::prepinit){
 #if _DEBUG >= 1
-	cout << "debug: preparing init state " << "\n";
+	log_handler.info( "debug: preparing init state ");
 #endif
 				simulation::generate_initstate();
 				io::saveinit();
 			}
 #if _DEBUG >= 1
-	cout << "debug: switch to run_simulation" << "\n";
+	log_handler.info( "debug: switch to run_simulation");
 #endif
 			run_simulation();
 			break;
 		case enumspace::runmode_enum::SURFACE: 
+			// print vars for the mode
+			grid::print_var();
+			surfaces::print_var();
+
 #if _DEBUG >= 1
-	cout << "debug: switch to run_surface " << "\n";
+	log_handler.info( "debug: switch to run_surface ");
 #endif
 			run_surface();
 			break;
 		case enumspace::runmode_enum::PREPAREINIT: 
+			// print vars for the mode
+			grid::print_var();
+			surfaces::print_var();
+			simulation::print_var();
+
 #if _DEBUG >= 1
-	cout << "debug: preparing init state " << "\n";
+	log_handler.info( "debug: preparing init state");
 #endif
 			simulation::generate_initstate();
 			io::saveinit();
@@ -102,7 +108,10 @@ int main(int argc, char** argv){
 		case enumspace::runmode_enum::TEST: 
 			break;
 	}
+#if _DEBUG >= 1
+	log_handler.info( "debug: ending");
+#endif
 	// ending
-	timer::toc();
-	timer::now();
+	out_handler.info(timer::toc());
+	out_handler.info(timer::now());
 }

@@ -8,8 +8,9 @@
 #include "surfaces.hpp"
 #include "grid.hpp"
 #include "run.hpp"
-#include "ioer.hpp"
+#include "io.hpp"
 
+using scatter::io::out_handler;
 using namespace scatter;
 
 void scatter::run_surface(void){
@@ -24,15 +25,15 @@ void scatter::run_surface(void){
 	surfaces_obj = surfaces_t(surfnum);
 	surfaces_obj.set_gamma(gammamode, gammapara);
 	surfaces_obj.set_energy(surfmode, surfpara);
-	ioer::info("surfaces:\n", "i^th surf & d^dimension");
-	ioer::tabout("x", "U(x)", "F(x)", "gamma(x)", "gamma'(x)");
+	out_handler.info("surfaces:\n", "i^th surf & d^dimension");
+	out_handler.tabout("x", "U(x)", "F(x)", "gamma(x)", "gamma'(x)");
 	// loop output
 	for(size_t i = 0; i < surfnum; ++i){
 		for(size_t d = 0, Ndim = rem::dim; d < Ndim; ++d){
-			ioer::drawline('#');
-			ioer::info("i = ", i, "d = ", d);
+			out_handler.drawline('#');
+			out_handler.info("i = ", i, "d = ", d);
 			for(auto& x : grid_obj.get_grid(d)){
-				ioer::tabout(x, surfaces_obj.fU(i, d, x), surfaces_obj.fF(i, d, x), 
+				out_handler.tabout(x, surfaces_obj.fU(i, d, x), surfaces_obj.fF(i, d, x), 
 								surfaces_obj.fGamma(d, x), surfaces_obj.fGammader(d, x));
 			}
 		}

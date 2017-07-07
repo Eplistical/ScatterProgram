@@ -50,9 +50,9 @@ namespace ioer {
 			{
 				io_base_obj.open(path, mode);
 			}
-			void close(const string& path) 
+			void close(void) 
 			{
-				io_base_obj.close(path);
+				io_base_obj.close(_path);
 			}
 
 			// utilities
@@ -63,7 +63,7 @@ namespace ioer {
 				_read(ParamType& x)
 				{
 					io_base_obj.at(_path).read
-						(reinterpret_cast<char*>(&x), static_cast<std::streamsize>(sizeof(x) * 8));
+						(reinterpret_cast<char*>(&x), static_cast<std::streamsize>(sizeof(x)));
 				}
 
 			template<typename ParamType>
@@ -71,9 +71,11 @@ namespace ioer {
 				_read(ParamType& x)
 				{
 					using ValType = typename ParamType::value_type;
-					ValType tmp[] = {x.real(), x.imag()};
+					ValType tmp[2];
 					io_base_obj.at(_path).read
-						(reinterpret_cast<char*>(tmp), static_cast<std::streamsize>(2 * sizeof(ValType) * 8));
+						(reinterpret_cast<char*>(tmp), static_cast<std::streamsize>(2 * sizeof(ValType)));
+					x.real(tmp[0]);
+					x.imag(tmp[1]);
 				}
 
 			template<typename ParamType>
@@ -84,7 +86,7 @@ namespace ioer {
 					_read(ParamType& x)
 					{
 						io_base_obj.at(_path).read
-							(reinterpret_cast<char*>(x.data()), static_cast<std::streamsize>(x.size() * sizeof(typename ParamType::value_type) * 8));
+							(reinterpret_cast<char*>(&x[0]), static_cast<std::streamsize>(x.size() * sizeof(typename ParamType::value_type)));
 					}
 
 			template<typename ParamType>
@@ -96,7 +98,7 @@ namespace ioer {
 				{
 					for(auto& it : x) {
 						io_base_obj.at(_path).read
-							(reinterpret_cast<char*>(&x), static_cast<std::streamsize>(sizeof(typename ParamType::value_type) * 8));
+							(reinterpret_cast<char*>(&x), static_cast<std::streamsize>(sizeof(typename ParamType::value_type)));
 					}
 				}
 

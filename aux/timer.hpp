@@ -9,6 +9,8 @@
 #include <iostream>
 #include <chrono>
 #include <ctime>
+#include <string>
+#include <sstream>
 
 namespace timer{
 	using namespace std::chrono;
@@ -19,18 +21,22 @@ namespace timer{
 		tic_time = system_clock::now();
 	}
 
-	inline void toc(void) noexcept{
+	inline std::string toc(void) noexcept{
 		duration<double> elapsed = system_clock::now() - tic_time;
-		std::cout 
+		std::ostringstream buf;
+		buf 
 			<< "Time elapsed: " << elapsed.count() << " s"
-			<< std::endl;
+			<< "\n";
+		return buf.str();
 	}
 
-	inline void now(void) noexcept{
+	inline std::string now(void) noexcept{
 		const time_t _now = system_clock::to_time_t(system_clock::now());
-		std::cout 
+		std::ostringstream buf;
+		buf 
 			<< "now: " << ctime(&_now)
-			<< std::endl;
+			<< "\n";
+		return buf.str();
 	}
 };
 #endif

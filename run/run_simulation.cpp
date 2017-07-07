@@ -14,6 +14,8 @@
 #include "omp.h"
 #endif
 
+using scatter::io::log_handler;
+
 using namespace scatter;
 using namespace scatter::grid;
 using namespace scatter::surfaces;
@@ -33,7 +35,7 @@ static void assign_initstate(std::vector<particle_t>& swarm){
 
 void scatter::run_simulation(){
 #if _DEBUG >= 1
-	cout << "debug: run_simulation: begin" << "\n";
+	log_handler.info( "debug: run_simulation: begin");
 #endif
 	grid_obj = grid_t(rmin, rmax, Nr);
 	surfaces_obj = surfaces_t(surfnum);
@@ -53,7 +55,7 @@ void scatter::run_simulation(){
 		records.at(i) = std::vector<particle_t>(static_cast<size_t>((Nrecord + 1) * Ntraj));
 	}
 #if _DEBUG >= 2
-	cout << "debug: run_simulation: initialization finished, go! " << "\n";
+	log_handler.info( "debug: run_simulation: initialization finished, go! ");
 #endif
 	size_t traj, step, irecord;
 #if defined(_OPENMP)
@@ -68,11 +70,11 @@ void scatter::run_simulation(){
 		irecord = 0;
 
 #if _DEBUG >= 2
-	cout << "debug: ";
+	log_handler.info_nonewline( "debug: ");
 #if defined(_OPENMP)
-	cout << "thread " << omp_get_thread_num() << ": ";
+	log_handler.info_nonewline( "thread ", omp_get_thread_num(), ": ");
 #endif
-	cout << "now on particle " << traj << "\n";
+	log_handler.info( "now on particle ", traj);
 #endif
 		while(step < Nstep){
 			// store anastep data
@@ -90,7 +92,7 @@ void scatter::run_simulation(){
 		}
 	}
 #if _DEBUG >= 2
-	cout << "debug: run_simulation: finished dynamics, now anal & output section ... " << "\n";
+	log_handler.info( "debug: run_simulation: finished dynamics, now anal & output section ... ");
 #endif
 	for(irecord = 0; irecord < Nrecord; ++irecord){
 	}

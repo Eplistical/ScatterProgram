@@ -1,16 +1,22 @@
+#include <iostream>
 #include <string>
 #include "boost/filesystem.hpp"
 #include "vars.hpp"
-#include "ioer.hpp"
 #include "io_var.hpp"
+#include "ioer.hpp"
 
 std::string scatter::io::jsonfile;
 std::string scatter::io::datfile;
 std::string scatter::io::initfile;
 std::string scatter::io::outfile;
+std::string scatter::io::logfile;
+
+ioer::output_t scatter::io::out_handler;
+ioer::output_t scatter::io::log_handler;
 
 // init io parameters 
-void scatter::io::load_var(void){
+void scatter::io::load_var(void)
+{
 	namespace fs = boost::filesystem;
 	using namespace scatter::io;
 
@@ -27,18 +33,26 @@ void scatter::io::load_var(void){
 	datfile = parent + "." + rem::jobname + ".dat";
 	initfile = parent + "." + rem::jobname +  ".init";
 	outfile = parent + rem::jobname + ".out";
+	logfile = parent + rem::jobname + ".log";
 }
 
 // print out io parameters
-void scatter::io::print_var(void){
+void scatter::io::print_var(void)
+{
 	using namespace scatter::io;
-	ioer::info("io info");
-	ioer::drawline('-');
-	ioer::keyval()
+	out_handler.info("io info");
+	out_handler.drawline('-');
+	out_handler.keyval()
 		("jsonfile", jsonfile)
 		("datfile", datfile)
 		("initfile", initfile)
 		("outfile", outfile)
 		;
-	ioer::drawline('-');
+	out_handler.drawline('-');
+}
+
+void scatter::io::handler_init(void)
+{
+	out_handler.open(outfile, std::ios::out);
+	log_handler.open(logfile, std::ios::out);
 }

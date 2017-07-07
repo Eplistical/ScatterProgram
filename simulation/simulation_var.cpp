@@ -5,10 +5,12 @@
 #include <string>
 #include <vector>
 #include "rem.hpp"
-#include "ioer.hpp"
+#include "io.hpp"
 #include "string_mode_conversion.hpp"
 #include "surfaces.hpp"
 #include "simulation_var.hpp"
+
+using scatter::io::out_handler;
 
 // variables in scatter::simulation
 namespace NS = scatter::simulation;
@@ -75,9 +77,9 @@ void scatter::simulation::load_var(const rapidjson::Document& doc){
 // print out simulation parameters
 void scatter::simulation::print_var(void){
 	using namespace scatter::simulation;
-	ioer::info("simulation info");
-	ioer::drawline('-');
-	ioer::keyval()
+	out_handler.info("simulation info");
+	out_handler.drawline('-');
+	out_handler.keyval()
 		("Ntraj", Ntraj)
 		("mass", mass)
 		("omega", omega)
@@ -93,5 +95,5 @@ void scatter::simulation::print_var(void){
 		("elestate", elestate)
 		("initmode", enumspace::mode_to_string(initmode, enumspace::initmode_dict))
 		;
-	ioer::drawline('-');
+	out_handler.drawline('-');
 }

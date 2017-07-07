@@ -1,7 +1,9 @@
 #include <vector>
 #include "json_toolkit.hpp"
-#include "ioer.hpp"
+#include "io.hpp"
 #include "grid_var.hpp"
+
+using scatter::io::out_handler;
 
 std::vector<double> scatter::grid::rmin;
 std::vector<double> scatter::grid::rmax;
@@ -28,9 +30,9 @@ void scatter::grid::load_var(const rapidjson::Document& doc){
 // print out grid parameters
 void scatter::grid::print_var(void){
 	using namespace scatter::grid;
-	ioer::info("grid info");
-	ioer::drawline('-');
-	ioer::keyval()
+	out_handler.info("grid info");
+	out_handler.drawline('-');
+	out_handler.keyval()
 		("rmin", rmin)
 		("rmax", rmax)
 		("Nr", Nr)
@@ -38,5 +40,5 @@ void scatter::grid::print_var(void){
 		("derange", derange)
 		;
 
-	ioer::drawline('-');
+	out_handler.drawline('-');
 }

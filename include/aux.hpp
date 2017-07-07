@@ -3,7 +3,6 @@
 // API module for aux
 
 #include "../aux/fermi.hpp"
-#include "../aux/ioer.hpp"
 #include "../aux/lorentian.hpp"
 #include "../aux/randomer.hpp"
 #include "../aux/timer.hpp"

@@ -54,13 +54,15 @@ def main():
     logfile = infile_DIR + '/.' + jobname + '.log'
     outfile = infile_DIR + '/' + jobname + '.out'
 
-    # preprocessor
-    try:
-        os.remove(logfile)
-    except FileNotFoundError:
-        pass
+    # new log file
+    if os.path.exists(logfile) : os.remove(logfile)
     logging.basicConfig(filename=logfile, level=logging.INFO)
     logging.info(now() + ' complete loading infile & translate to json.')
+
+
+    # run!
+    BIN_DIR = FILE_DIR + '/../build/bin'
+    os.system(BIN_DIR + '/scatter -i ' + infile)
 
     """
     # job analysis

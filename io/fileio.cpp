@@ -1,12 +1,16 @@
 #include <string>
+#include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <cassert>
 #include "ioer.hpp"
 #include "io_var.hpp"
 #include "rem.hpp"
 #include "fileio.hpp"
 #include "simulation.hpp"
 #include "run.hpp"
+
+using scatter::io::out_handler;
 
 using namespace scatter;
 using ioer::output_t;
@@ -21,16 +25,27 @@ void rwinit(char op)
 
 	using scatter::simulation::r0p0;
 	if (op == 'w') {
-		output_t dest(scatter::io::initfile, ios::out | ios::binary);
+		output_t dest(scatter::io::initfile, std::ios::out | std::ios::binary);
 		dest.write(dim, mass, inittemp);
 		dest.write(r0p0);
+		dest.close();
 	}
 	if (op == 'r') {
-		input_t source(scatter::io::initfile, ios::in | ios::binary);
-		mass.resize(dim);
+		input_t source(scatter::io::initfile, std::ios::in | std::ios::binary);
+		// -- check header, no assignment -- //
+		auto mass_read = mass;
+		auto dim_read = dim;
+		auto inittemp_read = inittemp;
+		source.read(dim_read, mass_read, inittemp_read);
+
+		assert(dim == dim_read);
+		assert(mass == mass_read);
+		assert(inittemp == inittemp_read);
+
+		// -- read data part -- //
 		r0p0.resize(2 * dim * Ntraj);
-		source.read(dim, mass, inittemp);
 		source.read(r0p0);
+		source.close();
 	}
 }
 
@@ -38,13 +53,15 @@ void rwdat(char op){
 	using scatter::surfaces_obj;
 	using scatter::grid_obj;
 	using scatter::surfaces::surfnum;
+	using scatter::surfaces::surfpara;
+	using scatter::surfaces::gammapara;
 	using scatter::simulation::mass;
 	using scatter::rem::dim;
 	using scatter::rem::kT;
 	using scatter::rem::Gamma0;
 
 	if (op == 'w') {
-		output_t dest(scatter::io::datfile, ios::out | ios::binary);
+		output_t dest(scatter::io::datfile, std::ios::out | std::ios::binary);
 		// -- header part -- //
 		dest.write(dim, surfnum, kT, Gamma0, mass);
 		// surfaces para info
@@ -63,47 +80,73 @@ void rwdat(char op){
 	}
 	else if (op == 'r') {
 		//// NOT FINISHED HERE
-		input_t source(scatter::io::datfile, ios::in | ios::binary);
-		// -- header part -- //
-		mass.resize(dim);
-		source.read(dim, surfnum, kT, Gamma0, mass);
-		// surfaces para info
-		for(size_t d = 0; d < dim; ++d){
-			//source.read(surfaces_obj.get_gamma_para(d));
+		input_t source(scatter::io::datfile, std::ios::in | std::ios::binary);
+
+		// -- check header part, no assignment -- //
+		auto dim_read = dim;
+		auto surfnum_read = surfnum;
+		auto kT_read = kT;
+		auto Gamma0_read = Gamma0;
+		auto mass_read = mass;
+		source.read(dim_read, surfnum_read, kT_read, Gamma0_read, mass_read);
+
+		assert(dim == dim_read);
+		assert(surfnum == surfnum_read);
+		assert(kT == kT_read);
+		assert(Gamma0 == Gamma0_read);
+		assert(mass == mass_read);
+
+		// surfaces & gamma para info 
+		auto gammapara_read = gammapara;
+		auto surfpara_read = surfpara;
+		for (size_t i = 0; i < 1; ++i) {
+			source.read(gammapara_read[i]);
+			assert(gammapara[i] == gammapara_read[i]);
 		}
-		for(size_t i = 0; i < surfnum; i++){
-			for(size_t d = 0; d < dim; d++){
-				//source.read(surfaces_obj.get_energy_para(i, d));
-			}
+		for (size_t i = 0; i < surfnum; ++i) {
+			source.read(surfpara_read[i]);
+			assert(surfpara[i] == surfpara_read[i]);
 		}
+
 		// grid info
-		//source.read(grid_obj.get_rmin(), grid_obj.get_rmax(), grid_obj.get_dr());
-		// -- data part -- //
-		//source.read(grid_obj.get_fef_ref());
+		auto rmin_read = grid_obj.get_rmin();
+		auto rmax_read = grid_obj.get_rmax();
+		auto dr_read = grid_obj.get_dr();
+		source.read(rmin_read, rmax_read, dr_read);
+
+		assert(grid_obj.get_rmin() == rmin_read);
+		assert(grid_obj.get_rmax() == rmax_read);
+		assert(grid_obj.get_dr() == dr_read);
+
+		// -- data part, for assignment -- //
+		std::vector<double>& fef = grid_obj.get_fef_ref();
+		fef.resize(grid_obj.get_feflen());
+		source.read(fef);
+		source.close();
 	}
 }
 
 // API
 void scatter::io::savedat(void){
-    ioer::info_nonewline("saving data to " + scatter::io::datfile + " ...  ");
+    out_handler.info_nonewline("saving data to " + scatter::io::datfile + " ...  ");
     rwdat('w');
-    ioer::info_nonewline("done");
+    out_handler.info_nonewline("done");
 }
 
 void scatter::io::loaddat(void){
-    ioer::info_nonewline("loading data from " + scatter::io::datfile + " ...  ");
+    out_handler.info_nonewline("loading data from " + scatter::io::datfile + " ...  ");
     rwdat('r');
-    ioer::info("done");
+    out_handler.info("done");
 }
 
 void scatter::io::saveinit(void){
-    ioer::info_nonewline("saving r0p0 to " + scatter::io::initfile + " ...  ");
+    out_handler.info_nonewline("saving r0p0 to " + scatter::io::initfile + " ...  ");
     rwinit('w');
-    ioer::info("done");
+    out_handler.info("done");
 }
 
 void scatter::io::loadinit(void){
-    ioer::info_nonewline("loading r0p0 from " + scatter::io::initfile + " ...  ");
+    out_handler.info_nonewline("loading r0p0 from " + scatter::io::initfile + " ...  ");
     rwinit('r');
-    ioer::info("done");
+    out_handler.info("done");
 }

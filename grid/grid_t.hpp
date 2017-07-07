@@ -45,6 +45,7 @@ namespace scatter{
 			size_t get_forcelen(void) const;
 			size_t get_efriclen(void) const;
 			size_t get_fBCMElen(void) const;
+			size_t get_feflen(void) const;
 			std::vector<double> get_force(const std::vector<double>& r) const;
 			std::vector<double> get_efric(const std::vector<double>& r) const;
 			std::vector<double> get_fBCME(const std::vector<double>& r) const;

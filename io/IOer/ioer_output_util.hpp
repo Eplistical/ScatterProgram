@@ -73,7 +73,7 @@ namespace ioer {
 
 	class output_t {
 		protected:
-			const string _path;
+			string _path;
 
 			size_t _width = 16;
 			string _dlm = " ";
@@ -105,10 +105,12 @@ namespace ioer {
 			void open(const string& path, ios::openmode mode = ios::out) 
 			{
 				io_base_obj.open(path, mode);
+				_path = path;
 			}
-			void close(const string& path) 
+			void close(void) 
 			{
-				io_base_obj.close(path);
+				io_base_obj.close(_path);
+				_path = ioer::STDIO_PATH;
 			}
 
 			// utilities
@@ -211,7 +213,7 @@ namespace ioer {
 				_write(const ParamType& x)
 				{
 					io_base_obj.at(_path).write
-						(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(sizeof(x) * 8));
+						(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(sizeof(x)));
 				}
 
 			template<typename ParamType>
@@ -221,7 +223,7 @@ namespace ioer {
 					using ValType = typename ParamType::value_type;
 					ValType tmp[] = {x.real(), x.imag()};
 					io_base_obj.at(_path).write
-						(reinterpret_cast<const char*>(tmp), static_cast<std::streamsize>(2 * sizeof(ValType) * 8));
+						(reinterpret_cast<const char*>(tmp), static_cast<std::streamsize>(2 * sizeof(ValType)));
 				}
 
 			template<typename ParamType>
@@ -231,7 +233,7 @@ namespace ioer {
 					size_t N = 0;
 					while(x[N] != '\0') ++N;
 					io_base_obj.at(_path).write
-						(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(N * sizeof(char) * 8));
+						(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(N * sizeof(char)));
 				}
 
 			template<typename ParamType>
@@ -242,7 +244,7 @@ namespace ioer {
 					_write(const ParamType& x)
 					{
 						io_base_obj.at(_path).write
-							(reinterpret_cast<const char*>(x.data()), static_cast<std::streamsize>(x.size() * sizeof(typename ParamType::value_type) * 8));
+							(reinterpret_cast<const char*>(x.data()), static_cast<std::streamsize>(x.size() * sizeof(typename ParamType::value_type)));
 					}
 
 			template<typename ParamType>
@@ -254,7 +256,7 @@ namespace ioer {
 				{
 					for(auto& it : x) {
 						io_base_obj.at(_path).write
-							(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(sizeof(typename ParamType::value_type) * 8));
+							(reinterpret_cast<const char*>(&x), static_cast<std::streamsize>(sizeof(typename ParamType::value_type)));
 					}
 				}
 

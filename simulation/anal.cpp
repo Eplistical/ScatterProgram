@@ -1,10 +1,12 @@
 #include "vector.hpp"
-#include "ioer.hpp"
+#include "io.hpp"
 #include "rem.hpp"
 #include "dynamic_algorithms.hpp"
 #include "simulation_var.hpp"
 #include "analmode.hpp"
 #include "anal.hpp"
+using scatter::io::out_handler;
+
 using namespace scatter;
 using namespace scatter::simulation;
 
@@ -73,8 +75,8 @@ static void _default_anal(const std::vector<particle_t>& swarm, enumspace::analm
 	const double surf = _surf(swarm);
 	const double z_boundary = -20;
 	// output
-	ioer::tabout_nonewline(rp, 0, 2);
-	ioer::tabout_nonewline(Ek, surf);
+	out_handler.tabout_nonewline(rp, 0, 2);
+	out_handler.tabout_nonewline(Ek, surf);
 	// number of particle goes out 
 	size_t Nout = 0;
 	for(size_t traj = 0; traj < simulation::Ntraj; ++traj){
@@ -82,7 +84,7 @@ static void _default_anal(const std::vector<particle_t>& swarm, enumspace::analm
 			++Nout;
 		}
 	}
-	ioer::tabout_nonewline(Nout);
+	out_handler.tabout_nonewline(Nout);
     */
 }
 
@@ -91,9 +93,9 @@ static void _final_dist_anal(const std::vector<particle_t>& swarm, enumspace::an
 	double Omega, Ekx, Epx;
 	int n_vib;
 	// header
-	ioer::tabout(0,1,2,3,4,5,6,7,8);
-	ioer::tabout("traj", "n_el", "n_vib", "Ek_vib", "Ep_vib", "x", "px", "z", "pz");
-	ioer::drawline('#');
+	out_handler.tabout(0,1,2,3,4,5,6,7,8);
+	out_handler.tabout("traj", "n_el", "n_vib", "Ek_vib", "Ep_vib", "x", "px", "z", "pz");
+	out_handler.drawline('#');
 	// loop trajectories
 	for(size_t traj = 0;traj < simulation::Ntraj; traj++){
 		Omega = omega.at(swarm[traj].surf);
@@ -102,14 +104,14 @@ static void _final_dist_anal(const std::vector<particle_t>& swarm, enumspace::an
 		// round nvib
 		n_vib = round((Ekx + Epx) / Omega - 0.5);
 
-		ioer::tabout(	traj, swarm[traj].surf, n_vib, Ekx, Epx,
+		out_handler.tabout(	traj, swarm[traj].surf, n_vib, Ekx, Epx,
 						swarm[traj].r[0],
 						swarm[traj].p[0],
 						swarm[traj].r[1],
 						swarm[traj].p[1]);
-		ioer::newline();
+		out_handler.newline();
 	}
-	ioer::drawline('#');
+	out_handler.drawline('#');
     */
 }
 
@@ -120,17 +122,17 @@ static void _hop_anal_para(const std::vector<particle_t>& swarm, enumspace::anal
 	std::vector<hop_t> hop_recorder;
 	if(mode == enumspace::analmode_enum::HOP_ANAL_CME){
 		hop_recorder = CME_hop_recorder;
-		ioer::info("hop_anal_CME:");
+		out_handler.info("hop_anal_CME:");
 	}
 	else if(mode == enumspace::analmode_enum::HOP_ANAL_BCME){
 		hop_recorder = BCME_hop_recorder;
-		ioer::info("hop_anal_BCME:");
+		out_handler.info("hop_anal_BCME:");
 	}
-	ioer::tabout(0,1,2,3,4,5,6,7,8);
-	ioer::tabout("trajID", "from", "to", "energy_gap", "gamma", "x", "z", "px", "pz");
-	ioer::drawline('#');
+	out_handler.tabout(0,1,2,3,4,5,6,7,8);
+	out_handler.tabout("trajID", "from", "to", "energy_gap", "gamma", "x", "z", "px", "pz");
+	out_handler.drawline('#');
 	for(size_t i = 0, Nhop = hop_recorder.size(); i < Nhop; ++i){
-		ioer::tabout(	hop_recorder[i].id, 
+		out_handler.tabout(	hop_recorder[i].id, 
 						hop_recorder[i].from,
 						hop_recorder[i].to,
 						hop_recorder[i].energy_gap,
@@ -139,9 +141,9 @@ static void _hop_anal_para(const std::vector<particle_t>& swarm, enumspace::anal
 						hop_recorder[i].r[1],
 						hop_recorder[i].p[0],
 						hop_recorder[i].p[1]);
-		ioer::newline();
+		out_handler.newline();
 	}
-	ioer::drawline('#');
+	out_handler.drawline('#');
     */
 }
 
