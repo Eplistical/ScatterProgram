@@ -47,7 +47,7 @@ int main(int argc, char** argv){
 	}
 
 	// run program
-	rem::bcast_var();
+	// broadcast rem
 	rem::print_var();
 	
 	// ending
