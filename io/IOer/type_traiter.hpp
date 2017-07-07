@@ -21,6 +21,14 @@
 namespace type_traiter{
 	using namespace std;
 
+	// -- is_bool -- //
+	template<typename T>
+		struct is_bool 
+		{
+			static constexpr bool value 
+				= is_same<typename remove_cv<T>::type, bool>::value; 
+		};
+
 	// -- is_string -- //
 	template<typename ... Types>
 	struct is_string {
