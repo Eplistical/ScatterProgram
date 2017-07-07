@@ -35,7 +35,11 @@ void run_preparedat(void)
 	surfaces_obj.set_gamma(gammamode, gammapara);
 	surfaces_obj.set_energy(surfmode, surfpara);
 
-	// 
+	std::vector<int> Jobs(500);
+	for (size_t i = 0; i < Jobs.size(); ++i) 
+		Jobs[i] = i;
+	std::vector<int> mybatch = mpier::assign_job(Jobs);
+	out_handler.info("thread ", mpier::rank, ": ", mybatch, "\n");
 }
 
 int main(int argc, char** argv)
@@ -67,6 +71,10 @@ int main(int argc, char** argv)
 			("infile", rem::infile) 
 			("MPI-threadNum", mpier::size)
 			;
+		rem::print_var();
+		io::print_var();
+		grid::print_var();
+		surfaces::print_var();
 	}
 
 	// bcast vars

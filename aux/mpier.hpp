@@ -36,13 +36,10 @@ namespace mpier{
 	using namespace std;
 	using namespace type_traiter;
 
-	// is_vector
-	template <class N> struct is_vector { static const bool value = false;  };
-	template <class N, class A> struct is_vector<std::vector<N, A> > { static const bool value = true; };
-
+	// -- vars -- //
 	// normal type -> MPI TYPE mapping
 	using MPI_PREDIFINED_DATA_T = decltype(MPI_INT);
-	std::unordered_map<type_index, MPI_PREDIFINED_DATA_T> typemap
+	static std::unordered_map<type_index, MPI_PREDIFINED_DATA_T> typemap
 		= { 
 			{typeid(char), MPI_CHAR},
 			{typeid(int), MPI_INT},
@@ -53,37 +50,77 @@ namespace mpier{
 			{typeid(double), MPI_DOUBLE},
 		};
 
-	int size;
-	int rank;
-	bool master;
+	static int size;
+	static int rank;
+	static bool master;
 
-	inline void setup(void) {
+	// -- helpers -- //
+	inline std::vector<size_t> assign_job(size_t Njob)
+	{
+		/**
+		 * given a total Njobs
+		 * return a vector {StartJobIndex, JobNumber} for current process
+		 */
+		size_t quotient = Njob / size;
+		size_t remainder = Njob % size;
+		std::vector<size_t> rst(2);
+		if (rank < remainder) {
+			rst[0] = (quotient + 1) * rank;
+			rst[1] = quotient + 1;
+		}
+		else {
+			rst[0] = quotient * rank + remainder;
+			rst[1] = quotient;
+		}
+		return rst;
+	}
+
+	template<typename T>
+	inline std::vector<T> assign_job(std::vector<T> Jobs)
+	{
+		/**
+		 * given a vector of all jobs,
+		 * return a vector of jobs for current process
+		 */
+		std::vector<size_t> mybatch = assign_job(Jobs.size());
+		return std::vector<T>(Jobs.begin() + mybatch[0], Jobs.begin() + mybatch[0] + mybatch[1]);
+	}
+
+	// -- init/finalize --//
+	inline void setup(void) 
+	{
 		MPI::Init();
 		size = MPI::COMM_WORLD.Get_size();
 		rank = MPI::COMM_WORLD.Get_rank();
 		master = (rank == 0);
 	}
 
-	inline void barrier(void) {
-		MPI::COMM_WORLD.Barrier();
-	}
-
-	inline void finalize(void) {
+	inline void finalize(void) 
+	{
 		MPI::Finalize();
 	}
 
+	// -- barrier -- //
+	inline void barrier(void) 
+	{
+		MPI::COMM_WORLD.Barrier();
+	}
 
+
+	// -- bcast -- //
 	inline void bcast(int& root){  }
 
 	template<typename ParamType>
 		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), void>::type
-		bcast(int root, ParamType& x){
+		bcast(int root, ParamType& x)
+		{
 			MPI::COMM_WORLD.Bcast(&x, 1, typemap[typeid(ParamType)], root);
 		}
 
 	template<typename ParamType>
 		inline typename enable_if<is_bool<ParamType>::value, void>::type
-		bcast(int root, ParamType& x){
+		bcast(int root, ParamType& x) 
+		{
 			int tmp = static_cast<int>(x);
 			MPI::COMM_WORLD.Bcast(&tmp, 1, MPI_INT, root);
 			x = static_cast<bool>(tmp);
@@ -91,7 +128,8 @@ namespace mpier{
 
 	template<typename ParamType>
 		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, void>::type
-		bcast(int root, ParamType& x){
+		bcast(int root, ParamType& x)
+		{
 			size_t _size = x.size();
 			MPI::COMM_WORLD.Bcast(&_size, 1, MPI_SIZE_T, root);
 			if (not master) x.resize(_size);
@@ -99,7 +137,8 @@ namespace mpier{
 		}
 
 	template<typename ParamType, typename ... Types>
-		inline void bcast(int root, ParamType& x, Types& ... otherx){
+		inline void bcast(int root, ParamType& x, Types& ... otherx)
+		{
 			bcast(root, x);
 			bcast(root, otherx ...);
 		}
