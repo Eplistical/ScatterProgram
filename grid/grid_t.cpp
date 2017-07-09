@@ -1,4 +1,9 @@
+#ifdef _DEBUG
+#include "debugtools.hpp"
+#endif
+
 #include <sstream>
+#include "scatter_exceptions.hpp"
 #include "vector.hpp"
 #include "rem.hpp"
 #include "grid_t.hpp"
@@ -60,24 +65,24 @@ std::vector<size_t> grid_t::get_Nr(void) const
 	return _Nr;
 }
 
-double grid_t::get_rmin(size_t i) const
+double grid_t::get_rmin(size_t d) const
 {
-	return _rmin.at(i);
+	return _rmin.at(d);
 }
 
-double grid_t::get_rmax(size_t i) const
+double grid_t::get_rmax(size_t d) const
 {
-	return _rmax.at(i);
+	return _rmax.at(d);
 }
 
-double grid_t::get_dr(size_t i) const
+double grid_t::get_dr(size_t d) const
 {
-	return _dr.at(i);
+	return _dr.at(d);
 }
 
-size_t grid_t::get_Nr(size_t i) const
+size_t grid_t::get_Nr(size_t d) const
 {
-	return _Nr.at(i);
+	return _Nr.at(d);
 }
 
 size_t grid_t::get_Ntot(void) const
@@ -107,39 +112,63 @@ size_t grid_t::get_feflen(void) const
 
 std::vector<double> grid_t::get_force(const std::vector<double>& r) const
 {
-	return subvec(_fef, r_to_index(r) * dim, dim);
+	return subvec(_fef, r_to_index_filtered(r) * dim, dim);
 }
 
 std::vector<double> grid_t::get_efric(const std::vector<double>& r) const
 {
-	return subvec(_fef, _efricoffset + r_to_index(r) * dim2, dim2);
+	return subvec(_fef, _efricoffset + r_to_index_filtered(r) * dim2, dim2);
 }
 
 std::vector<double> grid_t::get_fBCME(const std::vector<double>& r) const
 {
-	return subvec(_fef, _fBCMEoffset + r_to_index(r) * dim, dim);
+	return subvec(_fef, _fBCMEoffset + r_to_index_filtered(r) * dim, dim);
 }
 
-
-// helper
 size_t grid_t::r_to_index(const std::vector<double>& r) const
 {
-	if(r.at(0) < _rmin.at(0) or r.at(0) > _rmax.at(0)){
-		std::stringstream errmsg;
-		errmsg 
-			<< "r_to_index: x out of range! -- x = " << r.at(0) 
-			<< std::endl;
-		throw std::out_of_range(errmsg.str());
+	size_t rst = 0;
+	int coef = 1;
+	int d_index;
+	for (size_t d = 0; d < rem::dim; ++d) {
+		d_index = static_cast<int>((r.at(d) - _rmin.at(d)) / _dr.at(d) + 0.5);
+		// throw if out of range
+		if (d_index >= _Nr.at(d) or d_index < 0) {
+			std::stringstream errmsg;
+			errmsg << "r_to_index: r[" << d << "] = " << r.at(d) << " out of range!\n";
+			throw scatter::OutofRangeError(errmsg.str());
+		}
+		rst += d_index * coef;
+		coef *= _Nr.at(d);
 	}
-	const double x = r.at(0);
-	const double z = std::max(_rmin.at(1), std::min(r.at(1), _rmax.at(1) - _dr.at(1)));
-	const size_t jx = static_cast<size_t>( (x - _rmin.at(0)) / _dr.at(0) );
-	const size_t jz = static_cast<size_t>( (z - _rmin.at(1)) / _dr.at(1) );
-	const size_t index = jz * _Nr.at(0) + jx;
-	return index;
+	return rst;
 }
 
-void grid_t::calc_fef(void) 
+std::vector<double> grid_t::index_to_r(size_t k) const
 {
-	return;
+	size_t coef = get_Ntot();
+	std::vector<double> rst(rem::dim);
+	int d_index;
+	for (int d = rem::dim - 1; d >= 0; --d) {
+		coef /= _Nr.at(d);
+		d_index = static_cast<int>(k / coef + 0.5);
+		// throw if out of range
+		if (d_index >= _Nr.at(d) or d_index < 0) {
+			std::stringstream errmsg;
+			errmsg << "index_to_r: dimension " << d << "is detected out of range!\n";
+			throw scatter::OutofRangeError(errmsg.str());
+		}
+		rst.at(d) = _rmin.at(d) + _dr.at(d) * d_index;
+		k %= coef; 
+	}
+	return rst;
+}
+
+size_t grid_t::r_to_index_filtered(const std::vector<double>& r) const
+{
+	// THIS IS FOR 2D SCATTERING MODEL ONLY!
+	// modify z to make all z < zmin be treated as zmin
+	std::vector<double> effect_r = r;
+	effect_r.at(1) = std::max(_rmin.at(1), effect_r.at(1));
+	return r_to_index(effect_r);
 }
