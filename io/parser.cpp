@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include "vars.hpp"
 #include "parser.hpp"
+#include "scatter_exceptions.hpp"
 #include "boost/program_options.hpp"
 #include "boost/filesystem.hpp"
 
@@ -47,7 +48,7 @@ bool scatter::arg_parser(int argc, char** argv){
 		// check if infile exists
 		fs::path tmp(rem::infile);
 		if(not fs::exists(tmp)){
-			throw std::invalid_argument("input file not exists!");
+			throw scatter::FileNotFoundError("arg parser: input file not exists!");
 		}
 	}
 	if(vm.count("nproc")){

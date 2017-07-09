@@ -60,11 +60,11 @@ def main():
     logging.info(now() + ' complete loading infile & translate to json.')
 
 
+    """
     # run!
     BIN_DIR = FILE_DIR + '/../build/bin'
     os.system(BIN_DIR + '/scatter -i ' + infile)
 
-    """
     # job analysis
     jobtype = jsondata['rem']['jobtype']['value'][0]
 

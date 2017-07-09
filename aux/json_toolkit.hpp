@@ -48,6 +48,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const ParamType& param) const{
 				// load paramter, scalar version
+				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
 				const std::string tmpstr = Obj[tag]["value"][0].GetString();
 				const_cast<ParamType&>(param) = boost::lexical_cast<ParamType>(tmpstr);
@@ -57,6 +58,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const ParamType& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, scalar version
+				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
 				const std::string tmpstr = Obj[tag]["value"][0].GetString();
 				const_cast<ParamType&>(param) = Dict.left.at(tmpstr);
@@ -66,6 +68,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param) const{
 				// load paramter, vector version
+				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
@@ -81,6 +84,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, vector version
+				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
@@ -96,6 +100,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType>>& param) const{
 				// load paramter, multiple-vector version
+				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
@@ -114,6 +119,7 @@ namespace json{
 			template<typename ParamType>
 			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType>>& param, const boost::bimap<std::string, ParamType>& Dict) const{
 				// load parameter & convert to enum class according to Dict, multiple-vector version
+				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;

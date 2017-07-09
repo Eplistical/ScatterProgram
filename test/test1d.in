@@ -1,8 +1,8 @@
 $rem
-    jobname     test1D
+    jobname     test1d
     jobtype     simulation
 	loaddat		true
-    DIM         1
+    dim         1
 	hbar		1
     kT          0.01
     Gamma0      0.03
