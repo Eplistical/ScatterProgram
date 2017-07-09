@@ -2,6 +2,7 @@
 #include "debugtools.hpp"
 #endif
 
+#include <algorithm>
 #include <cassert>
 #include "timer.hpp"
 #include "io.hpp"
@@ -31,15 +32,15 @@ void run_preparedat(void)
 
 	// setup objs using paras 
 	grid_obj = grid_t(rmin, rmax, Nr);
-	surfaces_obj = surfaces_t(surfnum);
-	surfaces_obj.set_gamma(gammamode, gammapara);
-	surfaces_obj.set_energy(surfmode, surfpara);
+	//surfaces_obj = surfaces_t(surfnum);
+	//surfaces_obj.set_gamma(gammamode, gammapara);
+	//surfaces_obj.set_energy(surfmode, surfpara);
 
-	std::vector<int> Jobs(500);
-	for (size_t i = 0; i < Jobs.size(); ++i) 
-		Jobs[i] = i;
-	std::vector<int> mybatch = mpier::assign_job(Jobs);
+	// create job index vector & shuffle
+	std::vector<size_t> mybatch = mpier::assign_job_random(grid_obj.get_Ntot());
 	out_handler.info("thread ", mpier::rank, ": ", mybatch, "\n");
+	
+	// do job!
 }
 
 int main(int argc, char** argv)

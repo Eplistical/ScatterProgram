@@ -8,6 +8,7 @@
  */
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -53,38 +54,6 @@ namespace mpier{
 	static int size;
 	static int rank;
 	static bool master;
-
-	// -- helpers -- //
-	inline std::vector<size_t> assign_job(size_t Njob)
-	{
-		/**
-		 * given a total Njobs
-		 * return a vector {StartJobIndex, JobNumber} for current process
-		 */
-		size_t quotient = Njob / size;
-		size_t remainder = Njob % size;
-		std::vector<size_t> rst(2);
-		if (rank < remainder) {
-			rst[0] = (quotient + 1) * rank;
-			rst[1] = quotient + 1;
-		}
-		else {
-			rst[0] = quotient * rank + remainder;
-			rst[1] = quotient;
-		}
-		return rst;
-	}
-
-	template<typename T>
-	inline std::vector<T> assign_job(std::vector<T> Jobs)
-	{
-		/**
-		 * given a vector of all jobs,
-		 * return a vector of jobs for current process
-		 */
-		std::vector<size_t> mybatch = assign_job(Jobs.size());
-		return std::vector<T>(Jobs.begin() + mybatch[0], Jobs.begin() + mybatch[0] + mybatch[1]);
-	}
 
 	// -- init/finalize --//
 	inline void setup(void) 
@@ -142,6 +111,56 @@ namespace mpier{
 			bcast(root, x);
 			bcast(root, otherx ...);
 		}
+
+	// -- utilities -- //
+	inline std::vector<size_t> assign_job(size_t Njob)
+	{
+		/**
+		 * given a total Njobs
+		 * return a vector {StartJobIndex, JobNumber} for current process
+		 */
+		size_t quotient = Njob / size;
+		size_t remainder = Njob % size;
+		std::vector<size_t> rst(2);
+		if (rank < remainder) {
+			rst[0] = (quotient + 1) * rank;
+			rst[1] = quotient + 1;
+		}
+		else {
+			rst[0] = quotient * rank + remainder;
+			rst[1] = quotient;
+		}
+		return rst;
+	}
+
+	template<typename T>
+	inline std::vector<T> assign_job(std::vector<T> Jobs)
+	{
+		/**
+		 * given a vector of all jobs,
+		 * return a vector of jobs for current process
+		 */
+		std::vector<size_t> mybatch = assign_job(Jobs.size());
+		return std::vector<T>(Jobs.begin() + mybatch[0], Jobs.begin() + mybatch[0] + mybatch[1]);
+	}
+
+	inline std::vector<size_t> assign_job_random(size_t Njob)
+	{
+		/**
+		 * given total # of jobs
+		 * return a vector of random job indices
+		 */
+		vector<size_t> Jobs(Njob);
+		if (master) {
+			for (size_t i = 0; i < Jobs.size(); ++i) 
+				Jobs[i] = i;
+			std::random_shuffle(Jobs.begin(), Jobs.end()); 
+		}
+		bcast(0, Jobs);
+		std::vector<size_t> mybatch = assign_job(Jobs);
+		return mybatch;
+	}
+
 };
 
 
