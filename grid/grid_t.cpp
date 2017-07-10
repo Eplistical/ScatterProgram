@@ -29,10 +29,15 @@ grid_t::grid_t( const std::vector<double>& rmin,
 	_fBCMEoffset = _forcelen + _efriclen;
 }
 
-// getter & setter
+// setter
 std::vector<double>& grid_t::get_fef_ref(void) 
 {
 	return _fef;
+}
+
+void grid_t::alloc_fef_space(void)
+{
+	_fef.assign(get_feflen(), 0.0);
 }
 
 // getter

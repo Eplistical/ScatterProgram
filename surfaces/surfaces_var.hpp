@@ -6,8 +6,8 @@
 #include "json_toolkit.hpp"
 #include "surfaces_collection.hpp"
 
-namespace scatter{
-	namespace surfaces{
+namespace scatter {
+	namespace surfaces {
 		using enumspace::surfmode_enum;
 		extern size_t surfnum;
 		extern double cutoff_gamma;
