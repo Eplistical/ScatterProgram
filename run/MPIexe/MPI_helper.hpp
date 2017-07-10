@@ -27,8 +27,8 @@ namespace scatter
 			mpier::bcast(0, tmp);
 			surfaces::gammamode[i] = enumspace::surfmode_dict.left.at(tmp);
 		}
-		surfaces::gammapara.resize(1);
-		for (size_t i = 0; i < 1; ++i) {
+		surfaces::gammapara.resize(rem::dim);
+		for (size_t i = 0; i < rem::dim; ++i) {
 			mpier::bcast(0, surfaces::gammapara[i]);
 		}
 
@@ -40,8 +40,8 @@ namespace scatter
 			surfaces::surfmode[i] = enumspace::surfmode_dict.left.at(tmp);
 		}
 
-		surfaces::surfpara.resize(surfaces::surfnum);
-		for (size_t i = 0; i < surfaces::surfnum; ++i) {
+		surfaces::surfpara.resize(rem::dim * surfaces::surfnum);
+		for (size_t i = 0; i < rem::dim * surfaces::surfnum; ++i) {
 			mpier::bcast(0, surfaces::surfpara[i]);
 		}
 	}

@@ -32,15 +32,15 @@ void run_preparedat(void)
 
 	// setup objs using paras 
 	grid_obj = grid_t(rmin, rmax, Nr);
-	//surfaces_obj = surfaces_t(surfnum);
-	//surfaces_obj.set_gamma(gammamode, gammapara);
-	//surfaces_obj.set_energy(surfmode, surfpara);
+	surfaces_obj = surfaces_t(surfnum);
+	surfaces_obj.set_gamma(gammamode, gammapara);
+	surfaces_obj.set_energy(surfmode, surfpara);
 
 	// create job index vector & shuffle
 	std::vector<size_t> mybatch = mpier::assign_job_random(grid_obj.get_Ntot());
-	out_handler.info("thread ", mpier::rank, ": ", mybatch, "\n");
 	
 	// do job!
+	
 }
 
 int main(int argc, char** argv)
@@ -53,10 +53,6 @@ int main(int argc, char** argv)
 		// parse infile 
 		if(setup(argc, argv) != 0) return 0; 
 		assert(rem::jobtype == "preparedat");
-		// parse arg again to override infile
-		arg_parser(argc, argv);
-		// assign output/log destination
-		io::handler_init();
 	}
 
 	// -- program begin -- //

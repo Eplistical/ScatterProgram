@@ -56,7 +56,8 @@ namespace json{
 			}
 
 			template<typename ParamType>
-			const load_param& operator()(const std::string& key, const ParamType& param, const boost::bimap<std::string, ParamType>& Dict) const{
+			const load_param& operator()(const std::string& key, const ParamType& param, const boost::bimap<std::string, ParamType>& Dict) const
+			{
 				// load parameter & convert to enum class according to Dict, scalar version
 				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
@@ -66,7 +67,8 @@ namespace json{
 			}
 
 			template<typename ParamType>
-			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param) const{
+			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param) const
+			{
 				// load paramter, vector version
 				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
@@ -82,7 +84,8 @@ namespace json{
 			}
 
 			template<typename ParamType>
-			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param, const boost::bimap<std::string, ParamType>& Dict) const{
+			const load_param& operator()(const std::string& key, const std::vector<ParamType>& param, const boost::bimap<std::string, ParamType>& Dict) const
+			{
 				// load parameter & convert to enum class according to Dict, vector version
 				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
@@ -98,13 +101,14 @@ namespace json{
 			}
 
 			template<typename ParamType>
-			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType>>& param) const{
+			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType> >& param) const
+			{
 				// load paramter, multiple-vector version
 				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
-				std::vector<std::vector<ParamType>> rst;
+				std::vector<std::vector<ParamType> > rst;
 				for(size_t ivec = 0, Nvec = data.Size(); ivec < Nvec; ++ivec){
 					rst.push_back(std::vector<ParamType>());
 					for (size_t j = 0, N = data[ivec].Size(); j < N; ++j){
@@ -112,18 +116,19 @@ namespace json{
 						rst[ivec].push_back(boost::lexical_cast<ParamType>(tmpstr));
 					}
 				}
-				const_cast<std::vector<std::vector<ParamType>>&>(param) = rst;
+				const_cast<std::vector<std::vector<ParamType> >&>(param) = rst;
 				return *this;
 			}
 
 			template<typename ParamType>
-			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType>>& param, const boost::bimap<std::string, ParamType>& Dict) const{
+			const load_param& operator()(const std::string& key, const std::vector<std::vector<ParamType> >& param, const boost::bimap<std::string, ParamType>& Dict) const
+			{
 				// load parameter & convert to enum class according to Dict, multiple-vector version
 				//std::cout << key << "\n";
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
-				std::vector<std::vector<ParamType>> rst;
+				std::vector<std::vector<ParamType> > rst;
 				for(size_t ivec = 0, Nvec = data.Size(); ivec < Nvec; ++ivec){
 					rst.push_back(std::vector<ParamType>());
 					for (size_t j = 0, N = data[ivec].Size(); j < N; j++){
@@ -131,7 +136,7 @@ namespace json{
 						rst[ivec].push_back(Dict.left.at(tmpstr));
 					}
 				}
-				const_cast<std::vector<std::vector<ParamType>>&>(param) = rst;
+				const_cast<std::vector<std::vector<ParamType> >&>(param) = rst;
 				return *this;
 			}
 	};

@@ -42,6 +42,7 @@ int scatter::setup(int argc, char** argv)
 	infile_parser();
 	// parse arg again to override infile
 	arg_parser(argc, argv);
+
 	// assign output/log destination
 	io::handler_init();
 

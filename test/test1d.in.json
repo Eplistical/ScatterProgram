@@ -2,7 +2,7 @@
     "rem": {
         "jobname": {
             "value": [
-                "test1D"
+                "test1d"
             ],
             "datatype": "S",
             "datamodel": "s"
