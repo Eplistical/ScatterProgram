@@ -112,8 +112,9 @@ namespace mpier{
 			bcast(root, otherx ...);
 		}
 
+
 	// -- utilities -- //
-	inline std::vector<size_t> assign_job(size_t Njob)
+	inline std::vector<size_t> assign_job_start_and_num(size_t Njob)
 	{
 		/**
 		 * given a total Njobs
@@ -140,8 +141,24 @@ namespace mpier{
 		 * given a vector of all jobs,
 		 * return a vector of jobs for current process
 		 */
-		std::vector<size_t> mybatch = assign_job(Jobs.size());
+		std::vector<size_t> mybatch = assign_job_start_and_num(Jobs.size());
 		return std::vector<T>(Jobs.begin() + mybatch[0], Jobs.begin() + mybatch[0] + mybatch[1]);
+	}
+
+	inline std::vector<size_t> assign_job(size_t Njob)
+	{
+		/**
+		 * given total # of jobs
+		 * return a vector continuous job indices
+		 */
+		vector<size_t> Jobs(Njob);
+		if (master) {
+			for (size_t i = 0; i < Jobs.size(); ++i) 
+				Jobs[i] = i;
+		}
+		bcast(0, Jobs);
+		std::vector<size_t> mybatch = assign_job(Jobs);
+		return mybatch;
 	}
 
 	inline std::vector<size_t> assign_job_random(size_t Njob)

@@ -36,11 +36,29 @@ void run_preparedat(void)
 	surfaces_obj.set_gamma(gammamode, gammapara);
 	surfaces_obj.set_energy(surfmode, surfpara);
 
-	// create job index vector & shuffle
-	std::vector<size_t> mybatch = mpier::assign_job_random(grid_obj.get_Ntot());
+	// assign job
+	//std::vector<size_t> mybatch = mpier::assign_job_random(grid_obj.get_Ntot());
+	std::vector<size_t> mybatch = mpier::assign_job(grid_obj.get_Ntot());
+
+	// allocate space for fef
+	grid_obj.alloc_fef_space();
 	
 	// do job!
-	
+	for (size_t index : mybatch) {
+		// calc fef between |0> & |1>, the index^th element
+		grid_obj.calc_fef(0, 1, index);
+	}
+
+	std::vector<double> &fef = grid_obj.get_fef_ref();
+	double *tmp = NULL;
+	// reduce results, not using mpier here because the feature has not been added
+	if (mpier::master)
+		MPI::COMM_WORLD.Reduce(MPI_IN_PLACE, &fef[0], grid_obj.get_feflen(), MPI_DOUBLE, MPI_SUM, 0);
+	else
+		MPI::COMM_WORLD.Reduce(&fef[0], tmp, grid_obj.get_feflen(), MPI_DOUBLE, MPI_SUM, 0);
+
+	if (mpier::master) 
+		out_handler.info("reduced fef:\n", fef);
 }
 
 int main(int argc, char** argv)
