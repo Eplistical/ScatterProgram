@@ -1,3 +1,4 @@
+#include "types.hpp"
 #include <iostream>
 #include <string>
 #include "boost/filesystem.hpp"

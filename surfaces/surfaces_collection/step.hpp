@@ -1,6 +1,7 @@
 #ifndef _SURFACES_STEP_HPP
 #define _SURFACES_STEP_HPP
 // step surface
+#include "types.hpp"
 
 #include <vector>
 #include <cmath>

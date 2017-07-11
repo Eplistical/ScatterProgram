@@ -1,7 +1,4 @@
-#ifdef _DEBUG
-#include "debugtools.hpp"
-#endif
-
+#include "scatter_basic.hpp"
 #include <string>
 #include "json_toolkit.hpp"
 #include "io.hpp"

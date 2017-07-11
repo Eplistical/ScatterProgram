@@ -1,6 +1,7 @@
 #ifndef _SCATTER_FILEIO_HPP
 #define _SCATTER_FILEIO_HPP
 // API module for file io in Scatter
+#include "types.hpp"
 
 #include <string>
 

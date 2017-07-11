@@ -1,5 +1,7 @@
 #ifndef _SURFMODE_HPP
 #define _SURFMODE_HPP
+// surfaces modes
+#include "types.hpp"
 
 #include <boost/assign.hpp>
 #include <boost/bimap.hpp>

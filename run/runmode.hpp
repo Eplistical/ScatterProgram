@@ -1,6 +1,7 @@
 #ifndef _SCATTER_RUNMODE_HPP
 #define _SCATTER_RUNMODE_HPP
 // run mode dict
+#include "types.hpp"
 
 #include <boost/assign.hpp>
 #include <boost/bimap.hpp>

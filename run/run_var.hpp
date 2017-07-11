@@ -1,6 +1,7 @@
 #ifndef _SCATTER_RUN_VAR_HPP
 #define _SCATTER_RUN_VAR_HPP
 // API module for run in Scatter
+#include "types.hpp"
 #include "surfaces.hpp"
 #include "grid.hpp"
 

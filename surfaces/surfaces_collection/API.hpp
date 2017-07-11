@@ -1,7 +1,8 @@
 #ifndef _SURFACES_COLLECTION_API_HPP
 #define _SURFACES_COLLECTION_API_HPP
+// surfaces collection API
+#include "types.hpp"
 
-// namespaces used
 namespace surfaces_collections{};
 namespace enumspace{};
 

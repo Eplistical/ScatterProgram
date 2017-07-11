@@ -1,3 +1,4 @@
+#include "types.hpp"
 #ifdef _DEBUG
 #include "debugtools.hpp"
 #endif

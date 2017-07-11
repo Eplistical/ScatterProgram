@@ -1,3 +1,4 @@
+#include "types.hpp"
 #include <vector>
 #include "io.hpp"
 #include "json_toolkit.hpp"

@@ -1,6 +1,7 @@
 #ifndef _SCATTER_GRID_VAR_HPP
 #define _SCATTER_GRID_VAR_HPP
 // variables in grid
+#include "types.hpp"
 #include <vector>
 #include "json_toolkit.hpp"
 

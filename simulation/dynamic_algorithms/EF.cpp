@@ -1,3 +1,4 @@
+#include "types.hpp"
 #include "vector.hpp"
 #include "matrixop.hpp"
 #include "randomer.hpp"

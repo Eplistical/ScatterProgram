@@ -1,6 +1,7 @@
 #ifndef _SCATTER_ANALMODE_HPP
 #define _SCATTER_ANALMODE_HPP
 // anal mode dict
+#include "types.hpp"
 
 #include <string>
 #include <boost/assign.hpp>

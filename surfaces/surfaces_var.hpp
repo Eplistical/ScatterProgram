@@ -1,6 +1,7 @@
 #ifndef _SCATTER_SURFACES_VAR_HPP
 #define _SCATTER_SURFACES_VAR_HPP
 // module for variables in surfaces
+#include "types.hpp"
 #include <cstdio>
 #include <vector>
 #include "json_toolkit.hpp"

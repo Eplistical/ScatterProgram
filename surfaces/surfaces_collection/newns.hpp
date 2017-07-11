@@ -1,6 +1,7 @@
 #ifndef _SURFACES_NEWNS_HPP
 #define _SURFACES_NEWNS_HPP
 // newns surface
+#include "types.hpp"
 
 #include <vector>
 #include <cmath>

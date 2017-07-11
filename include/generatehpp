@@ -7,12 +7,7 @@ out, err = runcmd("cd ../aux; ls *.hpp")
 flist = tuple(tostr(out).split('\n'))
 
 text = """
-#ifndef _SCATTER_{TITLE}_HPP
-#define _SCATTER_{TITLE}_HPP
-
 #include "../aux/{title}.hpp"
-
-#endif
 """
 text = text[1:-1]
 

@@ -1,6 +1,7 @@
 #ifndef _SCATTER_EVOLVE_HPP
 #define _SCATTER_EVOLVE_HPP
 // module for evolve
+#include "types.hpp"
 
 #include "simulation.hpp"
 

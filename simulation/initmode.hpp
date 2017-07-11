@@ -1,6 +1,7 @@
 #ifndef _SCATTER_INITMODE_HPP
 #define _SCATTER_INITMODE_HPP
 // init mode dict
+#include "types.hpp"
 
 #include <string>
 #include <boost/assign.hpp>

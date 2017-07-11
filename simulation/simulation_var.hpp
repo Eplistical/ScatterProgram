@@ -1,6 +1,7 @@
 #ifndef _SCATTER_SIMULATION_VAR_HPP
 #define _SCATTER_SIMULATION_VAR_HPP
 // module for variables in simulation
+#include "types.hpp"
 
 #include <string>
 #include <vector>
