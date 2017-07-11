@@ -14,6 +14,9 @@
 extern "C"
 {
 
+#define max(x, y) (((x) > (y)) ? (x) : (y))
+#define min(x, y) (((x) < (y)) ? (x) : (y))
+
 static void _electronic_fef(const double hbar,
 							const double bandwidth,
 							const int dim, 
@@ -88,7 +91,6 @@ void scatter::grid_t::calc_fef(	size_t S0,
 								size_t S1, 
 								size_t index)
 {
-	cout << index << endl;
 	using namespace scatter::rem;
 	using namespace scatter::grid;
 	using scatter::surfaces_obj;

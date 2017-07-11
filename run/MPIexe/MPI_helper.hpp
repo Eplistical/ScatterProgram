@@ -4,6 +4,7 @@
 #include "mpier.hpp"
 #include <string>
 #include "vars.hpp"
+#include "io.hpp"
 #include "grid.hpp"
 #include "surfaces.hpp"
 #include "rem.hpp"

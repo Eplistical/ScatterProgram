@@ -11,6 +11,7 @@
 #include "json_toolkit.hpp"
 #include "grid.hpp"
 #include "surfaces.hpp"
+#include "simulation.hpp"
 #include "mpier.hpp"
 #include "MPI_helper.hpp"
 
@@ -20,16 +21,13 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
-void run_preparedat(void)
+void run_simulation(void)
 {
-	/* preparedat run: prepare force & efric & fBCME 
-	 * 	for given grid & surfaces.
-	 * 	save data to datfile
-	 *
+	/* simulation run
 	 */
 	using namespace grid;
 	using namespace surfaces;
-	using scatter::io::savedat;
+	using namespace simulation;
 
 	// setup objs using paras 
 	grid_obj = grid_t(rmin, rmax, Nr);
@@ -38,29 +36,30 @@ void run_preparedat(void)
 	surfaces_obj.set_energy(surfmode, surfpara);
 
 	// assign job
-	//std::vector<size_t> mybatch = mpier::assign_job_random(grid_obj.get_Ntot());
-	std::vector<size_t> mybatch = mpier::assign_job(grid_obj.get_Ntot());
+	std::vector<size_t> mybatch = mpier::assign_job(simulation::Ntraj);
+	std::vector<particle_t> final_states;
+	size_t step;
 
-	// allocate space for fef
-	grid_obj.alloc_fef_space();
-	
 	// do job!
 	for (size_t index : mybatch) {
-		// calc fef between |0> & |1>, the index^th element
-		grid_obj.calc_fef(0, 1, index);
+		// initialize praticle
+		particle_t ptcl(elestate);
+		ptcl.ranforce.assign(dim, 0.0);
+		ptcl.r = std::vector<double>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
+		ptcl.p = std::vector<double>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
+
+		step = 0;
+		while (step < Nstep) {
+			// store anastep data
+			if (step % Anastep == 0) {
+			}
+			// evolve
+			CME(ptcl, index);
+			++step;
+		}
+		// record final state
+		final_states.push_back(ptcl);
 	}
-
-	std::vector<double> &fef = grid_obj.get_fef_ref();
-	double *tmp = NULL;
-	// reduce results, not using mpier here because the feature has not been added
-	if (mpier::master)
-		MPI::COMM_WORLD.Reduce(MPI_IN_PLACE, &fef[0], grid_obj.get_feflen(), MPI_DOUBLE, MPI_SUM, 0);
-	else
-		MPI::COMM_WORLD.Reduce(&fef[0], tmp, grid_obj.get_feflen(), MPI_DOUBLE, MPI_SUM, 0);
-
-	// savedat
-	if (mpier::master) 
-		savedat();
 }
 
 int main(int argc, char** argv)
@@ -70,6 +69,7 @@ int main(int argc, char** argv)
 
 	// parse infile 
 	if(mpier::master) {
+		// parse infile 
 		if(setup(argc, argv) != 0) return 0; 
 		assert(rem::jobtype == "preparedat");
 	}
@@ -77,7 +77,7 @@ int main(int argc, char** argv)
 	// -- program begin -- //
 	if (mpier::master) {
 		// parameter output
-		out_handler.info("Program: scatter-preparedat");
+		out_handler.info("Program: scatter-simulation-MPI");
 		out_handler.info(timer::now());
 		timer::tic();
 #if _DEBUG >= 1
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
 	if (mpier::master) log_handler.info( "debug: start running core part");
 #endif
 
-	run_preparedat();
+	run_simulation();
 
 #if _DEBUG >= 1
 	if (mpier::master) log_handler.info( "debug: ending");

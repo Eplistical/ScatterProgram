@@ -50,6 +50,10 @@ void rwinit(char op)
 }
 
 void rwdat(char op){
+	/**
+	 * datfile structure:
+	 * 	 dim (uint64)
+	 */
 	using scatter::surfaces_obj;
 	using scatter::grid_obj;
 	using scatter::surfaces::surfnum;
@@ -130,7 +134,7 @@ void rwdat(char op){
 void scatter::io::savedat(void){
     out_handler.info_nonewline("saving data to " + scatter::io::datfile + " ...  ");
     rwdat('w');
-    out_handler.info_nonewline("done");
+    out_handler.info("done");
 }
 
 void scatter::io::loaddat(void){
