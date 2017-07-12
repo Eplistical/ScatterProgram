@@ -11,6 +11,8 @@ STRING_T scatter::io::initfile;
 STRING_T scatter::io::outfile;
 STRING_T scatter::io::logfile;
 
+STRING_T scatter::io::parent_dir;
+
 ioer::output_t scatter::io::out_handler;
 ioer::output_t scatter::io::log_handler;
 
@@ -22,18 +24,19 @@ void scatter::io::load_var(void)
 
 	fs::path infile(rem::infile);
 	infile = fs::absolute(infile);
-	STRING_T parent = infile.parent_path().string();
-	if(parent[parent.length() - 1] != '/'){
-		parent += "/";
+	parent_dir = infile.parent_path().string();
+	if(parent_dir[parent_dir.length() - 1] != '/'){
+		parent_dir += "/";
 	}
+
 	const STRING_T fname = infile.filename().string();
 	const STRING_T stem = infile.stem().string();
 
-	jsonfile = parent + fname + ".json";
-	datfile = parent + "." + rem::jobname + ".dat";
-	initfile = parent + "." + rem::jobname +  ".init";
-	outfile = parent + rem::jobname + ".out";
-	logfile = parent + rem::jobname + ".log";
+	jsonfile = parent_dir + fname + ".json";
+	datfile = parent_dir + "." + rem::jobname + ".dat";
+	initfile = parent_dir + "." + rem::jobname +  ".init";
+	outfile = parent_dir + rem::jobname + ".out";
+	logfile = parent_dir + rem::jobname + ".log";
 }
 
 // prINT_T out io parameters
@@ -43,6 +46,7 @@ void scatter::io::print_var(void)
 	out_handler.info("io info");
 	out_handler.drawline('-');
 	out_handler.keyval()
+		("parent_dir", parent_dir)
 		("jsonfile", jsonfile)
 		("datfile", datfile)
 		("initfile", initfile)
