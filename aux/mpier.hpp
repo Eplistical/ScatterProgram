@@ -36,7 +36,7 @@ namespace mpier{
 
 	static INT_T size;
 	static INT_T rank;
-	static bool master;
+	static BOOL_T master;
 
 	// -- init/finalize --//
 	inline void setup(void) 
@@ -58,7 +58,77 @@ namespace mpier{
 		MPI::COMM_WORLD.Barrier();
 	}
 
+	// -- send -- //
+	inline void send(INT_T to, INT_T tag){  }
 
+	template<typename ParamType>
+		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), void>::type
+		send(INT_T to, INT_T tag, ParamType& x)
+		{
+			MPI::COMM_WORLD.Send(&x, 1, typemap[typeid(ParamType)], to, tag);
+		}
+
+	template<typename ParamType>
+		inline typename enable_if<is_bool<ParamType>::value, void>::type
+		send(INT_T to, INT_T tag, ParamType& x) 
+		{
+			INT_T tmp = static_cast<INT_T>(x);
+			MPI::COMM_WORLD.Send(&tmp, 1, typemap[typeid(INT_T)], to, tag);
+		}
+
+	template<typename ParamType>
+		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, void>::type
+		send(INT_T to, INT_T tag, ParamType& x)
+		{
+			UINT_T _size = x.size();
+			MPI::COMM_WORLD.Send(&_size, 1, typemap[typeid(UINT_T)], to, -1);
+			MPI::COMM_WORLD.Send(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], to, tag);
+		}
+
+	template<typename ParamType, typename ... Types>
+		inline void send(INT_T to, INT_T tag, ParamType& x, Types& ... otherx)
+		{
+			send(to, tag, x);
+			send(to, tag, otherx ...);
+		}
+
+	// -- recv -- //
+	inline void recv(INT_T from, INT_T tag){  }
+
+	template<typename ParamType>
+		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), void>::type
+		recv(INT_T from, INT_T tag, ParamType& x)
+		{
+			MPI::COMM_WORLD.Recv(&x, 1, typemap[typeid(ParamType)], from, tag);
+		}
+
+	template<typename ParamType>
+		inline typename enable_if<is_bool<ParamType>::value, void>::type
+		recv(INT_T from, INT_T tag, ParamType& x) 
+		{
+			INT_T tmp;
+			MPI::COMM_WORLD.Recv(&tmp, 1, typemap[typeid(INT_T)], from, tag);
+			x = static_cast<BOOL_T>(tmp);
+		}
+
+	template<typename ParamType>
+		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, void>::type
+		recv(INT_T from, INT_T tag, ParamType& x)
+		{
+			UINT_T _size;
+			MPI::COMM_WORLD.Recv(&_size, 1, typemap[typeid(UINT_T)], from, -1);
+			x.resize(_size);
+			MPI::COMM_WORLD.Recv(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], from, tag);
+		}
+
+	template<typename ParamType, typename ... Types>
+		inline void recv(INT_T from, INT_T tag, ParamType& x, Types& ... otherx)
+		{
+			recv(from, tag, x);
+			recv(from, tag, otherx ...);
+		}
+	
+	
 	// -- bcast -- //
 	inline void bcast(INT_T root){  }
 
@@ -74,8 +144,8 @@ namespace mpier{
 		bcast(INT_T root, ParamType& x) 
 		{
 			INT_T tmp = static_cast<INT_T>(x);
-			MPI::COMM_WORLD.Bcast(&tmp, 1, MPI_UINT32_T, root);
-			x = static_cast<bool>(tmp);
+			MPI::COMM_WORLD.Bcast(&tmp, 1, typemap[typeid(INT_T)], root);
+			x = static_cast<BOOL_T>(tmp);
 		}
 
 	template<typename ParamType>
@@ -83,7 +153,7 @@ namespace mpier{
 		bcast(INT_T root, ParamType& x)
 		{
 			UINT_T _size = x.size();
-			MPI::COMM_WORLD.Bcast(&_size, 1, MPI_UINT32_T, root);
+			MPI::COMM_WORLD.Bcast(&_size, 1, typemap[typeid(UINT_T)], root);
 			if (not master) x.resize(_size);
 			MPI::COMM_WORLD.Bcast(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], root);
 		}
