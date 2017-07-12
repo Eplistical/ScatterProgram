@@ -25,6 +25,7 @@ void run_simulation(void)
 {
 	/* simulation run
 	 */
+	using namespace rem;
 	using namespace grid;
 	using namespace surfaces;
 	using namespace simulation;
@@ -39,11 +40,12 @@ void run_simulation(void)
 	std::vector<size_t> mybatch = mpier::assign_job(simulation::Ntraj);
 	std::vector<particle_t> final_states;
 	size_t step;
+	particle_t ptcl;
 
 	// do job!
 	for (size_t index : mybatch) {
 		// initialize praticle
-		particle_t ptcl(elestate);
+		ptcl.surf = elstate;
 		ptcl.ranforce.assign(dim, 0.0);
 		ptcl.r = std::vector<double>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
 		ptcl.p = std::vector<double>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
@@ -71,7 +73,7 @@ int main(int argc, char** argv)
 	if(mpier::master) {
 		// parse infile 
 		if(setup(argc, argv) != 0) return 0; 
-		assert(rem::jobtype == "preparedat");
+		assert(rem::jobtype == "simulation");
 	}
 
 	// -- program begin -- //
