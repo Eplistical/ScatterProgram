@@ -2,6 +2,7 @@
 #include "debugtools.hpp"
 #endif
 
+#include "types.hpp"
 #include <iostream>
 #include <cassert>
 #include "timer.hpp"
@@ -24,9 +25,9 @@ void run_test(void){
 	 */
 	using namespace grid;
 	grid_obj = grid_t(rmin, rmax, Nr);
-	std::vector<double> r;
-	size_t k;
-	for (size_t i = 0; i < grid_obj.get_Ntot(); ++i) {
+	std::vector<DOUBLE_T> r;
+	UINT_T k;
+	for (UINT_T i = 0; i < grid_obj.get_Ntot(); ++i) {
 		r = grid_obj.index_to_r(i);
 		k = grid_obj.r_to_index(r);
 		if(i != k)

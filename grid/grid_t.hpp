@@ -53,7 +53,7 @@ namespace scatter{
 			std::vector<DOUBLE_T> get_efric(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_fBCME(const std::vector<DOUBLE_T>& r) const;
 			UINT_T r_to_index(const std::vector<DOUBLE_T>& r) const;
-			std::vector<DOUBLE_T> index_to_r(size_t) const;
+			std::vector<DOUBLE_T> index_to_r(UINT_T index) const;
 	};
 };
 #endif

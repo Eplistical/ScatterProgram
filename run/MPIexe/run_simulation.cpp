@@ -2,6 +2,7 @@
 #include "debugtools.hpp"
 #endif
 
+#include "types.hpp"
 #include <algorithm>
 #include <cassert>
 #include "timer.hpp"
@@ -37,18 +38,18 @@ void run_simulation(void)
 	surfaces_obj.set_energy(surfmode, surfpara);
 
 	// assign job
-	std::vector<size_t> mybatch = mpier::assign_job(simulation::Ntraj);
+	std::vector<UINT_T> mybatch = mpier::assign_job(simulation::Ntraj);
 	std::vector<particle_t> final_states;
-	size_t step;
+	UINT_T step;
 	particle_t ptcl;
 
 	// do job!
-	for (size_t index : mybatch) {
+	for (UINT_T index : mybatch) {
 		// initialize praticle
 		ptcl.surf = elestate;
 		ptcl.ranforce.assign(dim, 0.0);
-		ptcl.r = std::vector<double>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
-		ptcl.p = std::vector<double>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
+		ptcl.r = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
+		ptcl.p = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
 
 		step = 0;
 		while (step < Nstep) {
@@ -62,6 +63,9 @@ void run_simulation(void)
 		// record final state
 		final_states.push_back(ptcl);
 	}
+
+	// collect final state
+	
 }
 
 int main(int argc, char** argv)

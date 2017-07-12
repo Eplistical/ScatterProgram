@@ -1,5 +1,7 @@
 v0.4
 (in progress)
+- use type macro to make types more stable
+
 
 v0.3
 - add a local cmake module directory

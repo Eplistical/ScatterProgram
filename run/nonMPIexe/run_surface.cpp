@@ -2,6 +2,7 @@
 #include "debugtools.hpp"
 #endif
 
+#include "types.hpp"
 #include <iostream>
 #include <cassert>
 #include "timer.hpp"
@@ -24,7 +25,7 @@ void run_surface(void){
 	 */
 	using namespace grid;
 	using namespace surfaces;
-	double U, F, G, Gder;
+	DOUBLE_T U, F, G, Gder;
 	grid_obj = grid_t(rmin, rmax, Nr);
 	surfaces_obj = surfaces_t(surfnum);
 	surfaces_obj.set_gamma(gammamode, gammapara);
@@ -32,8 +33,8 @@ void run_surface(void){
 	out_handler.info("surfaces:\n", "i^th surf & d^dimension");
 	out_handler.tabout("x", "U(x)", "F(x)", "gamma(x)", "gamma'(x)");
 	// loop output
-	for(size_t i = 0; i < surfnum; ++i){
-		for(size_t d = 0, Ndim = rem::dim; d < Ndim; ++d){
+	for(UINT_T i = 0; i < surfnum; ++i){
+		for(UINT_T d = 0, Ndim = rem::dim; d < Ndim; ++d){
 			out_handler.drawline('#');
 			out_handler.info("i = ", i, "d = ", d);
 			for(auto& x : grid_obj.get_grid(d)){

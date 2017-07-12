@@ -37,9 +37,9 @@ static void _electronic_fef(const DOUBLE_T hbar,
      * for given h, h', gamma, gamma'
      * written in C for speed */
     const INT_T dim2 = dim * dim;
-    memset(force, 0, sizeof(double) * dim);
-    memset(efric, 0, sizeof(double) * dim2);
-    memset(fBCME, 0, sizeof(double) * dim);
+    memset(force, 0, sizeof(DOUBLE_T) * dim);
+    memset(efric, 0, sizeof(DOUBLE_T) * dim2);
+    memset(fBCME, 0, sizeof(DOUBLE_T) * dim);
     // numerical integration from -bandwidth to bandwidth
     // use kT to determine de
     const DOUBLE_T de = max(min(0.05 * kT, de_max), de_min);
@@ -109,8 +109,8 @@ void scatter::grid_t::calc_fef(	UINT_T S0,
         for(INT_T d = 0; d < dim; ++d){
             force[d] -= nabla_h[d] * tmp;
         }
-        memset(efric, 0, sizeof(double) * dim2);
-        memset(fBCME, 0, sizeof(double) * dim);
+        memset(efric, 0, sizeof(DOUBLE_T) * dim2);
+        memset(fBCME, 0, sizeof(DOUBLE_T) * dim);
     }
     else {
         /* non-small gamma

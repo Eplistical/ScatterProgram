@@ -2,10 +2,7 @@
 #include "debugtools.hpp"
 #endif
 
-#if defined(_OPENMP)
-#include "omp.h"
-#endif
-
+#include "types.hpp"
 #include <iostream>
 #include <cassert>
 #include "timer.hpp"
@@ -29,12 +26,12 @@ using namespace scatter::rem;
 
 void assign_initstate(std::vector<particle_t>& swarm)
 {
-	for(size_t traj = 0; traj < Ntraj; ++traj){
-		swarm.at(traj).ranforce = std::vector<double>(dim, 0.0);
+	for(UINT_T traj = 0; traj < Ntraj; ++traj){
+		swarm.at(traj).ranforce = std::vector<DOUBLE_T>(dim, 0.0);
 		swarm.at(traj).surf = 0;
-		swarm.at(traj).r = std::vector<double>(r0p0.begin() + traj * dim * 2,
+		swarm.at(traj).r = std::vector<DOUBLE_T>(r0p0.begin() + traj * dim * 2,
 												r0p0.begin() + traj * dim * 2 + dim);
-		swarm.at(traj).p = std::vector<double>(r0p0.begin() + traj * dim * 2 + dim,
+		swarm.at(traj).p = std::vector<DOUBLE_T>(r0p0.begin() + traj * dim * 2 + dim,
 												r0p0.begin() + traj * dim * 2 + dim * 2);
 	}
 }

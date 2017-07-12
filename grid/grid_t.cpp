@@ -93,7 +93,9 @@ UINT_T grid_t::get_Nr(UINT_T d) const
 
 UINT_T grid_t::get_Ntot(void) const
 {
-	return product(_Nr);
+	UINT_T rst = 1;
+	for (UINT_T d : _Nr) rst *= d;
+	return rst;
 }
 
 UINT_T grid_t::get_forcelen(void) const
@@ -150,14 +152,14 @@ UINT_T grid_t::r_to_index(const std::vector<DOUBLE_T>& r) const
 	return rst;
 }
 
-std::vector<DOUBLE_T> grid_t::index_to_r(UINT_T k) const
+std::vector<DOUBLE_T> grid_t::index_to_r(UINT_T index) const
 {
 	UINT_T coef = get_Ntot();
 	std::vector<DOUBLE_T> rst(rem::dim);
 	INT_T d_index;
 	for (INT_T d = rem::dim - 1; d >= 0; --d) {
 		coef /= _Nr.at(d);
-		d_index = static_cast<INT_T>(k / coef + 0.5);
+		d_index = static_cast<INT_T>(index / coef + 0.5);
 		// throw if out of range
 		if (d_index >= _Nr.at(d) or d_index < 0) {
 			std::stringstream errmsg;
@@ -165,7 +167,7 @@ std::vector<DOUBLE_T> grid_t::index_to_r(UINT_T k) const
 			throw scatter::OutofRangeError(errmsg.str());
 		}
 		rst.at(d) = _rmin.at(d) + _dr.at(d) * d_index;
-		k %= coef; 
+		index %= coef; 
 	}
 	return rst;
 }
