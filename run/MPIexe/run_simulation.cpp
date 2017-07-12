@@ -43,7 +43,16 @@ void run_simulation(void)
 	UINT_T step;
 	particle_t ptcl;
 
-	// do job!
+	// load init
+	io::loadinit();
+
+	// containers for final info
+	std::vector<UINT_T> job_info = mybatch;
+	std::vector<UINT_T> final_surf_info;
+	std::vector<DOUBLE_T> final_r_info;
+	std::vector<DOUBLE_T> final_p_info;
+
+	// -- do job! -- //
 	for (UINT_T index : mybatch) {
 		// initialize praticle
 		ptcl.surf = elestate;
@@ -61,11 +70,49 @@ void run_simulation(void)
 			++step;
 		}
 		// record final state
-		final_states.push_back(ptcl);
+		final_surf_info.push_back(ptcl.surf);
+		final_r_info.insert(final_r_info.end(), ptcl.r.begin(), ptcl.r.end());
+		final_p_info.insert(final_p_info.end(), ptcl.p.begin(), ptcl.p.end());
 	}
 
-	// collect final state
-	
+	mpier::barrier();
+
+	// -- collect final info -- //
+	if (not mpier::master) {
+		mpier::send(0, mpier::rank * 100, 
+						job_info, 
+						final_surf_info, 
+						final_r_info, 
+						final_p_info);
+	}
+	else {
+		vector<UINT_T> job_info_buf; 
+		vector<UINT_T> surf_info_buf; 
+		vector<DOUBLE_T> r_info_buf; 
+		vector<DOUBLE_T> p_info_buf; 
+		for (UINT_T r = 1; r < mpier::size; ++r) {
+			mpier::recv(r, r * 100, 
+							job_info_buf, 
+							surf_info_buf, 
+							r_info_buf, 
+							p_info_buf);
+			job_info.insert(job_info.end(), job_info_buf.begin(), job_info_buf.end());
+			final_surf_info.insert(final_surf_info.end(), surf_info_buf.begin(), surf_info_buf.end());
+			final_r_info.insert(final_r_info.end(), r_info_buf.begin(), r_info_buf.end());
+			final_p_info.insert(final_p_info.end(), p_info_buf.begin(), p_info_buf.end());
+		} 
+	}
+
+	// output
+	STRING_T final_info_file = io::parent_dir + rem::jobname + STRING_T(".final.dat");
+	out_handler.info_nonewline("saving final particle info to ", final_info_file, "... ");
+	io::save( final_info_file, 
+				Ntraj, dim, 
+				job_info, 
+				final_surf_info, 
+				final_r_info, 
+				final_p_info);
+	out_handler.info("done.");
 }
 
 int main(int argc, char** argv)
