@@ -45,7 +45,7 @@ void run_simulation(void)
 	// do job!
 	for (size_t index : mybatch) {
 		// initialize praticle
-		ptcl.surf = elstate;
+		ptcl.surf = elestate;
 		ptcl.ranforce.assign(dim, 0.0);
 		ptcl.r = std::vector<double>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
 		ptcl.p = std::vector<double>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 

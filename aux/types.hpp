@@ -8,6 +8,7 @@ using CHAR_T = char;
 using BOOL_T = bool;
 using INT_T = int_fast32_t;
 using UINT_T = uint_fast32_t;
+using SIZE_T = uint_fast32_t;
 using FLOAT_T = float;
 using DOUBLE_T = double;
 
