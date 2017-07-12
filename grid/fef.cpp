@@ -18,7 +18,7 @@ extern "C"
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 
-static void _electronic_fef(const DOUBLE_T hbar,
+static VOID_T _electronic_fef(const DOUBLE_T hbar,
 							const DOUBLE_T bandwidth,
 							const INT_T dim, 
                             const DOUBLE_T kT,
@@ -88,7 +88,7 @@ static void _electronic_fef(const DOUBLE_T hbar,
 
 //  calc fef between S0 & S1, for a single poINT_T r (labeled by index)
 // 	S0 has fewer el
-void scatter::grid_t::calc_fef(	UINT_T S0, 
+VOID_T scatter::grid_t::calc_fef(	UINT_T S0, 
 								UINT_T S1, 
 								UINT_T index)
 {

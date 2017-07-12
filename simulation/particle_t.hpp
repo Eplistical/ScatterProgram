@@ -13,14 +13,14 @@ namespace scatter{
 			UINT_T surf;
 
 			// big five
-			explicit particle_t(void) : surf(0) {}
+			explicit particle_t(VOID_T) : surf(0) {}
 			explicit particle_t(UINT_T s) : surf(s) {}
 			particle_t(const particle_t& other) = default; 
 			particle_t& operator=(const particle_t& other) = default;
 			~particle_t() = default;
 
 			// setter
-			void hop(UINT_T s){surf = s;}
+			VOID_T hop(UINT_T s){surf = s;}
 	};
 };
 

@@ -28,8 +28,8 @@ namespace scatter{
 		extern std::vector<DOUBLE_T> initpavg;
 		extern std::vector<DOUBLE_T> r0p0;
 
-		void load_var(const rapidjson::Document& doc);
-		void print_var(void);
+		VOID_T load_var(const rapidjson::Document& doc);
+		VOID_T print_var(VOID_T);
 	};
 };
 

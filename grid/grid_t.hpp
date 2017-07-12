@@ -31,24 +31,24 @@ namespace scatter{
 			grid_t& operator=(const grid_t&) = default;
 			explicit grid_t(const std::vector<DOUBLE_T>& rmin, const std::vector<DOUBLE_T>& rmax, const std::vector<UINT_T>& Nr);
 			// setter
-			std::vector<DOUBLE_T>& get_fef_ref(void);
-			void alloc_fef_space(void);
-			void calc_fef(UINT_T S0, UINT_T S1, UINT_T index);
+			std::vector<DOUBLE_T>& get_fef_ref(VOID_T);
+			VOID_T alloc_fef_space(VOID_T);
+			VOID_T calc_fef(UINT_T S0, UINT_T S1, UINT_T index);
 			// getter
 			std::vector<DOUBLE_T> get_grid(UINT_T d) const;
-			std::vector<DOUBLE_T> get_rmin(void) const;
-			std::vector<DOUBLE_T> get_rmax(void) const;
-			std::vector<DOUBLE_T> get_dr(void) const;
-			std::vector<UINT_T> get_Nr(void) const;
+			std::vector<DOUBLE_T> get_rmin(VOID_T) const;
+			std::vector<DOUBLE_T> get_rmax(VOID_T) const;
+			std::vector<DOUBLE_T> get_dr(VOID_T) const;
+			std::vector<UINT_T> get_Nr(VOID_T) const;
 			DOUBLE_T get_rmin(UINT_T d) const;
 			DOUBLE_T get_rmax(UINT_T d) const;
 			DOUBLE_T get_dr(UINT_T d) const;
 			UINT_T get_Nr(UINT_T d) const;
-			UINT_T get_Ntot(void) const;
-			UINT_T get_forcelen(void) const;
-			UINT_T get_efriclen(void) const;
-			UINT_T get_fBCMElen(void) const;
-			UINT_T get_feflen(void) const;
+			UINT_T get_Ntot(VOID_T) const;
+			UINT_T get_forcelen(VOID_T) const;
+			UINT_T get_efriclen(VOID_T) const;
+			UINT_T get_fBCMElen(VOID_T) const;
+			UINT_T get_feflen(VOID_T) const;
 			std::vector<DOUBLE_T> get_force(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_efric(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_fBCME(const std::vector<DOUBLE_T>& r) const;

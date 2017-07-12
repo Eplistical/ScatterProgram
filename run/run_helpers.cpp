@@ -17,7 +17,7 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
-void scatter::infile_parser(void){
+VOID_T scatter::infile_parser(VOID_T){
 	// load path of infile & init rapidjson obj first
 	io::load_var();
 	rapidjson::Document&& doc = json::load_json_file(io::jsonfile);

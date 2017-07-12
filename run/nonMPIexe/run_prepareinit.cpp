@@ -24,7 +24,7 @@ using namespace scatter::surfaces;
 using namespace scatter::simulation;
 using namespace scatter::rem;
 
-void assign_initstate(std::vector<particle_t>& swarm)
+VOID_T assign_initstate(std::vector<particle_t>& swarm)
 {
 	for(UINT_T traj = 0; traj < Ntraj; ++traj){
 		swarm.at(traj).ranforce = std::vector<DOUBLE_T>(dim, 0.0);
@@ -36,7 +36,7 @@ void assign_initstate(std::vector<particle_t>& swarm)
 	}
 }
 
-void run_prepareinit()
+VOID_T run_prepareinit()
 {
 #if _DEBUG >= 1
 	log_handler.info( "debug: run_prepareinit: begin");

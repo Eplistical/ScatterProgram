@@ -22,7 +22,7 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
-void run_simulation(void)
+VOID_T run_simulation(void)
 {
 	/* simulation run
 	 */

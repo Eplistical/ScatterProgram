@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 
+using VOID_T = void;
 using CHAR_T = char;
 using BOOL_T = bool;
 using INT_T = int32_t;

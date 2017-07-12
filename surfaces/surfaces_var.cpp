@@ -20,7 +20,7 @@ std::vector<surfmode_enum> NS::gammamode;
 std::vector<std::vector<DOUBLE_T> > NS::gammapara; 
 
 // init surfaces parameters 
-void scatter::surfaces::load_var(const rapidjson::Document& doc)
+VOID_T scatter::surfaces::load_var(const rapidjson::Document& doc)
 {
 	using namespace scatter::surfaces;
 	using json::load_param;
@@ -35,7 +35,7 @@ void scatter::surfaces::load_var(const rapidjson::Document& doc)
 }
 
 // prINT_T out surfaces parameters
-void scatter::surfaces::print_var(void)
+VOID_T scatter::surfaces::print_var(VOID_T)
 {
 	using namespace scatter::surfaces;
 	out_handler.info("surfaces info");

@@ -9,7 +9,7 @@
 
 namespace scatter{
 	namespace simulation{
-		void anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode);
+		VOID_T anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode);
 	};
 };
 

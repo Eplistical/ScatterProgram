@@ -22,7 +22,7 @@ namespace surfaces_collection {
 			std::vector<std::shared_ptr<basesurf>> surfptr;
 		public:
 			// --- setters --- //
-			void append_dim(enumspace::surfmode_enum mode, std::vector<DOUBLE_T> para){
+			VOID_T append_dim(enumspace::surfmode_enum mode, std::vector<DOUBLE_T> para){
 				/* Append a dimension to current surface
 				 *
 				 * param mode: surface mode
@@ -47,7 +47,7 @@ namespace surfaces_collection {
 				}
 			}
 
-			void clear(void)
+			VOID_T clear(VOID_T)
 			{ 
 				surfptr.clear(); 
 			}
@@ -55,7 +55,7 @@ namespace surfaces_collection {
 			// --- getters --- //
 			
 			// dimension num
-			UINT_T dim(void) const 
+			UINT_T dim(VOID_T) const 
 			{ 
 				return surfptr.size(); 
 			}
@@ -79,7 +79,7 @@ namespace surfaces_collection {
 			}
 
 			// STRING_T for all dimensions
-			STRING_T get_expr(void) const
+			STRING_T get_expr(VOID_T) const
 			{
 				std::stringstream expr;
 				for(UINT_T d = 0; d < dim(); ++d){

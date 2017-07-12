@@ -17,10 +17,10 @@ namespace surfaces_collection{
 			virtual DOUBLE_T dUdx(DOUBLE_T x) const = 0;
 
 			// getters
-			UINT_T get_Npara(void) const { return Npara; }
-			STRING_T get_expr(void) const { return expr.str(); }
-			std::vector<DOUBLE_T> get_para(void) const { return para; }
-			STRING_T get_mode(void) const { return mode.str(); }
+			UINT_T get_Npara(VOID_T) const { return Npara; }
+			STRING_T get_expr(VOID_T) const { return expr.str(); }
+			std::vector<DOUBLE_T> get_para(VOID_T) const { return para; }
+			STRING_T get_mode(VOID_T) const { return mode.str(); }
 
         protected:
 			std::stringstream mode;		// STRING_T for surf mode

@@ -3,7 +3,7 @@
 // helper functions for run
 #include "types.hpp"
 namespace scatter{
-	void infile_parser(void);
+	VOID_T infile_parser(VOID_T);
 	int setup(int argc, char** argv);
 }
 

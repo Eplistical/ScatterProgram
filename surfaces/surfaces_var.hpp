@@ -17,8 +17,8 @@ namespace scatter {
 		extern std::vector<surfmode_enum> gammamode;
 		extern std::vector<std::vector<DOUBLE_T> > gammapara;
 
-		void load_var(const rapidjson::Document& doc);
-		void print_var(void);
+		VOID_T load_var(const rapidjson::Document& doc);
+		VOID_T print_var(VOID_T);
 	};
 };
 

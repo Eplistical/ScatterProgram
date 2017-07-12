@@ -8,7 +8,7 @@
 
 using namespace scatter;
 
-void simulation::generate_initstate(void){
+VOID_T simulation::generate_initstate(VOID_T){
 	using namespace scatter::rem;
 	using namespace scatter::simulation;
 	using enumspace::initmode_enum;

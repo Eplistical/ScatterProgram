@@ -1,8 +1,4 @@
 #include "types.hpp"
-#ifdef _DEBUG
-#include "debugtools.hpp"
-#endif
-
 #include "io.hpp"
 #include "randomer.hpp"
 #include "vector.hpp"
@@ -12,6 +8,7 @@
 #include "evolve.hpp"
 #include "dynamics_mode.hpp"
 #include "fermi.hpp"
+using scatter::io::log_handler;
 
 using namespace scatter;
 using namespace scatter::simulation;
@@ -30,10 +27,11 @@ using surfaces::surfnum;
 std::vector<hop_t> scatter::simulation::CME_hop_recorder;
 std::vector<hop_t> scatter::simulation::BCME_hop_recorder;
 
-static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode){
+static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode)
+{
 	// deal with hopping & ptclomentum adjustment
 #if _DEBUG >= 4
-	cout << "debug: Now hopping ... ";
+	log_handler.info("debug: Now hopping ... ");
 #endif 
 	const DOUBLE_T gamma = surfaces_obj.fGamma(ptcl.r, Gamma0);
 	const UINT_T hop_from = ptcl.surf;
@@ -64,7 +62,7 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 	const UINT_T hop_to = randomer::discrete(Phop);
 	if (hop_from != hop_to) {
 #if _DEBUG >= 4
-	cout << hop_from << " -> " << hop_to << "! ";
+	log_handler.info(hop_from, " -> ", hop_to, "! ");
 #endif 
 		DOUBLE_T to_energy = surfaces_obj.fU(hop_to, ptcl.r);
 		// hopping happens
@@ -76,7 +74,7 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 		}
 	}
 #if _DEBUG >= 4
-	cout << "done. ";
+	log_handler.info("done. ";
 #endif 
 	return hop_to;
 }
@@ -84,7 +82,7 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 static std::vector<DOUBLE_T> _CME_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
 	// calc force on the particle
 #if _DEBUG >= 4
-	cout << "Getting force ... ";
+	log_handler.info_nonewline("Getting force ... ");
 #endif 
 	std::vector<DOUBLE_T> force = surfaces_obj.fF(ptcl.surf, ptcl.r);
 	if(mode == enumspace::dynamics_mode_enum::BCME) {
@@ -92,20 +90,20 @@ static std::vector<DOUBLE_T> _CME_get_Force(const particle_t& ptcl, enumspace::d
 	}
 	return force;
 #if _DEBUG >= 4
-	cout << "done. ";
+	log_handler.info("done. ");
 #endif 
 }
 
 static void _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode) {
 #if _DEBUG >= 4
-	cout << "debug: _CME: dynamic mode is " << enumspace::dynamics_mode_dict.right.at(mode) << ". ";
+	log_handler.info_nonewline("debug: _CME: dynamic mode is ", enumspace::dynamics_mode_dict.right.at(mode), ". ");
 #endif
 
  	ptcl.hop( _CME_hopper(ptcl, trajID, mode) );
     velocity_verlet(ptcl, mode, _CME_get_Force);
 
 #if _DEBUG >= 4
-	cout << "\n";
+	log_handler.info("");
 #endif 
 }
 

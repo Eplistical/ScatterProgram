@@ -6,14 +6,14 @@
 
 namespace scatter{
 	namespace io{
-		void savedat(void);
-		void loaddat(void);
-		void saveinit(void);
-		void loadinit(void);
+		VOID_T savedat(VOID_T);
+		VOID_T loaddat(VOID_T);
+		VOID_T saveinit(VOID_T);
+		VOID_T loadinit(VOID_T);
 
 		// API to save binary file
 		template<typename ... Types>
-			void save(const STRING_T path, const Types& ... x) 
+			VOID_T save(const STRING_T path, const Types& ... x) 
 			{
 				ioer::output_t dest(path);
 				dest.write(x ...);
@@ -21,7 +21,7 @@ namespace scatter{
 
 		// API to load binary file
 		template<typename ... Types>
-			void load(const STRING_T path, Types& ... x) 
+			VOID_T load(const STRING_T path, Types& ... x) 
 			{
 				ioer::input_t source(path);
 				source.read(x ...);

@@ -23,17 +23,17 @@ namespace scatter{
 			~surfaces_t() = default;
 			explicit surfaces_t(UINT_T Nsurf);
 			// setter
-			void set_gamma(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<DOUBLE_T> >& paras);
-			void set_energy(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<DOUBLE_T> >& paras);
-			void set_abs_gamma_threash(DOUBLE_T x);
+			VOID_T set_gamma(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<DOUBLE_T> >& paras);
+			VOID_T set_energy(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<DOUBLE_T> >& paras);
+			VOID_T set_abs_gamma_threash(DOUBLE_T x);
 			// getter
-			UINT_T get_surf_number(void) const;
-			single_surf_t get_gamma(void) const;
+			UINT_T get_surf_number(VOID_T) const;
+			single_surf_t get_gamma(VOID_T) const;
 			single_surf_t get_energy(INT_T i) const;
 			std::vector<DOUBLE_T> get_gamma_para(INT_T d) const; 
 			std::vector<DOUBLE_T> get_energy_para(INT_T i, INT_T d) const; 
-			std::vector<std::vector<DOUBLE_T> > get_gamma_para_blank(void) const;
-			std::vector<std::vector<DOUBLE_T> > get_energy_para_blank(void) const;
+			std::vector<std::vector<DOUBLE_T> > get_gamma_para_blank(VOID_T) const;
+			std::vector<std::vector<DOUBLE_T> > get_energy_para_blank(VOID_T) const;
 			// U
 			std::vector<DOUBLE_T> vU(INT_T i, const std::vector<DOUBLE_T>& r) const; 		// energy as a vector @ surf i
 			DOUBLE_T fU(INT_T i, const std::vector<DOUBLE_T>& r) const;					// total energy @ surf i

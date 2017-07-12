@@ -16,7 +16,7 @@ using namespace scatter;
 using ioer::output_t;
 using ioer::input_t;
 
-void rwinit(CHAR_T op)
+VOID_T rwinit(CHAR_T op)
 {
 	using scatter::rem::dim;
 	using scatter::simulation::mass;
@@ -49,7 +49,7 @@ void rwinit(CHAR_T op)
 	}
 }
 
-void rwdat(CHAR_T op){
+VOID_T rwdat(CHAR_T op){
 	/**
 	 * datfile structure:
 	 * 	 dim (uint64)
@@ -131,25 +131,25 @@ void rwdat(CHAR_T op){
 }
 
 // API
-void scatter::io::savedat(void){
+VOID_T scatter::io::savedat(VOID_T){
     out_handler.info_nonewline("saving data to " + scatter::io::datfile + " ...  ");
     rwdat('w');
     out_handler.info("done");
 }
 
-void scatter::io::loaddat(void){
+VOID_T scatter::io::loaddat(VOID_T){
     out_handler.info_nonewline("loading data from " + scatter::io::datfile + " ...  ");
     rwdat('r');
     out_handler.info("done");
 }
 
-void scatter::io::saveinit(void){
+VOID_T scatter::io::saveinit(VOID_T){
     out_handler.info_nonewline("saving r0p0 to " + scatter::io::initfile + " ...  ");
     rwinit('w');
     out_handler.info("done");
 }
 
-void scatter::io::loadinit(void){
+VOID_T scatter::io::loadinit(VOID_T){
     out_handler.info_nonewline("loading r0p0 from " + scatter::io::initfile + " ...  ");
     rwinit('r');
     out_handler.info("done");

@@ -31,12 +31,12 @@ grid_t::grid_t( const std::vector<DOUBLE_T>& rmin,
 }
 
 // setter
-std::vector<DOUBLE_T>& grid_t::get_fef_ref(void) 
+std::vector<DOUBLE_T>& grid_t::get_fef_ref(VOID_T) 
 {
 	return _fef;
 }
 
-void grid_t::alloc_fef_space(void)
+VOID_T grid_t::alloc_fef_space(VOID_T)
 {
 	_fef.assign(get_feflen(), 0.0);
 }
@@ -51,22 +51,22 @@ std::vector<DOUBLE_T> grid_t::get_grid(UINT_T d) const
 	return rst;
 }
 
-std::vector<DOUBLE_T> grid_t::get_rmin(void) const
+std::vector<DOUBLE_T> grid_t::get_rmin(VOID_T) const
 {
 	return _rmin;
 }
 
-std::vector<DOUBLE_T> grid_t::get_rmax(void) const
+std::vector<DOUBLE_T> grid_t::get_rmax(VOID_T) const
 {
 	return _rmax;
 }
 
-std::vector<DOUBLE_T> grid_t::get_dr(void) const
+std::vector<DOUBLE_T> grid_t::get_dr(VOID_T) const
 {
 	return _dr;
 }
 
-std::vector<UINT_T> grid_t::get_Nr(void) const
+std::vector<UINT_T> grid_t::get_Nr(VOID_T) const
 {
 	return _Nr;
 }
@@ -91,29 +91,29 @@ UINT_T grid_t::get_Nr(UINT_T d) const
 	return _Nr.at(d);
 }
 
-UINT_T grid_t::get_Ntot(void) const
+UINT_T grid_t::get_Ntot(VOID_T) const
 {
 	UINT_T rst = 1;
 	for (UINT_T d : _Nr) rst *= d;
 	return rst;
 }
 
-UINT_T grid_t::get_forcelen(void) const
+UINT_T grid_t::get_forcelen(VOID_T) const
 {
 	return _forcelen;
 }
 
-UINT_T grid_t::get_efriclen(void) const
+UINT_T grid_t::get_efriclen(VOID_T) const
 {
 	return _efriclen;
 }
 
-UINT_T grid_t::get_fBCMElen(void) const
+UINT_T grid_t::get_fBCMElen(VOID_T) const
 {
 	return _fBCMElen;
 }
 
-UINT_T grid_t::get_feflen(void) const
+UINT_T grid_t::get_feflen(VOID_T) const
 {
 	return _forcelen + _efriclen + _fBCMElen;
 }

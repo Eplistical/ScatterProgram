@@ -3,7 +3,6 @@
 #include "io.hpp"
 #include "rem_var.hpp"
 // variables in scatter::rem
-
 using scatter::io::out_handler;
 
 // args passed by command line
@@ -24,7 +23,7 @@ DOUBLE_T scatter::rem::Gamma0;
 
 
 // load rem parameters from Document Obj
-void scatter::rem::load_var(const rapidjson::Document& doc){
+VOID_T scatter::rem::load_var(const rapidjson::Document& doc){
 	using namespace scatter::rem;
 	using json::load_param;
 	load_param(doc, "rem")
@@ -40,7 +39,7 @@ void scatter::rem::load_var(const rapidjson::Document& doc){
 }
 
 // prINT_T out rem parameters
-void scatter::rem::print_var(void){
+VOID_T scatter::rem::print_var(VOID_T){
 	using namespace scatter::rem;
 	out_handler.info("rem info");
 	out_handler.drawline('-');

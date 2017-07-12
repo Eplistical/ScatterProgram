@@ -39,7 +39,7 @@ namespace mpier{
 	static BOOL_T master;
 
 	// -- init/finalize --//
-	inline void setup(void) 
+	inline VOID_T setup(VOID_T) 
 	{
 		MPI::Init();
 		size = MPI::COMM_WORLD.Get_size();
@@ -47,29 +47,29 @@ namespace mpier{
 		master = (rank == 0);
 	}
 
-	inline void finalize(void) 
+	inline VOID_T finalize(VOID_T) 
 	{
 		MPI::Finalize();
 	}
 
 	// -- barrier -- //
-	inline void barrier(void) 
+	inline VOID_T barrier(VOID_T) 
 	{
 		MPI::COMM_WORLD.Barrier();
 	}
 
 	// -- send -- //
-	inline void send(INT_T to, INT_T tag){  }
+	inline VOID_T send(INT_T to, INT_T tag){  }
 
 	template<typename ParamType>
-		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), void>::type
+		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), VOID_T>::type
 		send(INT_T to, INT_T tag, ParamType& x)
 		{
 			MPI::COMM_WORLD.Send(&x, 1, typemap[typeid(ParamType)], to, tag);
 		}
 
 	template<typename ParamType>
-		inline typename enable_if<is_bool<ParamType>::value, void>::type
+		inline typename enable_if<is_bool<ParamType>::value, VOID_T>::type
 		send(INT_T to, INT_T tag, ParamType& x) 
 		{
 			INT_T tmp = static_cast<INT_T>(x);
@@ -77,7 +77,7 @@ namespace mpier{
 		}
 
 	template<typename ParamType>
-		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, void>::type
+		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, VOID_T>::type
 		send(INT_T to, INT_T tag, ParamType& x)
 		{
 			UINT_T _size = x.size();
@@ -86,24 +86,24 @@ namespace mpier{
 		}
 
 	template<typename ParamType, typename ... Types>
-		inline void send(INT_T to, INT_T tag, ParamType& x, Types& ... otherx)
+		inline VOID_T send(INT_T to, INT_T tag, ParamType& x, Types& ... otherx)
 		{
 			send(to, tag, x);
 			send(to, tag, otherx ...);
 		}
 
 	// -- recv -- //
-	inline void recv(INT_T from, INT_T tag){  }
+	inline VOID_T recv(INT_T from, INT_T tag){  }
 
 	template<typename ParamType>
-		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), void>::type
+		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), VOID_T>::type
 		recv(INT_T from, INT_T tag, ParamType& x)
 		{
 			MPI::COMM_WORLD.Recv(&x, 1, typemap[typeid(ParamType)], from, tag);
 		}
 
 	template<typename ParamType>
-		inline typename enable_if<is_bool<ParamType>::value, void>::type
+		inline typename enable_if<is_bool<ParamType>::value, VOID_T>::type
 		recv(INT_T from, INT_T tag, ParamType& x) 
 		{
 			INT_T tmp;
@@ -112,7 +112,7 @@ namespace mpier{
 		}
 
 	template<typename ParamType>
-		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, void>::type
+		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, VOID_T>::type
 		recv(INT_T from, INT_T tag, ParamType& x)
 		{
 			UINT_T _size;
@@ -122,7 +122,7 @@ namespace mpier{
 		}
 
 	template<typename ParamType, typename ... Types>
-		inline void recv(INT_T from, INT_T tag, ParamType& x, Types& ... otherx)
+		inline VOID_T recv(INT_T from, INT_T tag, ParamType& x, Types& ... otherx)
 		{
 			recv(from, tag, x);
 			recv(from, tag, otherx ...);
@@ -130,17 +130,17 @@ namespace mpier{
 	
 	
 	// -- bcast -- //
-	inline void bcast(INT_T root){  }
+	inline VOID_T bcast(INT_T root){  }
 
 	template<typename ParamType>
-		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), void>::type
+		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), VOID_T>::type
 		bcast(INT_T root, ParamType& x)
 		{
 			MPI::COMM_WORLD.Bcast(&x, 1, typemap[typeid(ParamType)], root);
 		}
 
 	template<typename ParamType>
-		inline typename enable_if<is_bool<ParamType>::value, void>::type
+		inline typename enable_if<is_bool<ParamType>::value, VOID_T>::type
 		bcast(INT_T root, ParamType& x) 
 		{
 			INT_T tmp = static_cast<INT_T>(x);
@@ -149,7 +149,7 @@ namespace mpier{
 		}
 
 	template<typename ParamType>
-		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, void>::type
+		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, VOID_T>::type
 		bcast(INT_T root, ParamType& x)
 		{
 			UINT_T _size = x.size();
@@ -159,7 +159,7 @@ namespace mpier{
 		}
 
 	template<typename ParamType, typename ... Types>
-		inline void bcast(INT_T root, ParamType& x, Types& ... otherx)
+		inline VOID_T bcast(INT_T root, ParamType& x, Types& ... otherx)
 		{
 			bcast(root, x);
 			bcast(root, otherx ...);

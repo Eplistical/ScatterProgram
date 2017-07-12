@@ -69,7 +69,7 @@ static std::vector<DOUBLE_T> _Ek(const std::vector<particle_t>& swarm) {
     return std::vector<DOUBLE_T>(rem::dim, 0.0);
 }
 
-static void _default_anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode) {
+static VOID_T _default_anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode) {
     /*
 	const std::vector<DOUBLE_T> rp = _rp(swarm);
 	const std::vector<DOUBLE_T> Ek = _Ek(swarm);
@@ -89,7 +89,7 @@ static void _default_anal(const std::vector<particle_t>& swarm, enumspace::analm
     */
 }
 
-static void _final_dist_anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode) {
+static VOID_T _final_dist_anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode) {
     /*
 	DOUBLE_T Omega, Ekx, Epx;
 	INT_T n_vib;
@@ -116,7 +116,7 @@ static void _final_dist_anal(const std::vector<particle_t>& swarm, enumspace::an
     */
 }
 
-static void _hop_anal_para(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode){
+static VOID_T _hop_anal_para(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode){
 	/* analyze hoppings in CME/BCME
 	 */
     /*
@@ -149,7 +149,7 @@ static void _hop_anal_para(const std::vector<particle_t>& swarm, enumspace::anal
 }
 
 // API
-void anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode){
+VOID_T anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode){
 	using namespace enumspace;
 	switch(mode){
 		case analmode_enum::SIMU_ANAL_CME :

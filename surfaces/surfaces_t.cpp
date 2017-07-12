@@ -20,7 +20,7 @@ surfaces_t::surfaces_t(UINT_T Nsurf)
 }
 
 // setter
-void surfaces_t::set_gamma(const std::vector<enumspace::surfmode_enum>& modes, 
+VOID_T surfaces_t::set_gamma(const std::vector<enumspace::surfmode_enum>& modes, 
 							const std::vector<std::vector<DOUBLE_T> >& paras)
 {
 	_gamma.clear();
@@ -29,7 +29,7 @@ void surfaces_t::set_gamma(const std::vector<enumspace::surfmode_enum>& modes,
 	}
 }
 
-void surfaces_t::set_energy(const std::vector<enumspace::surfmode_enum>& modes, 
+VOID_T surfaces_t::set_energy(const std::vector<enumspace::surfmode_enum>& modes, 
 								const std::vector<std::vector<DOUBLE_T> >& paras)
 {
 	UINT_T index = 0;
@@ -42,18 +42,18 @@ void surfaces_t::set_energy(const std::vector<enumspace::surfmode_enum>& modes,
 	}
 }
 
-void surfaces_t::set_abs_gamma_threash(DOUBLE_T x)
+VOID_T surfaces_t::set_abs_gamma_threash(DOUBLE_T x)
 {
 	_abs_gamma_threash = x; 
 }
 
 // getter
-UINT_T surfaces_t::get_surf_number(void) const
+UINT_T surfaces_t::get_surf_number(VOID_T) const
 {
 	return _Nsurf; 
 }
 
-single_surf_t surfaces_t::get_gamma(void) const
+single_surf_t surfaces_t::get_gamma(VOID_T) const
 {
 	return _gamma; 
 }
@@ -73,7 +73,7 @@ std::vector<DOUBLE_T> surfaces_t::get_energy_para(INT_T i, INT_T d) const
 	return _energy.at(i).get_para(d);
 }
 
-std::vector<std::vector<DOUBLE_T> > surfaces_t::get_gamma_para_blank(void) const
+std::vector<std::vector<DOUBLE_T> > surfaces_t::get_gamma_para_blank(VOID_T) const
 {
 	std::vector<std::vector<DOUBLE_T> > rst(1);
 	UINT_T N = 0;
@@ -84,7 +84,7 @@ std::vector<std::vector<DOUBLE_T> > surfaces_t::get_gamma_para_blank(void) const
 	return rst;
 }
 
-std::vector<std::vector<DOUBLE_T> > surfaces_t::get_energy_para_blank(void) const
+std::vector<std::vector<DOUBLE_T> > surfaces_t::get_energy_para_blank(VOID_T) const
 {
 	std::vector<std::vector<DOUBLE_T> > rst(_Nsurf);
 	UINT_T N = 0;

@@ -5,7 +5,7 @@
 
 namespace scatter{
 	namespace simulation{
-		void generate_initstate(void);
+		VOID_T generate_initstate(VOID_T);
 	};
 };
 

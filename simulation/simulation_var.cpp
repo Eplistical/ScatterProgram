@@ -37,7 +37,7 @@ std::vector<DOUBLE_T> NS::r0p0;
 
 
 // helper function
-static void extract_omega(void){
+static VOID_T extract_omega(VOID_T){
 	// extract omega for all harmonic surfaces
 	using namespace scatter;
 	std::vector<DOUBLE_T> tmp;
@@ -52,7 +52,7 @@ static void extract_omega(void){
 }
 
 // init simulation parameters 
-void scatter::simulation::load_var(const rapidjson::Document& doc){
+VOID_T scatter::simulation::load_var(const rapidjson::Document& doc){
 	using namespace scatter::simulation;
 	using json::load_param;
 	load_param(doc, "simulation")
@@ -75,7 +75,7 @@ void scatter::simulation::load_var(const rapidjson::Document& doc){
 }
 
 // prINT_T out simulation parameters
-void scatter::simulation::print_var(void){
+VOID_T scatter::simulation::print_var(VOID_T){
 	using namespace scatter::simulation;
 	out_handler.info("simulation info");
 	out_handler.drawline('-');

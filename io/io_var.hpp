@@ -18,9 +18,9 @@ namespace scatter{
 		extern ioer::output_t out_handler;
 		extern ioer::output_t log_handler;
 
-		void load_var(void);
-		void print_var(void);
-		void handler_init(void);
+		VOID_T load_var(VOID_T);
+		VOID_T print_var(VOID_T);
+		VOID_T handler_init(VOID_T);
     };
 };
 

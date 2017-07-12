@@ -14,7 +14,7 @@
 
 namespace scatter 
 {
-	void inline bcast_vars(void) 
+	VOID_T inline bcast_vars(void) 
 	{
 		// broadcast rem para
 		mpier::bcast(0, rem::jobname, rem::jobtype, rem::loaddat, rem::dim, rem::dim2, rem::hbar, rem::kT, rem::Gamma0);

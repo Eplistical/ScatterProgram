@@ -17,7 +17,7 @@ ioer::output_t scatter::io::out_handler;
 ioer::output_t scatter::io::log_handler;
 
 // init io parameters 
-void scatter::io::load_var(void)
+VOID_T scatter::io::load_var(VOID_T)
 {
 	namespace fs = boost::filesystem;
 	using namespace scatter::io;
@@ -40,7 +40,7 @@ void scatter::io::load_var(void)
 }
 
 // prINT_T out io parameters
-void scatter::io::print_var(void)
+VOID_T scatter::io::print_var(VOID_T)
 {
 	using namespace scatter::io;
 	out_handler.info("io info");
@@ -55,7 +55,7 @@ void scatter::io::print_var(void)
 	out_handler.drawline('-');
 }
 
-void scatter::io::handler_init(void)
+VOID_T scatter::io::handler_init(VOID_T)
 {
 	out_handler.open(outfile, std::ios::out);
 	log_handler.open(logfile, std::ios::out);

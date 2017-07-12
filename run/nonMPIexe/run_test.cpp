@@ -18,7 +18,7 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
-void run_test(void){
+VOID_T run_test(void){
 	/* 
 	 * for test some functions
 	 *
