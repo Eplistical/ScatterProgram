@@ -4,7 +4,7 @@
 #include "types.hpp"
 
 namespace scatter{
-	bool arg_parser(int argc, char** argv);
+	BOOL_T arg_parser(INT_T argc, char** argv);
 }
 
 #endif 

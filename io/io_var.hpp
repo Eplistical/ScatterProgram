@@ -2,17 +2,16 @@
 #define _SCATTER_IO_VAR_HPP
 // variables in io 
 #include "types.hpp"
-#include <string>
 #include "json_toolkit.hpp"
 #include "ioer.hpp"
 
 namespace scatter{
     namespace io{
-        extern std::string jsonfile;
-        extern std::string datfile;
-        extern std::string initfile;
-        extern std::string outfile;
-        extern std::string logfile;
+        extern STRING_T jsonfile;
+        extern STRING_T datfile;
+        extern STRING_T initfile;
+        extern STRING_T outfile;
+        extern STRING_T logfile;
 
 		extern ioer::output_t out_handler;
 		extern ioer::output_t log_handler;

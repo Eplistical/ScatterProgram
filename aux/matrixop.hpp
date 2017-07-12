@@ -30,7 +30,7 @@ namespace matrixop{
 			 * 	param EignVal, EigenVac: vector to store results
 			 * */ 
 			using MatrixType = Matrix<MatrixElementType, Dynamic, Dynamic>;
-			const int N = static_cast<size_t>(sqrt(MatrixToDiag.size()));
+			const int N = static_cast<uint_fast32_t>(sqrt(MatrixToDiag.size()));
 			Map<const MatrixType> A(MatrixToDiag.data(), N, N);
 			SelfAdjointEigenSolver<MatrixType> es(A);
 			EigenVec = vector<EigenVecType>(es.eigenvectors().data(), 
@@ -43,7 +43,7 @@ namespace matrixop{
 		inline vector<MatrixElementType> _matmat(
 				 const vector<MatrixElementType>& Mat1, 
 				 const vector<MatrixElementType>& Mat2,
-				 const size_t M, const size_t N, const size_t K)
+				 const uint_fast32_t M, const uint_fast32_t N, const uint_fast32_t K)
 		{
 			/*  matrix-matrix multiplication, 
 			 *  should not be called by external functions
@@ -70,7 +70,7 @@ namespace matrixop{
 		inline vector<MatrixElementType> matmat( 
 				const vector<MatrixElementType>& Mat1, 
 				const vector<MatrixElementType>& Mat2,
-				const size_t N)
+				const uint_fast32_t N)
 		{
 			/*  matrix-matrix multiplication, 
 			 *
@@ -80,8 +80,8 @@ namespace matrixop{
 			 *
 			 * 	return a std::vector storing resulting M * K matrix
 			 * */ 
-			const size_t M = static_cast<const size_t>(Mat1.size() / N);
-			const size_t K = static_cast<const size_t>(Mat2.size() / N);
+			const uint_fast32_t M = static_cast<const uint_fast32_t>(Mat1.size() / N);
+			const uint_fast32_t K = static_cast<const uint_fast32_t>(Mat2.size() / N);
 			return _matmat(Mat1, Mat2, M, N, K);
 		}
 
@@ -97,8 +97,8 @@ namespace matrixop{
 			 *
 			 * 	return a std::vector with M elements
 			 * */ 
-			const size_t N = static_cast<const size_t>(Vec.size());
-			const size_t M = static_cast<const size_t>(Mat.size() / N);
+			const uint_fast32_t N = static_cast<const uint_fast32_t>(Vec.size());
+			const uint_fast32_t M = static_cast<const uint_fast32_t>(Mat.size() / N);
 			return _matmat(Mat, Vec, M, N, 1);
 		}
 };

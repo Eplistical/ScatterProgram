@@ -11,8 +11,8 @@ using surfaces_collection::single_surf_t;
 namespace scatter{
 	class surfaces_t{
 		private:
-			size_t _Nsurf; 
-			double _abs_gamma_threash;
+			UINT_T _Nsurf; 
+			DOUBLE_T _abs_gamma_threash;
 			single_surf_t _gamma;
 			std::vector<single_surf_t> _energy;
 		public:
@@ -21,35 +21,35 @@ namespace scatter{
 			surfaces_t(const surfaces_t&) = default;
 			surfaces_t& operator=(const surfaces_t&) = default;
 			~surfaces_t() = default;
-			explicit surfaces_t(size_t Nsurf);
+			explicit surfaces_t(UINT_T Nsurf);
 			// setter
-			void set_gamma(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double> >& paras);
-			void set_energy(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<double> >& paras);
-			void set_abs_gamma_threash(double x);
+			void set_gamma(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<DOUBLE_T> >& paras);
+			void set_energy(const std::vector<enumspace::surfmode_enum>& modes, const std::vector<std::vector<DOUBLE_T> >& paras);
+			void set_abs_gamma_threash(DOUBLE_T x);
 			// getter
-			size_t get_surf_number(void) const;
+			UINT_T get_surf_number(void) const;
 			single_surf_t get_gamma(void) const;
-			single_surf_t get_energy(int i) const;
-			std::vector<double> get_gamma_para(int d) const; 
-			std::vector<double> get_energy_para(int i, int d) const; 
-			std::vector<std::vector<double> > get_gamma_para_blank(void) const;
-			std::vector<std::vector<double> > get_energy_para_blank(void) const;
+			single_surf_t get_energy(INT_T i) const;
+			std::vector<DOUBLE_T> get_gamma_para(INT_T d) const; 
+			std::vector<DOUBLE_T> get_energy_para(INT_T i, INT_T d) const; 
+			std::vector<std::vector<DOUBLE_T> > get_gamma_para_blank(void) const;
+			std::vector<std::vector<DOUBLE_T> > get_energy_para_blank(void) const;
 			// U
-			std::vector<double> vU(int i, const std::vector<double>& r) const; 		// energy as a vector @ surf i
-			double fU(int i, const std::vector<double>& r) const;					// total energy @ surf i
-			double fU(int i, int d, double x) const;								// energy @ surf i & dimension d
+			std::vector<DOUBLE_T> vU(INT_T i, const std::vector<DOUBLE_T>& r) const; 		// energy as a vector @ surf i
+			DOUBLE_T fU(INT_T i, const std::vector<DOUBLE_T>& r) const;					// total energy @ surf i
+			DOUBLE_T fU(INT_T i, INT_T d, DOUBLE_T x) const;								// energy @ surf i & dimension d
 			// F
-			std::vector<double> vdUdr(int i, const std::vector<double>& r) const;  	// nablaU
-			std::vector<double> fF(int i, const std::vector<double>& r) const; 	   	// force
-			double fF(int i, int d, double x) const;								// force @ surf i & dimension d
+			std::vector<DOUBLE_T> vdUdr(INT_T i, const std::vector<DOUBLE_T>& r) const;  	// nablaU
+			std::vector<DOUBLE_T> fF(INT_T i, const std::vector<DOUBLE_T>& r) const; 	   	// force
+			DOUBLE_T fF(INT_T i, INT_T d, DOUBLE_T x) const;								// force @ surf i & dimension d
 			// Gamma
-			std::vector<double> vGamma(const std::vector<double>& r) const; 
-			double fGamma(const std::vector<double>& r, double Gamma0) const;
-			double fGamma(int d, double x) const;
-			std::vector<double> vGammader(const std::vector<double>& r) const;
-			std::vector<double> fGammader(const std::vector<double>& r, double Gamma0) const;
-			double fGammader(int d, double x) const;
-			bool small_gamma(const std::vector<double>& r, double Gamma0) const;
+			std::vector<DOUBLE_T> vGamma(const std::vector<DOUBLE_T>& r) const; 
+			DOUBLE_T fGamma(const std::vector<DOUBLE_T>& r, DOUBLE_T Gamma0) const;
+			DOUBLE_T fGamma(INT_T d, DOUBLE_T x) const;
+			std::vector<DOUBLE_T> vGammader(const std::vector<DOUBLE_T>& r) const;
+			std::vector<DOUBLE_T> fGammader(const std::vector<DOUBLE_T>& r, DOUBLE_T Gamma0) const;
+			DOUBLE_T fGammader(INT_T d, DOUBLE_T x) const;
+			BOOL_T small_gamma(const std::vector<DOUBLE_T>& r, DOUBLE_T Gamma0) const;
 	};
 };
 #endif

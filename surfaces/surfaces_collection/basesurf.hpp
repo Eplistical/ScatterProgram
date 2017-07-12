@@ -13,20 +13,20 @@ namespace surfaces_collection{
 			basesurf(){};
 			~basesurf(){};
 
-			virtual double U(double x) const = 0;
-			virtual double dUdx(double x) const = 0;
+			virtual DOUBLE_T U(DOUBLE_T x) const = 0;
+			virtual DOUBLE_T dUdx(DOUBLE_T x) const = 0;
 
 			// getters
-			size_t get_Npara(void) const { return Npara; }
-			std::string get_expr(void) const { return expr.str(); }
-			std::vector<double> get_para(void) const { return para; }
-			std::string get_mode(void) const { return mode.str(); }
+			UINT_T get_Npara(void) const { return Npara; }
+			STRING_T get_expr(void) const { return expr.str(); }
+			std::vector<DOUBLE_T> get_para(void) const { return para; }
+			STRING_T get_mode(void) const { return mode.str(); }
 
         protected:
-			std::stringstream mode;		// string for surf mode
-			std::stringstream expr;		// string for expression
-			std::vector<double> para;	// vector for parameters
-			size_t Npara;				// number of parameters required
+			std::stringstream mode;		// STRING_T for surf mode
+			std::stringstream expr;		// STRING_T for expression
+			std::vector<DOUBLE_T> para;	// vector for parameters
+			UINT_T Npara;				// number of parameters required
     };
 };
 

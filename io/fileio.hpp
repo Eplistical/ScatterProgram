@@ -3,7 +3,6 @@
 // API module for file io in Scatter
 #include "types.hpp"
 
-#include <string>
 
 namespace scatter{
 	namespace io{

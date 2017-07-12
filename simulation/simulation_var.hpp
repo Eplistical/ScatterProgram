@@ -3,7 +3,6 @@
 // module for variables in simulation
 #include "types.hpp"
 
-#include <string>
 #include <vector>
 #include "json_toolkit.hpp"
 #include "initmode.hpp"
@@ -11,23 +10,23 @@
 namespace scatter{
 	namespace simulation{
 		// simulation control parameters
-		extern std::vector<double> mass;
-		extern std::vector<double> omega;
-		extern size_t Ntraj;
-		extern size_t Nstep;
-		extern double EndT;
-		extern double dt;
-		extern size_t Anastep;
+		extern std::vector<DOUBLE_T> mass;
+		extern std::vector<DOUBLE_T> omega;
+		extern UINT_T Ntraj;
+		extern UINT_T Nstep;
+		extern DOUBLE_T EndT;
+		extern DOUBLE_T dt;
+		extern UINT_T Anastep;
 
 		// for init state
-		extern bool prepinit;
-		extern double inittemp;
-		extern size_t vibstate;
-		extern size_t elestate;
+		extern BOOL_T prepinit;
+		extern DOUBLE_T inittemp;
+		extern UINT_T vibstate;
+		extern UINT_T elestate;
 		extern std::vector<enumspace::initmode_enum> initmode;
-		extern std::vector<double> initravg;
-		extern std::vector<double> initpavg;
-		extern std::vector<double> r0p0;
+		extern std::vector<DOUBLE_T> initravg;
+		extern std::vector<DOUBLE_T> initpavg;
+		extern std::vector<DOUBLE_T> r0p0;
 
 		void load_var(const rapidjson::Document& doc);
 		void print_var(void);

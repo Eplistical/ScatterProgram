@@ -3,7 +3,6 @@
 // dynamics mode dict
 #include "types.hpp"
 
-#include <string>
 #include <boost/assign.hpp>
 #include <boost/bimap.hpp>
 

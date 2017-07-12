@@ -11,14 +11,14 @@
 namespace surfaces_collection{
     class step : public basesurf{
         private:
-        double A;
-        double B;
-        double C;
+        DOUBLE_T A;
+        DOUBLE_T B;
+        DOUBLE_T C;
 
         public:
-        explicit step(const std::vector<double>& paralist){
+        explicit step(const std::vector<DOUBLE_T>& paralist){
             Npara = 3;
-            para = std::vector<double>(paralist.begin(), paralist.begin() + Npara);
+            para = std::vector<DOUBLE_T>(paralist.begin(), paralist.begin() + Npara);
             A = para.at(0);
             B = para.at(1);
             C = para.at(2);
@@ -32,11 +32,11 @@ namespace surfaces_collection{
                  ;
         }
 
-        double U(double x) const{
+        DOUBLE_T U(DOUBLE_T x) const{
             return (x <= C)?A:B;
         }
 
-        double dUdx(double x) const{
+        DOUBLE_T dUdx(DOUBLE_T x) const{
             return 0.0;
         }
     };

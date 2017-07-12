@@ -22,7 +22,7 @@ namespace surfaces_collection {
 			std::vector<std::shared_ptr<basesurf>> surfptr;
 		public:
 			// --- setters --- //
-			void append_dim(enumspace::surfmode_enum mode, std::vector<double> para){
+			void append_dim(enumspace::surfmode_enum mode, std::vector<DOUBLE_T> para){
 				/* Append a dimension to current surface
 				 *
 				 * param mode: surface mode
@@ -55,34 +55,34 @@ namespace surfaces_collection {
 			// --- getters --- //
 			
 			// dimension num
-			size_t dim(void) const 
+			UINT_T dim(void) const 
 			{ 
 				return surfptr.size(); 
 			}
 
 			// mode for d^th dimension
-			enumspace::surfmode_enum get_mode(int d) const 
+			enumspace::surfmode_enum get_mode(INT_T d) const 
 			{ 
 				return enumspace::surfmode_dict.left.at(surfptr.at(d)->get_mode()); 
 			}
 
 			// para number for d^th dimension
-			size_t get_Npara(int d) const 
+			UINT_T get_Npara(INT_T d) const 
 			{ 
 				return surfptr.at(d)->get_Npara();
 			}
 
 			// para for d^th dimension
-			std::vector<double> get_para(int d) const
+			std::vector<DOUBLE_T> get_para(INT_T d) const
 			{
 				return surfptr.at(d)->get_para(); 
 			}
 
-			// string for all dimensions
-			std::string get_expr(void) const
+			// STRING_T for all dimensions
+			STRING_T get_expr(void) const
 			{
 				std::stringstream expr;
-				for(size_t d = 0; d < dim(); ++d){
+				for(UINT_T d = 0; d < dim(); ++d){
 					expr << "dim " << d << ":" << std::endl;
 					expr << surfptr.at(d)->get_expr() << std::endl;
 				}
@@ -90,29 +90,29 @@ namespace surfaces_collection {
 			}
 
 			// U(r) for given dimension
-			double get_U(int d, double x) const
+			DOUBLE_T get_U(INT_T d, DOUBLE_T x) const
 			{
 				return surfptr[d]->U(x);
 			}
 			// U(r) as a vector
-			std::vector<double> get_U(const std::vector<double>& r) const
+			std::vector<DOUBLE_T> get_U(const std::vector<DOUBLE_T>& r) const
 			{
-				std::vector<double> rst(dim());
-				for(size_t d = 0, N = dim() ; d < N; ++d){
+				std::vector<DOUBLE_T> rst(dim());
+				for(UINT_T d = 0, N = dim() ; d < N; ++d){
 					rst[d] = get_U(d, r[d]);
 				}
 				return rst;
 			}
 
 			// U'(r) for given dimension
-			double get_dUdx(int d, double x) const{
+			DOUBLE_T get_dUdx(INT_T d, DOUBLE_T x) const{
 				return surfptr[d]->dUdx(x);
 			}
 			// U'(r) as a vector
-			std::vector<double> get_dUdx(const std::vector<double>& r) const
+			std::vector<DOUBLE_T> get_dUdx(const std::vector<DOUBLE_T>& r) const
 			{
-				std::vector<double> rst(dim());
-				for(size_t d = 0, N = dim() ; d < N; ++d){
+				std::vector<DOUBLE_T> rst(dim());
+				for(UINT_T d = 0, N = dim() ; d < N; ++d){
 					rst[d] = get_dUdx(d, r[d]);
 				}
 				return rst;

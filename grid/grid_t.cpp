@@ -13,14 +13,14 @@ using namespace scatter;
 using scatter::rem::dim;
 using scatter::rem::dim2;
 // constructor
-grid_t::grid_t( const std::vector<double>& rmin, 
-				const std::vector<double>& rmax, 
-				const std::vector<size_t>& Nr) :
+grid_t::grid_t( const std::vector<DOUBLE_T>& rmin, 
+				const std::vector<DOUBLE_T>& rmax, 
+				const std::vector<UINT_T>& Nr) :
 				_rmin(rmin), 
 				_rmax(rmax),
 			   	_Nr(Nr)	
 {
-	const size_t Ntot = get_Ntot();
+	const UINT_T Ntot = get_Ntot();
 	_dr = (_rmax - _rmin) / _Nr;
 	_forcelen = dim * Ntot;
 	_efriclen = dim2 * Ntot;
@@ -31,7 +31,7 @@ grid_t::grid_t( const std::vector<double>& rmin,
 }
 
 // setter
-std::vector<double>& grid_t::get_fef_ref(void) 
+std::vector<DOUBLE_T>& grid_t::get_fef_ref(void) 
 {
 	return _fef;
 }
@@ -42,102 +42,102 @@ void grid_t::alloc_fef_space(void)
 }
 
 // getter
-std::vector<double> grid_t::get_grid(size_t d) const
+std::vector<DOUBLE_T> grid_t::get_grid(UINT_T d) const
 {
-	std::vector<double> rst(_Nr.at(d));
-	for(size_t i = 0, N = _Nr.at(d); i < N; ++i){
+	std::vector<DOUBLE_T> rst(_Nr.at(d));
+	for(UINT_T i = 0, N = _Nr.at(d); i < N; ++i){
 		rst[i] = _rmin[d] + i * _dr[d];
 	}
 	return rst;
 }
 
-std::vector<double> grid_t::get_rmin(void) const
+std::vector<DOUBLE_T> grid_t::get_rmin(void) const
 {
 	return _rmin;
 }
 
-std::vector<double> grid_t::get_rmax(void) const
+std::vector<DOUBLE_T> grid_t::get_rmax(void) const
 {
 	return _rmax;
 }
 
-std::vector<double> grid_t::get_dr(void) const
+std::vector<DOUBLE_T> grid_t::get_dr(void) const
 {
 	return _dr;
 }
 
-std::vector<size_t> grid_t::get_Nr(void) const
+std::vector<UINT_T> grid_t::get_Nr(void) const
 {
 	return _Nr;
 }
 
-double grid_t::get_rmin(size_t d) const
+DOUBLE_T grid_t::get_rmin(UINT_T d) const
 {
 	return _rmin.at(d);
 }
 
-double grid_t::get_rmax(size_t d) const
+DOUBLE_T grid_t::get_rmax(UINT_T d) const
 {
 	return _rmax.at(d);
 }
 
-double grid_t::get_dr(size_t d) const
+DOUBLE_T grid_t::get_dr(UINT_T d) const
 {
 	return _dr.at(d);
 }
 
-size_t grid_t::get_Nr(size_t d) const
+UINT_T grid_t::get_Nr(UINT_T d) const
 {
 	return _Nr.at(d);
 }
 
-size_t grid_t::get_Ntot(void) const
+UINT_T grid_t::get_Ntot(void) const
 {
 	return product(_Nr);
 }
 
-size_t grid_t::get_forcelen(void) const
+UINT_T grid_t::get_forcelen(void) const
 {
 	return _forcelen;
 }
 
-size_t grid_t::get_efriclen(void) const
+UINT_T grid_t::get_efriclen(void) const
 {
 	return _efriclen;
 }
 
-size_t grid_t::get_fBCMElen(void) const
+UINT_T grid_t::get_fBCMElen(void) const
 {
 	return _fBCMElen;
 }
 
-size_t grid_t::get_feflen(void) const
+UINT_T grid_t::get_feflen(void) const
 {
 	return _forcelen + _efriclen + _fBCMElen;
 }
 
-std::vector<double> grid_t::get_force(const std::vector<double>& r) const
+std::vector<DOUBLE_T> grid_t::get_force(const std::vector<DOUBLE_T>& r) const
 {
 	return subvec(_fef, r_to_index_filtered(r) * dim, dim);
 }
 
-std::vector<double> grid_t::get_efric(const std::vector<double>& r) const
+std::vector<DOUBLE_T> grid_t::get_efric(const std::vector<DOUBLE_T>& r) const
 {
 	return subvec(_fef, _efricoffset + r_to_index_filtered(r) * dim2, dim2);
 }
 
-std::vector<double> grid_t::get_fBCME(const std::vector<double>& r) const
+std::vector<DOUBLE_T> grid_t::get_fBCME(const std::vector<DOUBLE_T>& r) const
 {
 	return subvec(_fef, _fBCMEoffset + r_to_index_filtered(r) * dim, dim);
 }
 
-size_t grid_t::r_to_index(const std::vector<double>& r) const
+UINT_T grid_t::r_to_index(const std::vector<DOUBLE_T>& r) const
 {
-	size_t rst = 0;
-	int coef = 1;
-	int d_index;
-	for (size_t d = 0; d < rem::dim; ++d) {
-		d_index = static_cast<int>((r.at(d) - _rmin.at(d)) / _dr.at(d) + 0.5);
+	UINT_T rst = 0;
+	INT_T coef = 1;
+	INT_T d_index;
+	for (UINT_T d = 0; d < rem::dim; ++d) {
+		d_index = static_cast<INT_T>((r.at(d) - _rmin.at(d)) / _dr.at(d) + 0.5);
 		// throw if out of range
 		if (d_index >= _Nr.at(d) or d_index < 0) {
 			std::stringstream errmsg;
@@ -150,14 +150,14 @@ size_t grid_t::r_to_index(const std::vector<double>& r) const
 	return rst;
 }
 
-std::vector<double> grid_t::index_to_r(size_t k) const
+std::vector<DOUBLE_T> grid_t::index_to_r(UINT_T k) const
 {
-	size_t coef = get_Ntot();
-	std::vector<double> rst(rem::dim);
-	int d_index;
-	for (int d = rem::dim - 1; d >= 0; --d) {
+	UINT_T coef = get_Ntot();
+	std::vector<DOUBLE_T> rst(rem::dim);
+	INT_T d_index;
+	for (INT_T d = rem::dim - 1; d >= 0; --d) {
 		coef /= _Nr.at(d);
-		d_index = static_cast<int>(k / coef + 0.5);
+		d_index = static_cast<INT_T>(k / coef + 0.5);
 		// throw if out of range
 		if (d_index >= _Nr.at(d) or d_index < 0) {
 			std::stringstream errmsg;
@@ -170,11 +170,11 @@ std::vector<double> grid_t::index_to_r(size_t k) const
 	return rst;
 }
 
-size_t grid_t::r_to_index_filtered(const std::vector<double>& r) const
+UINT_T grid_t::r_to_index_filtered(const std::vector<DOUBLE_T>& r) const
 {
 	// THIS IS FOR 2D SCATTERING MODEL ONLY!
 	// modify z to make all z < zmin be treated as zmin
-	std::vector<double> effect_r = r;
+	std::vector<DOUBLE_T> effect_r = r;
 	effect_r.at(1) = std::max(_rmin.at(1), effect_r.at(1));
 	return r_to_index(effect_r);
 }

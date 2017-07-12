@@ -30,21 +30,21 @@ using surfaces::surfnum;
 std::vector<hop_t> scatter::simulation::CME_hop_recorder;
 std::vector<hop_t> scatter::simulation::BCME_hop_recorder;
 
-static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dynamics_mode_enum mode){
+static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode){
 	// deal with hopping & ptclomentum adjustment
 #if _DEBUG >= 4
 	cout << "debug: Now hopping ... ";
 #endif 
-	const double gamma = surfaces_obj.fGamma(ptcl.r, Gamma0);
-	const size_t hop_from = ptcl.surf;
-	const double from_energy = surfaces_obj.fU(hop_from, ptcl.r);
-	static std::vector<double> h(surfnum);
-	static std::vector<double> Phop(surfnum);
+	const DOUBLE_T gamma = surfaces_obj.fGamma(ptcl.r, Gamma0);
+	const UINT_T hop_from = ptcl.surf;
+	const DOUBLE_T from_energy = surfaces_obj.fU(hop_from, ptcl.r);
+	static std::vector<DOUBLE_T> h(surfnum);
+	static std::vector<DOUBLE_T> Phop(surfnum);
 
 	Phop[hop_from] = hbar / dt / gamma;
 	h[hop_from] = 0.0;
 
-	for(size_t i = 0; i < surfnum; ++i){
+	for(UINT_T i = 0; i < surfnum; ++i){
 		if(i == hop_from) {
 			continue;
 		}
@@ -61,12 +61,12 @@ static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dyna
 		Phop[hop_from] -= Phop[i];
 	}
 	// get hop_to according to the probabilities
-	const size_t hop_to = randomer::discrete(Phop);
+	const UINT_T hop_to = randomer::discrete(Phop);
 	if (hop_from != hop_to) {
 #if _DEBUG >= 4
 	cout << hop_from << " -> " << hop_to << "! ";
 #endif 
-		double to_energy = surfaces_obj.fU(hop_to, ptcl.r);
+		DOUBLE_T to_energy = surfaces_obj.fU(hop_to, ptcl.r);
 		// hopping happens
 		if(mode == enumspace::dynamics_mode_enum::CME){
 			CME_hop_recorder.push_back(hop_t(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p));
@@ -81,12 +81,12 @@ static size_t _CME_hopper(const particle_t& ptcl, size_t trajID, enumspace::dyna
 	return hop_to;
 }
 
-static std::vector<double> _CME_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
+static std::vector<DOUBLE_T> _CME_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
 	// calc force on the particle
 #if _DEBUG >= 4
 	cout << "Getting force ... ";
 #endif 
-	std::vector<double> force = surfaces_obj.fF(ptcl.surf, ptcl.r);
+	std::vector<DOUBLE_T> force = surfaces_obj.fF(ptcl.surf, ptcl.r);
 	if(mode == enumspace::dynamics_mode_enum::BCME) {
 		force = force + grid_obj.get_fBCME(ptcl.r);
 	}
@@ -96,7 +96,7 @@ static std::vector<double> _CME_get_Force(const particle_t& ptcl, enumspace::dyn
 #endif 
 }
 
-static void _CME(particle_t& ptcl, size_t trajID, enumspace::dynamics_mode_enum mode) {
+static void _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode) {
 #if _DEBUG >= 4
 	cout << "debug: _CME: dynamic mode is " << enumspace::dynamics_mode_dict.right.at(mode) << ". ";
 #endif
@@ -110,10 +110,10 @@ static void _CME(particle_t& ptcl, size_t trajID, enumspace::dynamics_mode_enum 
 }
 
 // API
-void scatter::simulation::CME(particle_t& ptcl, size_t trajID) {
+void scatter::simulation::CME(particle_t& ptcl, UINT_T trajID) {
 	 _CME(ptcl, trajID, enumspace::dynamics_mode_enum::CME);
 }
 
-void scatter::simulation::BCME(particle_t& ptcl, size_t trajID) {
+void scatter::simulation::BCME(particle_t& ptcl, UINT_T trajID) {
 	 _CME(ptcl, trajID, enumspace::dynamics_mode_enum::BCME);
 }

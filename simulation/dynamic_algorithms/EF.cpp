@@ -9,28 +9,28 @@
 
 using namespace scatter;
 using namespace scatter::simulation;
-const int dim = scatter::rem::dim;
+const INT_T dim = scatter::rem::dim;
 
-static std::vector<double> _EF_get_Force(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
+static std::vector<DOUBLE_T> _EF_get_Force(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
     // m enters with ranforce
-    const std::vector<double> force;// = para.get_force(ptcl.r);
-    const std::vector<double> efric;// = para.get_efric(ptcl.r);
+    const std::vector<DOUBLE_T> force;// = para.get_force(ptcl.r);
+    const std::vector<DOUBLE_T> efric;// = para.get_efric(ptcl.r);
     // efric_p = [efric] * [p]
-    std::vector<double>&& efric_p = matrixop::matvec(efric, ptcl.p);
+    std::vector<DOUBLE_T>&& efric_p = matrixop::matvec(efric, ptcl.p);
     return force - efric_p / mass + ptcl.ranforce;
 }
 
-static std::vector<double> _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mode){
-    std::vector<double> ranforce;
+static std::vector<DOUBLE_T> _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mode){
+    std::vector<DOUBLE_T> ranforce;
 	/*
-    const std::vector<double> efric = para.get_efric(ptcl.r);
+    const std::vector<DOUBLE_T> efric = para.get_efric(ptcl.r);
     // if efric << force, ranforce = 0
-    const std::vector<double> force = para.get_force(ptcl.r);
+    const std::vector<DOUBLE_T> force = para.get_force(ptcl.r);
     if(norm(efric) < 1e-8 * min(abs(force))){
         ranforce.assign(dim, 0.0);
         return ranforce;
     }
-    std::vector<double> eva, evt;
+    std::vector<DOUBLE_T> eva, evt;
 	matrixop::hdiag(efric, eva, evt);
 
     // deal with negetive eva
@@ -46,7 +46,7 @@ static std::vector<double> _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamic
         }
     }
     // gaussian random
-    for(int d = 0; d < dim; ++d){
+    for(INT_T d = 0; d < dim; ++d){
 		eva[0] = randomer::normal(0.0, sqrt(2.0 * rem::kT * eva[d] / dt));
     }
     ranforce =  matrixop::matvec(evt, eva);
@@ -60,7 +60,7 @@ static void _EF(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
 }
 
 // API
-void scatter::simulation::EF(particle_t& ptcl, size_t trajID) {
+void scatter::simulation::EF(particle_t& ptcl, UINT_T trajID) {
 	_EF(ptcl, enumspace::dynamics_mode_enum::EF);
 }
 

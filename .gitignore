@@ -1,5 +1,6 @@
 *.out
 *.log
 *.*~
+1.sh
 build/
 sync_version.py

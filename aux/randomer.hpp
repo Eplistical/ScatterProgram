@@ -25,10 +25,10 @@ namespace randomer{
 		return dis(gen);
 	}
 
-	inline std::vector<double> vrand(size_t N, double lb = 0.0, double ub = 1.0) noexcept{
+	inline std::vector<double> vrand(uint_fast32_t N, double lb = 0.0, double ub = 1.0) noexcept{
 		std::uniform_real_distribution<> dis(lb, ub);
 		std::vector<double> rst(N);
-		for(size_t j = 0; j < N; ++j)
+		for(uint_fast32_t j = 0; j < N; ++j)
 			rst[j] = dis(gen);
 		return rst;
 	}
@@ -38,10 +38,10 @@ namespace randomer{
 		return dis(gen);
 	}
 
-	inline std::vector<double> vnormal(size_t N, double mu = 0.0, double sigma = 1.0) noexcept{
+	inline std::vector<double> vnormal(uint_fast32_t N, double mu = 0.0, double sigma = 1.0) noexcept{
 		std::normal_distribution<double> dis(mu, sigma);
 		std::vector<double> rst(N);
-		for(size_t j = 0; j < N; ++j)
+		for(uint_fast32_t j = 0; j < N; ++j)
 			rst[j] = dis(gen);
 		return rst;
 	}

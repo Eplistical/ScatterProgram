@@ -16,7 +16,7 @@ void scatter::simulation::velocity_verlet(particle_t& ptcl, enumspace::dynamics_
 #if _DEBUG >= 4
 	cout << "velocity_verlet ... ";
 #endif 
-    std::vector<double>&& force = forcefunc(ptcl, mode);
+    std::vector<DOUBLE_T>&& force = forcefunc(ptcl, mode);
     ptcl.p = ptcl.p + 0.5 * dt * force;
     ptcl.r = ptcl.r + dt * ptcl.p / mass;
     force = forcefunc(ptcl, mode);

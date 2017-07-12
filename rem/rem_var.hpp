@@ -2,24 +2,23 @@
 #define _SCATTER_REM_VAR_HPP
 // API module for rem in Scatter
 #include "types.hpp"
-#include <string>
 #include "json_toolkit.hpp"
 
 namespace scatter{
 	namespace rem{
 		// args passed by command line
-		extern std::string infile;
-		extern size_t threadNum;
+		extern STRING_T infile;
+		extern UINT_T threadNum;
 		// job control parameters
-		extern std::string jobname;
-		extern std::string jobtype;
-		extern bool loaddat;
+		extern STRING_T jobname;
+		extern STRING_T jobtype;
+		extern BOOL_T loaddat;
 		// basic parameters for the system(useful both for structure & dynamics)
-		extern size_t dim;
-		extern size_t dim2;
-		extern double hbar;
-		extern double kT;
-		extern double Gamma0;
+		extern UINT_T dim;
+		extern UINT_T dim2;
+		extern DOUBLE_T hbar;
+		extern DOUBLE_T kT;
+		extern DOUBLE_T Gamma0;
 
 
 		void load_var(const rapidjson::Document& doc);

@@ -7,20 +7,20 @@
 namespace scatter{
 	class particle_t{
 		public:
-			std::vector<double> r;
-			std::vector<double> p;
-			std::vector<double> ranforce;
-			size_t surf;
+			std::vector<DOUBLE_T> r;
+			std::vector<DOUBLE_T> p;
+			std::vector<DOUBLE_T> ranforce;
+			UINT_T surf;
 
 			// big five
 			explicit particle_t(void) : surf(0) {}
-			explicit particle_t(size_t s) : surf(s) {}
+			explicit particle_t(UINT_T s) : surf(s) {}
 			particle_t(const particle_t& other) = default; 
 			particle_t& operator=(const particle_t& other) = default;
 			~particle_t() = default;
 
 			// setter
-			void hop(size_t s){surf = s;}
+			void hop(UINT_T s){surf = s;}
 	};
 };
 

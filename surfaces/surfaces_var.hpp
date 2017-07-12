@@ -10,12 +10,12 @@
 namespace scatter {
 	namespace surfaces {
 		using enumspace::surfmode_enum;
-		extern size_t surfnum;
-		extern double cutoff_gamma;
+		extern UINT_T surfnum;
+		extern DOUBLE_T cutoff_gamma;
 		extern std::vector<surfmode_enum> surfmode;
-		extern std::vector<std::vector<double> > surfpara;
+		extern std::vector<std::vector<DOUBLE_T> > surfpara;
 		extern std::vector<surfmode_enum> gammamode;
-		extern std::vector<std::vector<double> > gammapara;
+		extern std::vector<std::vector<DOUBLE_T> > gammapara;
 
 		void load_var(const rapidjson::Document& doc);
 		void print_var(void);

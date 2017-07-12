@@ -11,13 +11,13 @@ using scatter::io::out_handler;
 namespace NS = scatter::surfaces;
 using enumspace::surfmode_enum;
 
-double NS::cutoff_gamma;
+DOUBLE_T NS::cutoff_gamma;
 
-size_t NS::surfnum;
+UINT_T NS::surfnum;
 std::vector<surfmode_enum> NS::surfmode;
-std::vector<std::vector<double> > NS::surfpara;
+std::vector<std::vector<DOUBLE_T> > NS::surfpara;
 std::vector<surfmode_enum> NS::gammamode;
-std::vector<std::vector<double> > NS::gammapara; 
+std::vector<std::vector<DOUBLE_T> > NS::gammapara; 
 
 // init surfaces parameters 
 void scatter::surfaces::load_var(const rapidjson::Document& doc)
@@ -34,7 +34,7 @@ void scatter::surfaces::load_var(const rapidjson::Document& doc)
 		;
 }
 
-// print out surfaces parameters
+// prINT_T out surfaces parameters
 void scatter::surfaces::print_var(void)
 {
 	using namespace scatter::surfaces;

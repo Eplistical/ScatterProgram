@@ -11,12 +11,12 @@
 namespace surfaces_collection{
     class constant : public basesurf{
         private:
-        double A;
+        DOUBLE_T A;
 
         public:
-        explicit constant(const std::vector<double>& paralist){
+        explicit constant(const std::vector<DOUBLE_T>& paralist){
             Npara = 1;
-            para = std::vector<double>(paralist.begin(), paralist.begin() + Npara);
+            para = std::vector<DOUBLE_T>(paralist.begin(), paralist.begin() + Npara);
             A = para.at(0);
 
             mode << "constant" << std::endl;
@@ -25,11 +25,11 @@ namespace surfaces_collection{
                  ;
         }
 
-        double U(double x) const{
+        DOUBLE_T U(DOUBLE_T x) const{
             return A;
         }
 
-        double dUdx(double x) const{
+        DOUBLE_T dUdx(DOUBLE_T x) const{
             return 0.0;
         }
     };

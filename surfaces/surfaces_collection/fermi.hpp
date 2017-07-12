@@ -11,15 +11,15 @@
 namespace surfaces_collection{
     class fermi : public basesurf{
         private:
-        double A;
-        double B;
-        double C;
-        double D;
+        DOUBLE_T A;
+        DOUBLE_T B;
+        DOUBLE_T C;
+        DOUBLE_T D;
         
         public:
-        explicit fermi(const std::vector<double>& paralist){
+        explicit fermi(const std::vector<DOUBLE_T>& paralist){
             Npara = 4;
-            para = std::vector<double>(paralist.begin(), paralist.begin() + Npara);
+            para = std::vector<DOUBLE_T>(paralist.begin(), paralist.begin() + Npara);
             A = para.at(0);
             B = para.at(1);
             C = para.at(2);
@@ -34,13 +34,13 @@ namespace surfaces_collection{
                  ;
         }
 
-        double U(double x) const{
-            double tmp = exp(-C * (x - D));
+        DOUBLE_T U(DOUBLE_T x) const{
+            DOUBLE_T tmp = exp(-C * (x - D));
             return B + isinf(tmp)?0.0:A / (1.0 + tmp);
         }
 
-        double dUdx(double x) const{
-            double tmp = exp(-C * (x - D));
+        DOUBLE_T dUdx(DOUBLE_T x) const{
+            DOUBLE_T tmp = exp(-C * (x - D));
             return isinf(tmp)?0.0:A * C * tmp / pow(1.0 + tmp, 2);
         }
     };

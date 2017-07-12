@@ -14,18 +14,18 @@ void simulation::generate_initstate(void){
 	using enumspace::initmode_enum;
 
 	// get simulation properties
-	const std::vector<double> sigmar = pow(inittemp / omega.at(elestate) / omega.at(elestate) / mass, 0.5);
-	const std::vector<double> sigmap = pow(inittemp * mass, 0.5);
+	const std::vector<DOUBLE_T> sigmar = pow(inittemp / omega.at(elestate) / omega.at(elestate) / mass, 0.5);
+	const std::vector<DOUBLE_T> sigmap = pow(inittemp * mass, 0.5);
 
 	// prepare r0p0
-	std::vector<double> r, p, rp;
-	double tmp;
+	std::vector<DOUBLE_T> r, p, rp;
+	DOUBLE_T tmp;
 	// loop over Ntraj
-	for(size_t traj = 0; traj < Ntraj; ++traj){
+	for(UINT_T traj = 0; traj < Ntraj; ++traj){
 		r.clear();
 		p.clear();
 		// loop over dim
-		for(size_t d = 0; d < dim; ++d){
+		for(UINT_T d = 0; d < dim; ++d){
 			if(initmode.at(d) == initmode_enum::DELTA){
 				r.push_back(initravg.at(d));
 				p.push_back(initpavg.at(d));

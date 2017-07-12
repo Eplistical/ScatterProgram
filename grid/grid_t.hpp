@@ -9,51 +9,51 @@ namespace scatter{
 	class grid_t{
 		private:
 			// data 
-			std::vector<double> _rmin;
-			std::vector<double> _rmax;
-			std::vector<double> _dr;
-			std::vector<size_t> _Nr;
-			std::vector<double> _fef;
-			size_t _forcelen;
-			size_t _efriclen;
-			size_t _fBCMElen;
-			size_t _forceoffset;
-			size_t _efricoffset;
-			size_t _fBCMEoffset;
+			std::vector<DOUBLE_T> _rmin;
+			std::vector<DOUBLE_T> _rmax;
+			std::vector<DOUBLE_T> _dr;
+			std::vector<UINT_T> _Nr;
+			std::vector<DOUBLE_T> _fef;
+			UINT_T _forcelen;
+			UINT_T _efriclen;
+			UINT_T _fBCMElen;
+			UINT_T _forceoffset;
+			UINT_T _efricoffset;
+			UINT_T _fBCMEoffset;
 
 			// program-dependent 
-			size_t r_to_index_filtered(const std::vector<double>& r) const;
+			UINT_T r_to_index_filtered(const std::vector<DOUBLE_T>& r) const;
 		public:
 			// constructor
 			grid_t() = default;
 			~grid_t() = default;
 			grid_t(const grid_t&) = default;
 			grid_t& operator=(const grid_t&) = default;
-			explicit grid_t(const std::vector<double>& rmin, const std::vector<double>& rmax, const std::vector<size_t>& Nr);
+			explicit grid_t(const std::vector<DOUBLE_T>& rmin, const std::vector<DOUBLE_T>& rmax, const std::vector<UINT_T>& Nr);
 			// setter
-			std::vector<double>& get_fef_ref(void);
+			std::vector<DOUBLE_T>& get_fef_ref(void);
 			void alloc_fef_space(void);
-			void calc_fef(size_t S0, size_t S1, size_t index);
+			void calc_fef(UINT_T S0, UINT_T S1, UINT_T index);
 			// getter
-			std::vector<double> get_grid(size_t d) const;
-			std::vector<double> get_rmin(void) const;
-			std::vector<double> get_rmax(void) const;
-			std::vector<double> get_dr(void) const;
-			std::vector<size_t> get_Nr(void) const;
-			double get_rmin(size_t d) const;
-			double get_rmax(size_t d) const;
-			double get_dr(size_t d) const;
-			size_t get_Nr(size_t d) const;
-			size_t get_Ntot(void) const;
-			size_t get_forcelen(void) const;
-			size_t get_efriclen(void) const;
-			size_t get_fBCMElen(void) const;
-			size_t get_feflen(void) const;
-			std::vector<double> get_force(const std::vector<double>& r) const;
-			std::vector<double> get_efric(const std::vector<double>& r) const;
-			std::vector<double> get_fBCME(const std::vector<double>& r) const;
-			size_t r_to_index(const std::vector<double>& r) const;
-			std::vector<double> index_to_r(size_t) const;
+			std::vector<DOUBLE_T> get_grid(UINT_T d) const;
+			std::vector<DOUBLE_T> get_rmin(void) const;
+			std::vector<DOUBLE_T> get_rmax(void) const;
+			std::vector<DOUBLE_T> get_dr(void) const;
+			std::vector<UINT_T> get_Nr(void) const;
+			DOUBLE_T get_rmin(UINT_T d) const;
+			DOUBLE_T get_rmax(UINT_T d) const;
+			DOUBLE_T get_dr(UINT_T d) const;
+			UINT_T get_Nr(UINT_T d) const;
+			UINT_T get_Ntot(void) const;
+			UINT_T get_forcelen(void) const;
+			UINT_T get_efriclen(void) const;
+			UINT_T get_fBCMElen(void) const;
+			UINT_T get_feflen(void) const;
+			std::vector<DOUBLE_T> get_force(const std::vector<DOUBLE_T>& r) const;
+			std::vector<DOUBLE_T> get_efric(const std::vector<DOUBLE_T>& r) const;
+			std::vector<DOUBLE_T> get_fBCME(const std::vector<DOUBLE_T>& r) const;
+			UINT_T r_to_index(const std::vector<DOUBLE_T>& r) const;
+			std::vector<DOUBLE_T> index_to_r(size_t) const;
 	};
 };
 #endif

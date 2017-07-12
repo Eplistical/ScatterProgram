@@ -3,7 +3,6 @@
 #include "debugtools.hpp"
 #endif
 
-#include <string>
 #include <vector>
 #include "rem.hpp"
 #include "io.hpp"
@@ -17,33 +16,33 @@ using scatter::io::out_handler;
 namespace NS = scatter::simulation;
 using enumspace::initmode_enum;
 
-std::vector<double> NS::mass;
-std::vector<double> NS::omega;
-size_t NS::Ntraj;
-size_t NS::Nstep;
-double NS::EndT;
-double NS::dt;
-size_t NS::Anastep;
+std::vector<DOUBLE_T> NS::mass;
+std::vector<DOUBLE_T> NS::omega;
+UINT_T NS::Ntraj;
+UINT_T NS::Nstep;
+DOUBLE_T NS::EndT;
+DOUBLE_T NS::dt;
+UINT_T NS::Anastep;
 
 // for init state
-bool NS::prepinit;
-double NS::inittemp;
-size_t NS::vibstate;
-size_t NS::elestate;
-std::vector<double> NS::initravg;
-std::vector<double> NS::initpavg;
+BOOL_T NS::prepinit;
+DOUBLE_T NS::inittemp;
+UINT_T NS::vibstate;
+UINT_T NS::elestate;
+std::vector<DOUBLE_T> NS::initravg;
+std::vector<DOUBLE_T> NS::initpavg;
 
 std::vector<initmode_enum> NS::initmode;
-std::vector<double> NS::r0p0;
+std::vector<DOUBLE_T> NS::r0p0;
 
 
 // helper function
 static void extract_omega(void){
 	// extract omega for all harmonic surfaces
 	using namespace scatter;
-	std::vector<double> tmp;
-	for(size_t i = 0; i < surfaces::surfnum; ++i){
-		for(size_t d = 0; d < rem::dim; ++d){
+	std::vector<DOUBLE_T> tmp;
+	for(UINT_T i = 0; i < surfaces::surfnum; ++i){
+		for(UINT_T d = 0; d < rem::dim; ++d){
 			if(surfaces::surfmode.at(d + i * rem::dim) == enumspace::surfmode_enum::HARMONIC){
 				tmp.push_back( pow(surfaces::surfpara.at(d + i * rem::dim).at(0) / simulation::mass.at(d), 0.5) );
 			}
@@ -75,7 +74,7 @@ void scatter::simulation::load_var(const rapidjson::Document& doc){
 	extract_omega();
 }
 
-// print out simulation parameters
+// prINT_T out simulation parameters
 void scatter::simulation::print_var(void){
 	using namespace scatter::simulation;
 	out_handler.info("simulation info");

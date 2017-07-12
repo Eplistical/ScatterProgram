@@ -1,5 +1,4 @@
 #include "types.hpp"
-#include <string>
 #include <iostream>
 #include <vector>
 #include <stdexcept>
@@ -17,7 +16,7 @@ using namespace scatter;
 using ioer::output_t;
 using ioer::input_t;
 
-void rwinit(char op)
+void rwinit(CHAR_T op)
 {
 	using scatter::rem::dim;
 	using scatter::simulation::mass;
@@ -50,7 +49,7 @@ void rwinit(char op)
 	}
 }
 
-void rwdat(char op){
+void rwdat(CHAR_T op){
 	/**
 	 * datfile structure:
 	 * 	 dim (uint64)
@@ -70,11 +69,11 @@ void rwdat(char op){
 		// -- header part -- //
 		dest.write(dim, surfnum, kT, Gamma0, mass);
 		// surfaces para info
-		for(size_t d = 0; d < dim; ++d){
+		for(UINT_T d = 0; d < dim; ++d){
 			dest.write(surfaces_obj.get_gamma_para(d));
 		}
-		for(size_t i = 0; i < surfnum; i++){
-			for(size_t d = 0; d < dim; d++){
+		for(UINT_T i = 0; i < surfnum; i++){
+			for(UINT_T d = 0; d < dim; d++){
 				dest.write(surfaces_obj.get_energy_para(i, d));
 			}
 		}
@@ -104,11 +103,11 @@ void rwdat(char op){
 		// surfaces & gamma para info 
 		auto gammapara_read = gammapara;
 		auto surfpara_read = surfpara;
-		for (size_t i = 0; i < 1; ++i) {
+		for (UINT_T i = 0; i < 1; ++i) {
 			source.read(gammapara_read[i]);
 			assert(gammapara[i] == gammapara_read[i]);
 		}
-		for (size_t i = 0; i < surfnum; ++i) {
+		for (UINT_T i = 0; i < surfnum; ++i) {
 			source.read(surfpara_read[i]);
 			assert(surfpara[i] == surfpara_read[i]);
 		}
@@ -124,7 +123,7 @@ void rwdat(char op){
 		assert(grid_obj.get_dr() == dr_read);
 
 		// -- data part, for assignment -- //
-		std::vector<double>& fef = grid_obj.get_fef_ref();
+		std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 		fef.resize(grid_obj.get_feflen());
 		source.read(fef);
 		source.close();

@@ -7,7 +7,7 @@
 
 namespace scatter{
 	namespace simulation{
-		void EF(particle_t& ptcl, size_t trajID);
+		void EF(particle_t& ptcl, UINT_T trajID);
 	};
 };
 

@@ -1,16 +1,15 @@
 #include "types.hpp"
 #include <iostream>
-#include <string>
 #include "boost/filesystem.hpp"
 #include "vars.hpp"
 #include "io_var.hpp"
 #include "ioer.hpp"
 
-std::string scatter::io::jsonfile;
-std::string scatter::io::datfile;
-std::string scatter::io::initfile;
-std::string scatter::io::outfile;
-std::string scatter::io::logfile;
+STRING_T scatter::io::jsonfile;
+STRING_T scatter::io::datfile;
+STRING_T scatter::io::initfile;
+STRING_T scatter::io::outfile;
+STRING_T scatter::io::logfile;
 
 ioer::output_t scatter::io::out_handler;
 ioer::output_t scatter::io::log_handler;
@@ -23,12 +22,12 @@ void scatter::io::load_var(void)
 
 	fs::path infile(rem::infile);
 	infile = fs::absolute(infile);
-	std::string parent = infile.parent_path().string();
+	STRING_T parent = infile.parent_path().string();
 	if(parent[parent.length() - 1] != '/'){
 		parent += "/";
 	}
-	const std::string fname = infile.filename().string();
-	const std::string stem = infile.stem().string();
+	const STRING_T fname = infile.filename().string();
+	const STRING_T stem = infile.stem().string();
 
 	jsonfile = parent + fname + ".json";
 	datfile = parent + "." + rem::jobname + ".dat";
@@ -37,7 +36,7 @@ void scatter::io::load_var(void)
 	logfile = parent + rem::jobname + ".log";
 }
 
-// print out io parameters
+// prINT_T out io parameters
 void scatter::io::print_var(void)
 {
 	using namespace scatter::io;
