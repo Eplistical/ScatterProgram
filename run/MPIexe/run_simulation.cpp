@@ -13,7 +13,7 @@
 #include "grid.hpp"
 #include "surfaces.hpp"
 #include "simulation.hpp"
-#include "mpier.hpp"
+#include "MPIer.hpp"
 #include "MPI_helper.hpp"
 
 using scatter::io::out_handler;
@@ -38,16 +38,16 @@ VOID_T run_simulation(void)
 	surfaces_obj.set_energy(surfmode, surfpara);
 
 	// assign job
-	std::vector<UINT_T> mybatch = mpier::assign_job(simulation::Ntraj);
+	std::vector<UINT_T> mybatch = MPIer::assign_job(simulation::Ntraj);
 	std::vector<particle_t> final_states;
 	UINT_T step;
 	particle_t ptcl;
 
 	// load init
-	if (mpier::master) {
+	if (MPIer::master) {
 		io::loadinit();
 	}
-	mpier::bcast(0, simulation::r0p0);
+	MPIer::bcast(0, simulation::r0p0);
 
 	// containers for final info
 	std::vector<UINT_T> job_info = mybatch;
@@ -62,7 +62,7 @@ VOID_T run_simulation(void)
 		ptcl.ranforce.assign(dim, 0.0);
 		ptcl.r = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
 		ptcl.p = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
-		cout << mpier::rank << "\t" << index << endl;
+		cout << MPIer::rank << "\t" << index << endl;
 
 		step = 0;
 		while (step < Nstep) {
@@ -79,23 +79,23 @@ VOID_T run_simulation(void)
 		final_p_info.insert(final_p_info.end(), ptcl.p.begin(), ptcl.p.end());
 	}
 
-	mpier::barrier();
+	MPIer::barrier();
 
 	// -- collect final info -- //
 	vector<UINT_T> job_info_buf; 
 	vector<UINT_T> surf_info_buf; 
 	vector<DOUBLE_T> r_info_buf; 
 	vector<DOUBLE_T> p_info_buf; 
-	for (UINT_T r = 1; r < mpier::size; ++r) {
-		if (mpier::rank == r) {
-			mpier::send(0,  
+	for (UINT_T r = 1; r < MPIer::size; ++r) {
+		if (MPIer::rank == r) {
+			MPIer::send(0,  
 						job_info, 
 						final_surf_info, 
 						final_r_info, 
 						final_p_info); 
 		}
-		else if (mpier::master) {
-			mpier::recv(r, 
+		else if (MPIer::master) {
+			MPIer::recv(r, 
 						job_info_buf, 
 						surf_info_buf, 
 						r_info_buf, 
@@ -105,11 +105,11 @@ VOID_T run_simulation(void)
 			final_r_info.insert(final_r_info.end(), r_info_buf.begin(), r_info_buf.end());
 			final_p_info.insert(final_p_info.end(), p_info_buf.begin(), p_info_buf.end());
 		}
-		mpier::barrier();
+		MPIer::barrier();
 	}
 
 	// output
-	if (mpier::master) {
+	if (MPIer::master) {
 		STRING_T final_info_file = io::parent_dir + rem::jobname + STRING_T(".final.dat");
 		out_handler.info_nonewline("saving final particle info to ", final_info_file, "... ");
 		io::save( final_info_file, 
@@ -125,27 +125,27 @@ VOID_T run_simulation(void)
 int main(int argc, char** argv)
 {
 	// MPI setup
-	mpier::setup();
+	MPIer::setup();
 
 	// parse infile 
-	if(mpier::master) {
+	if(MPIer::master) {
 		// parse infile 
 		if(setup(argc, argv) != 0) return 0; 
 		assert(rem::jobtype == "simulation");
 	}
 
 	// -- program begin -- //
-	if (mpier::master) {
+	if (MPIer::master) {
 		// parameter output
 		out_handler.info("Program: scatter-simulation-MPI");
 		out_handler.info(timer::now());
 		timer::tic();
 #if _DEBUG >= 1
-		if (mpier::master) log_handler.info( "debug: debug level ", _DEBUG, "\n");
+		if (MPIer::master) log_handler.info( "debug: debug level ", _DEBUG, "\n");
 #endif
 		out_handler.keyval()
 			("infile", rem::infile) 
-			("MPI-threadNum", mpier::size)
+			("MPI-threadNum", MPIer::size)
 			;
 		rem::print_var();
 		io::print_var();
@@ -159,20 +159,20 @@ int main(int argc, char** argv)
 
 	// run program
 #if _DEBUG >= 1
-	if (mpier::master) log_handler.info( "debug: start running core part");
+	if (MPIer::master) log_handler.info( "debug: start running core part");
 #endif
 
 	run_simulation();
 
 #if _DEBUG >= 1
-	if (mpier::master) log_handler.info( "debug: ending");
+	if (MPIer::master) log_handler.info( "debug: ending");
 #endif
 
 	// ending
-	if(mpier::master) {
+	if(MPIer::master) {
 		out_handler.info(timer::toc());
 		out_handler.info(timer::now());
 	}
 
-	mpier::finalize();
+	MPIer::finalize();
 }

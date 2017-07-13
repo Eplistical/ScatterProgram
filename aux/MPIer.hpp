@@ -19,7 +19,7 @@
 #include "mpi.h"
 #include "type_traiter.hpp"
 
-namespace mpier{
+namespace MPIer{
 	using namespace std;
 	using namespace type_traiter;
 
