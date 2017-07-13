@@ -59,53 +59,58 @@ namespace mpier{
 	}
 
 	// -- send -- //
-	inline VOID_T send(INT_T to, INT_T tag){  }
+	inline VOID_T send(INT_T to){  }
 
 	template<typename ParamType>
 		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), VOID_T>::type
-		send(INT_T to, INT_T tag, ParamType& x)
+		send(INT_T to, ParamType& x)
 		{
+			INT_T tag = rank; // default tag: rank of from thread
 			MPI::COMM_WORLD.Send(&x, 1, typemap[typeid(ParamType)], to, tag);
 		}
 
 	template<typename ParamType>
 		inline typename enable_if<is_bool<ParamType>::value, VOID_T>::type
-		send(INT_T to, INT_T tag, ParamType& x) 
+		send(INT_T to, ParamType& x) 
 		{
+			INT_T tag = rank; // default tag: rank of from thread
 			INT_T tmp = static_cast<INT_T>(x);
 			MPI::COMM_WORLD.Send(&tmp, 1, typemap[typeid(INT_T)], to, tag);
 		}
 
 	template<typename ParamType>
 		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, VOID_T>::type
-		send(INT_T to, INT_T tag, ParamType& x)
+		send(INT_T to, ParamType& x)
 		{
+			INT_T tag = rank; // default tag: rank of from thread
 			UINT_T _size = x.size();
-			MPI::COMM_WORLD.Send(&_size, 1, typemap[typeid(UINT_T)], to, -1);
+			MPI::COMM_WORLD.Send(&_size, 1, typemap[typeid(UINT_T)], to, tag);
 			MPI::COMM_WORLD.Send(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], to, tag);
 		}
 
 	template<typename ParamType, typename ... Types>
-		inline VOID_T send(INT_T to, INT_T tag, ParamType& x, Types& ... otherx)
+		inline VOID_T send(INT_T to, ParamType& x, Types& ... otherx)
 		{
-			send(to, tag, x);
-			send(to, tag, otherx ...);
+			send(to, x);
+			send(to, otherx ...);
 		}
 
 	// -- recv -- //
-	inline VOID_T recv(INT_T from, INT_T tag){  }
+	inline VOID_T recv(INT_T from){  }
 
 	template<typename ParamType>
 		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), VOID_T>::type
-		recv(INT_T from, INT_T tag, ParamType& x)
+		recv(INT_T from, ParamType& x)
 		{
+			INT_T tag = from; // default tag: rank of from thread
 			MPI::COMM_WORLD.Recv(&x, 1, typemap[typeid(ParamType)], from, tag);
 		}
 
 	template<typename ParamType>
 		inline typename enable_if<is_bool<ParamType>::value, VOID_T>::type
-		recv(INT_T from, INT_T tag, ParamType& x) 
+		recv(INT_T from, ParamType& x) 
 		{
+			INT_T tag = from; // default tag: rank of from thread
 			INT_T tmp;
 			MPI::COMM_WORLD.Recv(&tmp, 1, typemap[typeid(INT_T)], from, tag);
 			x = static_cast<BOOL_T>(tmp);
@@ -113,19 +118,20 @@ namespace mpier{
 
 	template<typename ParamType>
 		inline typename enable_if<is_vector<ParamType>::value || is_string<ParamType>::value, VOID_T>::type
-		recv(INT_T from, INT_T tag, ParamType& x)
+		recv(INT_T from, ParamType& x)
 		{
+			INT_T tag = from; // default tag: rank of from thread
 			UINT_T _size;
-			MPI::COMM_WORLD.Recv(&_size, 1, typemap[typeid(UINT_T)], from, -1);
+			MPI::COMM_WORLD.Recv(&_size, 1, typemap[typeid(UINT_T)], from, tag);
 			x.resize(_size);
 			MPI::COMM_WORLD.Recv(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], from, tag);
 		}
 
 	template<typename ParamType, typename ... Types>
-		inline VOID_T recv(INT_T from, INT_T tag, ParamType& x, Types& ... otherx)
+		inline VOID_T recv(INT_T from, ParamType& x, Types& ... otherx)
 		{
-			recv(from, tag, x);
-			recv(from, tag, otherx ...);
+			recv(from, x);
+			recv(from, otherx ...);
 		}
 	
 	
