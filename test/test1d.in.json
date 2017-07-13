@@ -124,13 +124,6 @@
             "datatype": "i",
             "datamodel": "s"
         },
-        "prepinit": {
-            "value": [
-                "0"
-            ],
-            "datatype": "b",
-            "datamodel": "s"
-        },
         "inittemp": {
             "value": [
                 "0.5"

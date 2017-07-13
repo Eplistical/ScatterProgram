@@ -19,7 +19,6 @@ namespace scatter{
 		extern UINT_T Anastep;
 
 		// for init state
-		extern BOOL_T prepinit;
 		extern DOUBLE_T inittemp;
 		extern UINT_T vibstate;
 		extern UINT_T elestate;

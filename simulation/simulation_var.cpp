@@ -25,7 +25,6 @@ DOUBLE_T NS::dt;
 UINT_T NS::Anastep;
 
 // for init state
-BOOL_T NS::prepinit;
 DOUBLE_T NS::inittemp;
 UINT_T NS::vibstate;
 UINT_T NS::elestate;
@@ -61,7 +60,6 @@ VOID_T scatter::simulation::load_var(const rapidjson::Document& doc){
 		("EndT", EndT)
 		("Nstep", Nstep)
 		("Anastep", Anastep)
-		("prepinit", prepinit)
 		("inittemp", inittemp)
 		("initravg", initravg)
 		("initpavg", initpavg)
@@ -87,7 +85,6 @@ VOID_T scatter::simulation::print_var(VOID_T){
 		("Nstep", Nstep)
 		("dt", dt)
 		("Anastep", Anastep)
-		("prepinit", prepinit)
 		("inittemp", inittemp)
 		("initravg", initravg)
 		("initpavg", initpavg)

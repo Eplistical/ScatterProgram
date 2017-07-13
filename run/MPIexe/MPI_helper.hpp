@@ -48,6 +48,10 @@ namespace scatter
 		for (UINT_T i = 0; i < rem::dim * surfaces::surfnum; ++i) {
 			mpier::bcast(0, surfaces::surfpara[i]);
 		}
+
+		// broadcast simulation para
+		mpier::bcast(0, simulation::mass, simulation::omega, simulation::Ntraj, simulation::Nstep, simulation::EndT, 
+						simulation::dt, simulation::Anastep, simulation::inittemp, simulation::vibstate, simulation::elestate);
 	}
 };
 

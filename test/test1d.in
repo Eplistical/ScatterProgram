@@ -28,7 +28,6 @@ $simulation
 
 	#-- init state relateda --#
 
-    prepInit    false
     initTemp    0.5
     vibstate    0
 	elestate	0
