@@ -65,6 +65,7 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 	log_handler.info(hop_from, " -> ", hop_to, "! ");
 #endif 
 		DOUBLE_T to_energy = surfaces_obj.fU(hop_to, ptcl.r);
+		/*
 		// hopping happens
 		if(mode == enumspace::dynamics_mode_enum::CME){
 			CME_hop_recorder.push_back(hop_t(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p));
@@ -72,9 +73,10 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 		else if(mode == enumspace::dynamics_mode_enum::BCME){
 			BCME_hop_recorder.push_back(hop_t(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p));
 		}
+		*/
 	}
 #if _DEBUG >= 4
-	log_handler.info("done. ";
+	log_handler.info("done. ");
 #endif 
 	return hop_to;
 }

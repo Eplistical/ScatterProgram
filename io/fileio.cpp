@@ -109,6 +109,7 @@ VOID_T rwdat(CHAR_T op){
 		}
 		for (UINT_T i = 0; i < surfnum; ++i) {
 			source.read(surfpara_read[i]);
+			//std::cout << i << "\t" << surfpara[i] << "\t" << surfpara_read[i] << std::endl;
 			assert(surfpara[i] == surfpara_read[i]);
 		}
 

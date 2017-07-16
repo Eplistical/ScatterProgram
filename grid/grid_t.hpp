@@ -2,12 +2,11 @@
 #define _SCATTER_GRID_T_HPP
 // module for grid_t
 #include "types.hpp"
-
 #include <vector>
 
 namespace scatter{
 	class grid_t{
-		private:
+		protected:
 			// data 
 			std::vector<DOUBLE_T> _rmin;
 			std::vector<DOUBLE_T> _rmax;
@@ -20,21 +19,22 @@ namespace scatter{
 			UINT_T _forceoffset;
 			UINT_T _efricoffset;
 			UINT_T _fBCMEoffset;
-
-			// program-dependent 
-			UINT_T r_to_index_filtered(const std::vector<DOUBLE_T>& r) const;
 		public:
-			// constructor
+			// -- ctor/dtor/copy/move -- //
+			explicit grid_t(const std::vector<DOUBLE_T>& rmin, const std::vector<DOUBLE_T>& rmax, const std::vector<UINT_T>& Nr);
 			grid_t() = default;
 			~grid_t() = default;
 			grid_t(const grid_t&) = default;
 			grid_t& operator=(const grid_t&) = default;
-			explicit grid_t(const std::vector<DOUBLE_T>& rmin, const std::vector<DOUBLE_T>& rmax, const std::vector<UINT_T>& Nr);
-			// setter
+			grid_t(grid_t&&) = default;
+			grid_t& operator=(grid_t&&) = default;
+
+			// -- setters --//
 			std::vector<DOUBLE_T>& get_fef_ref(VOID_T);
 			VOID_T alloc_fef_space(VOID_T);
 			VOID_T calc_fef(UINT_T S0, UINT_T S1, UINT_T index);
-			// getter
+
+			// -- getters -- //
 			std::vector<DOUBLE_T> get_grid(UINT_T d) const;
 			std::vector<DOUBLE_T> get_rmin(VOID_T) const;
 			std::vector<DOUBLE_T> get_rmax(VOID_T) const;
@@ -52,7 +52,11 @@ namespace scatter{
 			std::vector<DOUBLE_T> get_force(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_efric(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_fBCME(const std::vector<DOUBLE_T>& r) const;
+
+			// -- conversion between r & index -- //
+			UINT_T r_to_index_raw(const std::vector<DOUBLE_T>& r) const;
 			UINT_T r_to_index(const std::vector<DOUBLE_T>& r) const;
+			std::vector<DOUBLE_T> index_to_r_raw(UINT_T index) const;
 			std::vector<DOUBLE_T> index_to_r(UINT_T index) const;
 	};
 };

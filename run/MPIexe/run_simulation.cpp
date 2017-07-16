@@ -43,17 +43,27 @@ VOID_T run_simulation(void)
 	UINT_T step;
 	particle_t ptcl;
 
-	// load init
+	// load init & fef data
 	if (MPIer::master) {
 		io::loadinit();
+		io::loaddat();
 	}
 	MPIer::bcast(0, simulation::r0p0);
+	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
+	MPIer::bcast(0, fef);
 
 	// containers for final info
 	std::vector<UINT_T> job_info = mybatch;
 	std::vector<UINT_T> final_surf_info;
 	std::vector<DOUBLE_T> final_r_info;
 	std::vector<DOUBLE_T> final_p_info;
+	// containers for dynamic info
+	const UINT_T Nrecord = Nstep / Anastep + 1;
+	std::vector<DOUBLE_T> dyn_info_CME;
+	std::vector<DOUBLE_T> dyn_info_BCME;
+	std::vector<DOUBLE_T> dyn_info_EF;
+	std::vector<DOUBLE_T> tmp;
+
 
 	// -- do job! -- //
 	for (UINT_T index : mybatch) {
@@ -62,12 +72,13 @@ VOID_T run_simulation(void)
 		ptcl.ranforce.assign(dim, 0.0);
 		ptcl.r = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
 		ptcl.p = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
-		cout << MPIer::rank << "\t" << index << endl;
-
+	 	//t             <x>             <z>           <Ekx>           <Ekz>            <n1>      Nout'(-20)
 		step = 0;
 		while (step < Nstep) {
-			// store anastep data
+			// dynamic anal
 			if (step % Anastep == 0) {
+				tmp = anal(ptcl, enumspace::analmode::dyn_info);
+				dyn_info_CME.insert(dyn_info_CME.end(), tmp.begin(), tmp.end());
 			}
 			// evolve
 			CME(ptcl, index);

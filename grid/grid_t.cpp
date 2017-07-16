@@ -120,20 +120,22 @@ UINT_T grid_t::get_feflen(VOID_T) const
 
 std::vector<DOUBLE_T> grid_t::get_force(const std::vector<DOUBLE_T>& r) const
 {
-	return subvec(_fef, r_to_index_filtered(r) * dim, dim);
+	return subvec(_fef, r_to_index(r) * dim, dim);
 }
 
 std::vector<DOUBLE_T> grid_t::get_efric(const std::vector<DOUBLE_T>& r) const
 {
-	return subvec(_fef, _efricoffset + r_to_index_filtered(r) * dim2, dim2);
+	return subvec(_fef, _efricoffset + r_to_index(r) * dim2, dim2);
 }
 
 std::vector<DOUBLE_T> grid_t::get_fBCME(const std::vector<DOUBLE_T>& r) const
 {
-	return subvec(_fef, _fBCMEoffset + r_to_index_filtered(r) * dim, dim);
+	return subvec(_fef, _fBCMEoffset + r_to_index(r) * dim, dim);
 }
 
-UINT_T grid_t::r_to_index(const std::vector<DOUBLE_T>& r) const
+// -- r_to_index -- //
+
+UINT_T grid_t::r_to_index_raw(const std::vector<DOUBLE_T>& r) const
 {
 	UINT_T rst = 0;
 	INT_T coef = 1;
@@ -143,7 +145,7 @@ UINT_T grid_t::r_to_index(const std::vector<DOUBLE_T>& r) const
 		// throw if out of range
 		if (d_index >= _Nr.at(d) or d_index < 0) {
 			std::stringstream errmsg;
-			errmsg << "r_to_index: r[" << d << "] = " << r.at(d) << " out of range!\n";
+			errmsg << "r_to_index_raw: r[" << d << "] = " << r.at(d) << " out of range!\n";
 			throw scatter::OutofRangeError(errmsg.str());
 		}
 		rst += d_index * coef;
@@ -152,7 +154,19 @@ UINT_T grid_t::r_to_index(const std::vector<DOUBLE_T>& r) const
 	return rst;
 }
 
-std::vector<DOUBLE_T> grid_t::index_to_r(UINT_T index) const
+UINT_T grid_t::r_to_index(const std::vector<DOUBLE_T>& r) const
+{
+	// wrapper for r_to_index_raw
+	// THIS IS FOR 2D SCATTERING MODEL ONLY!
+	// modify z to make all z < zmin be treated as zmin
+	std::vector<DOUBLE_T> effect_r = r;
+	effect_r.at(1) = std::max(_rmin.at(1), effect_r.at(1));
+	return r_to_index_raw(effect_r);
+}
+
+// -- index_to_r -- //
+
+std::vector<DOUBLE_T> grid_t::index_to_r_raw(UINT_T index) const
 {
 	UINT_T coef = get_Ntot();
 	std::vector<DOUBLE_T> rst(rem::dim);
@@ -163,7 +177,7 @@ std::vector<DOUBLE_T> grid_t::index_to_r(UINT_T index) const
 		// throw if out of range
 		if (d_index >= _Nr.at(d) or d_index < 0) {
 			std::stringstream errmsg;
-			errmsg << "index_to_r: dimension " << d << "is detected out of range!\n";
+			errmsg << "index_to_r_raw: dimension " << d << "is detected out of range!\n";
 			throw scatter::OutofRangeError(errmsg.str());
 		}
 		rst.at(d) = _rmin.at(d) + _dr.at(d) * d_index;
@@ -172,11 +186,8 @@ std::vector<DOUBLE_T> grid_t::index_to_r(UINT_T index) const
 	return rst;
 }
 
-UINT_T grid_t::r_to_index_filtered(const std::vector<DOUBLE_T>& r) const
+std::vector<DOUBLE_T> grid_t::index_to_r(UINT_T index) const
 {
-	// THIS IS FOR 2D SCATTERING MODEL ONLY!
-	// modify z to make all z < zmin be treated as zmin
-	std::vector<DOUBLE_T> effect_r = r;
-	effect_r.at(1) = std::max(_rmin.at(1), effect_r.at(1));
-	return r_to_index(effect_r);
+	// wrapper for index_to_r_raw
+	return index_to_r_raw(index);
 }
