@@ -90,9 +90,7 @@ namespace ioer {
 				io_base_obj.open(path, mode | ios::out);
 			}
 
-			~output_t() { 
-				close();
-			};
+			~output_t() { };
 
 			// no copy or assign
 			output_t(const output_t&) = delete;
@@ -112,6 +110,7 @@ namespace ioer {
 				io_base_obj.open(path, mode);
 				_path = path;
 			}
+
 			void close(void) 
 			{
 				io_base_obj.close(_path);

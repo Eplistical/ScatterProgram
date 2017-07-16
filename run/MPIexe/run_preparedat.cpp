@@ -17,7 +17,7 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
-VOID_T run_preparedat(void)
+VOID_T run_preparedat(VOID_T)
 {
 	/* preparedat run: prepare force & efric & fBCME 
 	 * 	for given grid & surfaces.

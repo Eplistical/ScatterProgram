@@ -18,7 +18,7 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
-VOID_T run_surface(void){
+VOID_T run_surface(VOID_T){
 	/* surface run: generate a file containning surfaces data
 	 * 	that can be used to plot out surfaces.
 	 *

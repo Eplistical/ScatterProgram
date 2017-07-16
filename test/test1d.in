@@ -11,7 +11,7 @@ $end
 $grid
 	rmin		-2		
 	rmax		2		
-	Nr			10000
+	Nr			1000
 
 	#-- fef related --#
 
@@ -20,10 +20,10 @@ $grid
 $end
 
 $simulation
-    Ntraj       20
+    Ntraj       1
     mass        14000
-    EndT        100
-    Nstep       10000
+    EndT        10000
+    Nstep       1000000
     Anastep     100
 
 	#-- init state relateda --#

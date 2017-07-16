@@ -6,8 +6,10 @@
 #include <vector>
 #include "simulation.hpp"
 
-namespace scatter{
-	namespace simulation{
+namespace scatter
+{
+	namespace simulation
+	{
 
 		struct hop_t{
 			UINT_T id;
@@ -28,8 +30,8 @@ namespace scatter{
 		extern std::vector<hop_t> CME_hop_recorder;
 		extern std::vector<hop_t> BCME_hop_recorder;
 
-		void CME(particle_t& ptcl, UINT_T trajID);
-		void BCME(particle_t& ptcl, UINT_T trajID);
+		VOID_T CME(particle_t& ptcl, UINT_T trajID);
+		VOID_T BCME(particle_t& ptcl, UINT_T trajID);
 	};
 };
 

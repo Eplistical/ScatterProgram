@@ -20,7 +20,17 @@ namespace scatter{
 			~particle_t() = default;
 
 			// setter
-			VOID_T hop(UINT_T s){surf = s;}
+			VOID_T hop(UINT_T s) noexcept {surf = s;}
+
+			// getter
+			std::vector<DOUBLE_T> extract_info(VOID_T) const noexcept
+			{
+				// get info in a single vector (surf, r, p)
+				std::vector<DOUBLE_T> rst { static_cast<DOUBLE_T>(surf) };
+				rst.insert(rst.end(), r.begin(), r.end());
+				rst.insert(rst.end(), p.begin(), p.end());
+				return rst;
+			}
 	};
 };
 

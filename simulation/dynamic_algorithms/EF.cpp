@@ -54,13 +54,13 @@ static std::vector<DOUBLE_T> _EF_get_Ranforce(particle_t& ptcl, enumspace::dynam
     return ranforce;
 }
 
-static void _EF(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
+static VOID_T _EF(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
     ptcl.ranforce = _EF_get_Ranforce(ptcl, mode);
     //velocity_verlet(ptcl, mode, _EF_get_Force);
 }
 
 // API
-void scatter::simulation::EF(particle_t& ptcl, UINT_T trajID) {
+VOID_T scatter::simulation::EF(particle_t& ptcl, UINT_T trajID) {
 	_EF(ptcl, enumspace::dynamics_mode_enum::EF);
 }
 

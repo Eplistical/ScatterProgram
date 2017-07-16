@@ -12,7 +12,7 @@ using namespace scatter::simulation;
 using scatter::particle_t;
 
 // API
-void scatter::simulation::velocity_verlet(particle_t& ptcl, enumspace::dynamics_mode_enum mode, forcefunc_t forcefunc){
+VOID_T scatter::simulation::velocity_verlet(particle_t& ptcl, enumspace::dynamics_mode_enum mode, forcefunc_t forcefunc){
 #if _DEBUG >= 4
 	cout << "velocity_verlet ... ";
 #endif 

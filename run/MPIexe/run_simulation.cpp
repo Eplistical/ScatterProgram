@@ -27,8 +27,9 @@ using namespace scatter;
 template<typename ParamType>
 	using InfoRecoderType = unordered_map<enumspace::dynamics_mode_enum, vector<ParamType> >;
 
+using ParticleCollectionType = unordered_map<enumspace::dynamics_mode_enum, particle_t>;
 
-VOID_T run_simulation(void)
+VOID_T run_simulation(VOID_T)
 {
 	/* simulation run
 	 */
@@ -47,7 +48,6 @@ VOID_T run_simulation(void)
 	std::vector<UINT_T> mybatch = MPIer::assign_job(simulation::Ntraj);
 	std::vector<particle_t> final_states;
 	UINT_T step;
-	particle_t ptcl;
 
 	// load init & fef data
 	if (MPIer::master) {
@@ -58,90 +58,108 @@ VOID_T run_simulation(void)
 	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 	MPIer::bcast(0, fef);
 
-	// basic anal para
+	// basic para
 	std::vector<UINT_T> job_info = mybatch;
 	const UINT_T Nrecord = Nstep / Anastep + 1;
-	std::vector<DOUBLE_T> tmp;
+	std::vector<DOUBLE_T>&& tmp = std::vector<DOUBLE_T>();
+	particle_t init_ptcl;
 
-	// containers for final info
-	InfoRecoderType<UINT_T> final_surf_info;
-	InfoRecoderType<DOUBLE_T> final_r_info;
-	InfoRecoderType<DOUBLE_T> final_p_info;
+	// alogrithms to run
+	std::vector<enumspace::dynamics_mode_enum> algorithms
+	{
+		enumspace::dynamics_mode_enum::CME,
+		//enumspace::dynamics_mode_enum::BCME,
+		//enumspace::dynamics_mode_enum::EF,
+	};
 
-	// containers for dynamic info
-	InfoRecoderType<DOUBLE_T> dyn_info_CME;
-	InfoRecoderType<DOUBLE_T> dyn_info_BCME;
-	InfoRecoderType<DOUBLE_T>dyn_info_EF;
+	// show algorithms 
+	if (MPIer::master) {
+		out_handler.info_nonewline("algorithms: ");
+		for (auto& it : algorithms) {
+			out_handler.info_nonewline(enumspace::dynamics_mode_dict.right.at(it), ", ");
+		}
+		out_handler.newline();
+	}
 
+	// containers for info
+	InfoRecoderType<DOUBLE_T> dyn_info;
+	for (const auto& it : algorithms) {
+		dyn_info[it] = std::vector<DOUBLE_T>();
+	}
 
+	// particle collections
+	ParticleCollectionType ptcl;
+	
 	// -- do job! -- //
 	for (UINT_T index : mybatch) {
-		// initialize praticle
-		ptcl.surf = elestate;
-		ptcl.ranforce.assign(dim, 0.0);
-		ptcl.r = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
-		ptcl.p = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
-	 	// t             <x>             <z>           <Ekx>           <Ekz>            <n1>      Nout'(-20)
+		// load init state
+		init_ptcl = particle_t(elestate);
+		init_ptcl.ranforce.assign(dim, 0);
+		init_ptcl.r = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
+		init_ptcl.p = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
+
+		// initialize praticle for all algorithms
+		for (const auto& it : algorithms) {
+			ptcl[it] = init_ptcl;
+		}
 		step = 0;
 		while (step < Nstep) {
-			// dynamic anal
-			if (step % Anastep == 0) {
-				//tmp = anal(ptcl, enumspace::analmode_enum::dyn_info);
-				//dyn_info_CME.insert(dyn_info_CME.end(), tmp.begin(), tmp.end());
+			// loop over all its
+			for (const auto& it : algorithms) {
+				// record particle info 
+				if (step % Anastep == 0) {
+					tmp = ptcl[it].extract_info();
+					dyn_info[it].insert(dyn_info[it].end(), tmp.begin(), tmp.end());
+				}
+				// evolve
+				(*dynamic_algorithms[it])(ptcl[it], index);
 			}
-			// evolve
-			CME(ptcl, index);
 			++step;
 		}
-		// record final state
-		//final_surf_info.push_back(ptcl.surf);
-		//final_r_info.insert(final_r_info.end(), ptcl.r.begin(), ptcl.r.end());
-		//final_p_info.insert(final_p_info.end(), ptcl.p.begin(), ptcl.p.end());
 	}
 
 	MPIer::barrier();
 
-	// -- collect final info -- //
-	/*
+	// -- collect recorded info -- //
 	vector<UINT_T> job_info_buf; 
-	InfoRecoderType<UINT_T> surf_info_buf; 
-	InfoRecoderType<DOUBLE_T> r_info_buf; 
-	InfoRecoderType<DOUBLE_T> p_info_buf; 
+	vector<DOUBLE_T> dyn_info_buf; 
+
 	for (UINT_T r = 1; r < MPIer::size; ++r) {
 		if (MPIer::rank == r) {
-			MPIer::send(0,  
-						job_info, 
-						final_surf_info, 
-						final_r_info, 
-						final_p_info); 
+			MPIer::send(0, job_info);
+			for (const auto& it : algorithms) {
+				MPIer::send(0, dyn_info[it]);
+			}
 		}
 		else if (MPIer::master) {
-			MPIer::recv(r, 
-						job_info_buf, 
-						surf_info_buf, 
-						r_info_buf, 
-						p_info_buf);
+			MPIer::recv(r, job_info_buf);
 			job_info.insert(job_info.end(), job_info_buf.begin(), job_info_buf.end());
-			final_surf_info.insert(final_surf_info.end(), surf_info_buf.begin(), surf_info_buf.end());
-			final_r_info.insert(final_r_info.end(), r_info_buf.begin(), r_info_buf.end());
-			final_p_info.insert(final_p_info.end(), p_info_buf.begin(), p_info_buf.end());
+
+			for (const auto& it : algorithms) {
+				MPIer::recv(0, dyn_info_buf);
+				dyn_info[it].insert(dyn_info[it].end(), dyn_info_buf.begin(), dyn_info_buf.end());
+			}
 		}
 		MPIer::barrier();
 	}
 
 	// output
 	if (MPIer::master) {
-		STRING_T final_info_file = io::parent_dir + rem::jobname + STRING_T(".final.dat");
-		out_handler.info_nonewline("saving final particle info to ", final_info_file, "... ");
-		io::save( final_info_file, 
-					Ntraj, dim, 
-					job_info, 
-					final_surf_info, 
-					final_r_info, 
-					final_p_info);
+		STRING_T dyn_info_file = io::parent_dir + rem::jobname + STRING_T(".dyn_info.dat");
+		out_handler.info_nonewline("saving particle dynamic info to ", dyn_info_file, "... ");
+		UINT_T Nalgorithm = algorithms.size();
+		UINT_T single_traj_info_size = dyn_info[algorithms[0]].size() / Ntraj;
+
+		io::save_noclose( dyn_info_file, 
+							Ntraj, dim, 
+							Nalgorithm,
+							single_traj_info_size,
+							job_info);
+		for (const auto& it : algorithms) {
+			io::save_noclose(dyn_info_file, dyn_info[it]);
+		}
 		out_handler.info("done.");
 	}
-	*/
 }
 
 int main(int argc, char** argv)

@@ -96,12 +96,12 @@ static std::vector<DOUBLE_T> _CME_get_Force(const particle_t& ptcl, enumspace::d
 #endif 
 }
 
-static void _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode) {
+static VOID_T _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode) {
 #if _DEBUG >= 4
 	log_handler.info_nonewline("debug: _CME: dynamic mode is ", enumspace::dynamics_mode_dict.right.at(mode), ". ");
 #endif
 
- 	ptcl.hop( _CME_hopper(ptcl, trajID, mode) );
+ 	//ptcl.hop( _CME_hopper(ptcl, trajID, mode) );
     velocity_verlet(ptcl, mode, _CME_get_Force);
 
 #if _DEBUG >= 4
@@ -110,10 +110,10 @@ static void _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum 
 }
 
 // API
-void scatter::simulation::CME(particle_t& ptcl, UINT_T trajID) {
+VOID_T scatter::simulation::CME(particle_t& ptcl, UINT_T trajID) {
 	 _CME(ptcl, trajID, enumspace::dynamics_mode_enum::CME);
 }
 
-void scatter::simulation::BCME(particle_t& ptcl, UINT_T trajID) {
+VOID_T scatter::simulation::BCME(particle_t& ptcl, UINT_T trajID) {
 	 _CME(ptcl, trajID, enumspace::dynamics_mode_enum::BCME);
 }

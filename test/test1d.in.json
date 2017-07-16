@@ -67,7 +67,7 @@
         },
         "nr": {
             "value": [
-                "10000"
+                "1000"
             ],
             "datatype": "i",
             "datamodel": "v"
@@ -91,7 +91,7 @@
     "simulation": {
         "ntraj": {
             "value": [
-                "20"
+                "1"
             ],
             "datatype": "i",
             "datamodel": "s"
@@ -105,14 +105,14 @@
         },
         "endt": {
             "value": [
-                "100"
+                "10000"
             ],
             "datatype": "d",
             "datamodel": "s"
         },
         "nstep": {
             "value": [
-                "10000"
+                "1000000"
             ],
             "datatype": "i",
             "datamodel": "s"

@@ -11,21 +11,36 @@ namespace scatter{
 		VOID_T saveinit(VOID_T);
 		VOID_T loadinit(VOID_T);
 
-		// API to save binary file
+		// API to save binary file (one time save)
 		template<typename ... Types>
 			VOID_T save(const STRING_T path, const Types& ... x) 
 			{
 				ioer::output_t dest(path);
 				dest.write(x ...);
+				dest.close();
 			}
 
-		// API to load binary file
+		template<typename ... Types>
+			VOID_T save_noclose(const STRING_T path, const Types& ... x) 
+			{
+				ioer::output_t dest(path);
+				dest.write(x ...);
+			}
+
+		// API to load binary file (one time load)
 		template<typename ... Types>
 			VOID_T load(const STRING_T path, Types& ... x) 
 			{
 				ioer::input_t source(path);
 				source.read(x ...);
+				source.close();
+			}
 
+		template<typename ... Types>
+			VOID_T load_noclose(const STRING_T path, Types& ... x) 
+			{
+				ioer::input_t source(path);
+				source.read(x ...);
 			}
 	};
 };

@@ -149,7 +149,7 @@ static VOID_T _hop_anal_para(const std::vector<particle_t>& swarm, enumspace::an
 }
 
 // API
-std::vector<DOUBLE_T> anal(const particle_t& ptcl, enumspace::analmode_enum mode){
+std::vector<DOUBLE_T> scatter::simulation::anal(const particle_t& ptcl, enumspace::analmode_enum mode){
 	using namespace enumspace;
 	switch(mode){
 		/*
