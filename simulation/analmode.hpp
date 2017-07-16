@@ -2,22 +2,19 @@
 #define _SCATTER_ANALMODE_HPP
 // anal mode dict
 #include "types.hpp"
+#include "enumspace.hpp"
 
 #include <boost/assign.hpp>
 #include <boost/bimap.hpp>
 
 namespace enumspace{
 	enum class analmode_enum {
-		SIMU_ANAL_CME, 
-		SIMU_ANAL_BCME, 
-		SIMU_ANAL_EF, 
+		dyn_info,
+		final_info,
+		hop_info,
 
-		FINAL_ANAL_CME, 
-		FINAL_ANAL_BCME, 
-		FINAL_ANAL_EF,
-
-		HOP_ANAL_CME, 
-		HOP_ANAL_BCME, 
+		First = dyn_info,
+		Last = hop_info
 	};
 };
 #endif

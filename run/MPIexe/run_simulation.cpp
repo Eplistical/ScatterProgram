@@ -5,6 +5,7 @@
 #include "types.hpp"
 #include <algorithm>
 #include <cassert>
+#include <unordered_map>
 #include "timer.hpp"
 #include "io.hpp"
 #include "run.hpp"
@@ -21,6 +22,11 @@ using scatter::io::log_handler;
 
 using namespace std;
 using namespace scatter;
+
+// type for info recorder
+template<typename ParamType>
+	using InfoRecoderType = unordered_map<enumspace::dynamics_mode_enum, vector<ParamType> >;
+
 
 VOID_T run_simulation(void)
 {
@@ -52,17 +58,20 @@ VOID_T run_simulation(void)
 	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 	MPIer::bcast(0, fef);
 
-	// containers for final info
+	// basic anal para
 	std::vector<UINT_T> job_info = mybatch;
-	std::vector<UINT_T> final_surf_info;
-	std::vector<DOUBLE_T> final_r_info;
-	std::vector<DOUBLE_T> final_p_info;
-	// containers for dynamic info
 	const UINT_T Nrecord = Nstep / Anastep + 1;
-	std::vector<DOUBLE_T> dyn_info_CME;
-	std::vector<DOUBLE_T> dyn_info_BCME;
-	std::vector<DOUBLE_T> dyn_info_EF;
 	std::vector<DOUBLE_T> tmp;
+
+	// containers for final info
+	InfoRecoderType<UINT_T> final_surf_info;
+	InfoRecoderType<DOUBLE_T> final_r_info;
+	InfoRecoderType<DOUBLE_T> final_p_info;
+
+	// containers for dynamic info
+	InfoRecoderType<DOUBLE_T> dyn_info_CME;
+	InfoRecoderType<DOUBLE_T> dyn_info_BCME;
+	InfoRecoderType<DOUBLE_T>dyn_info_EF;
 
 
 	// -- do job! -- //
@@ -72,31 +81,32 @@ VOID_T run_simulation(void)
 		ptcl.ranforce.assign(dim, 0.0);
 		ptcl.r = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2, r0p0.begin() + index * dim * 2 + dim); 
 		ptcl.p = std::vector<DOUBLE_T>(r0p0.begin() + index * dim * 2 + dim , r0p0.begin() + index * dim * 2 + dim * 2); 
-	 	//t             <x>             <z>           <Ekx>           <Ekz>            <n1>      Nout'(-20)
+	 	// t             <x>             <z>           <Ekx>           <Ekz>            <n1>      Nout'(-20)
 		step = 0;
 		while (step < Nstep) {
 			// dynamic anal
 			if (step % Anastep == 0) {
-				tmp = anal(ptcl, enumspace::analmode::dyn_info);
-				dyn_info_CME.insert(dyn_info_CME.end(), tmp.begin(), tmp.end());
+				//tmp = anal(ptcl, enumspace::analmode_enum::dyn_info);
+				//dyn_info_CME.insert(dyn_info_CME.end(), tmp.begin(), tmp.end());
 			}
 			// evolve
 			CME(ptcl, index);
 			++step;
 		}
 		// record final state
-		final_surf_info.push_back(ptcl.surf);
-		final_r_info.insert(final_r_info.end(), ptcl.r.begin(), ptcl.r.end());
-		final_p_info.insert(final_p_info.end(), ptcl.p.begin(), ptcl.p.end());
+		//final_surf_info.push_back(ptcl.surf);
+		//final_r_info.insert(final_r_info.end(), ptcl.r.begin(), ptcl.r.end());
+		//final_p_info.insert(final_p_info.end(), ptcl.p.begin(), ptcl.p.end());
 	}
 
 	MPIer::barrier();
 
 	// -- collect final info -- //
+	/*
 	vector<UINT_T> job_info_buf; 
-	vector<UINT_T> surf_info_buf; 
-	vector<DOUBLE_T> r_info_buf; 
-	vector<DOUBLE_T> p_info_buf; 
+	InfoRecoderType<UINT_T> surf_info_buf; 
+	InfoRecoderType<DOUBLE_T> r_info_buf; 
+	InfoRecoderType<DOUBLE_T> p_info_buf; 
 	for (UINT_T r = 1; r < MPIer::size; ++r) {
 		if (MPIer::rank == r) {
 			MPIer::send(0,  
@@ -131,6 +141,7 @@ VOID_T run_simulation(void)
 					final_p_info);
 		out_handler.info("done.");
 	}
+	*/
 }
 
 int main(int argc, char** argv)

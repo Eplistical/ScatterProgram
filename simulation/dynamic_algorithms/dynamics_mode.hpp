@@ -2,6 +2,7 @@
 #define _DYNAMICS_MODE_HPP
 // dynamics mode dict
 #include "types.hpp"
+#include "enumspace.hpp"
 
 #include <boost/assign.hpp>
 #include <boost/bimap.hpp>
@@ -11,6 +12,9 @@ namespace enumspace{
 		CME,
 		BCME,
 		EF,
+
+		First = CME,
+		Last = EF, 
 	};
 	const boost::bimap<std::string, dynamics_mode_enum> dynamics_mode_dict = 
 		boost::assign::list_of<boost::bimap<std::string, dynamics_mode_enum>::relation>

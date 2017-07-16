@@ -149,9 +149,10 @@ static VOID_T _hop_anal_para(const std::vector<particle_t>& swarm, enumspace::an
 }
 
 // API
-VOID_T anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode){
+std::vector<DOUBLE_T> anal(const particle_t& ptcl, enumspace::analmode_enum mode){
 	using namespace enumspace;
 	switch(mode){
+		/*
 		case analmode_enum::SIMU_ANAL_CME :
 		case analmode_enum::SIMU_ANAL_BCME :
 		case analmode_enum::SIMU_ANAL_EF :
@@ -165,5 +166,6 @@ VOID_T anal(const std::vector<particle_t>& swarm, enumspace::analmode_enum mode)
 		case analmode_enum::HOP_ANAL_CME:
 		case analmode_enum::HOP_ANAL_BCME:
 			_hop_anal_para(swarm, mode);
+			*/
 	}
 }

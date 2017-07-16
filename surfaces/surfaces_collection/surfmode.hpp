@@ -2,6 +2,7 @@
 #define _SURFMODE_HPP
 // surfaces modes
 #include "types.hpp"
+#include "enumspace.hpp"
 
 #include <boost/assign.hpp>
 #include <boost/bimap.hpp>
@@ -14,7 +15,10 @@ namespace enumspace {
         FERMI,
         GAUSSIAN,
         NEWNS,
-        MORSE
+        MORSE,
+
+		First = CONSTANT,
+		Last = MORSE,
     };
 
     const boost::bimap<std::string, surfmode_enum> surfmode_dict = 
