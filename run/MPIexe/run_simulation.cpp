@@ -39,7 +39,15 @@ VOID_T run_simulation(VOID_T)
 	using namespace simulation;
 
 	// setup objs using paras 
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: setting up grid_obj");
+#endif
 	grid_obj = grid_t(rmin, rmax, Nr);
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: setting up surfaces_obj");
+#endif
+
 	surfaces_obj = surfaces_t(surfnum);
 	surfaces_obj.set_gamma(gammamode, gammapara);
 	surfaces_obj.set_energy(surfmode, surfpara);
@@ -49,6 +57,10 @@ VOID_T run_simulation(VOID_T)
 	std::vector<particle_t> final_states;
 	UINT_T step;
 
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: loading init & dat file");
+#endif
+
 	// load init & fef data
 	if (MPIer::master) {
 		io::loadinit();
@@ -57,6 +69,10 @@ VOID_T run_simulation(VOID_T)
 	MPIer::bcast(0, simulation::r0p0);
 	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 	MPIer::bcast(0, fef);
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: setting up parameters");
+#endif
 
 	// basic para
 	std::vector<UINT_T> job_info = mybatch;
@@ -91,8 +107,19 @@ VOID_T run_simulation(VOID_T)
 	ParticleCollectionType ptcl;
 	
 
+	// setup timer
+	DOUBLE_T next_report_percent = 0.1;
+	if (MPIer::master) timer::tic(99);
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: start loop");
+#endif
+
 	// -- do job! -- //
-	for (UINT_T index : mybatch) {
+	UINT_T index;
+	for (UINT_T i = 0, N = mybatch.size(); i < N; ++i) {
+		index = mybatch[i];
+
 		// load init state
 		init_ptcl = particle_t(elestate);
 		init_ptcl.ranforce.assign(dim, 0);
@@ -117,9 +144,19 @@ VOID_T run_simulation(VOID_T)
 			}
 			++step;
 		}
+
+		// timer
+		if (MPIer::master and (i / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
+			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc(99));
+			next_report_percent += 0.1;
+		}
 	}
 
 	MPIer::barrier();
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: collecting info");
+#endif
 
 	// -- collect recorded info -- //
 	vector<UINT_T> job_info_buf; 
@@ -133,6 +170,10 @@ VOID_T run_simulation(VOID_T)
 			}
 		}
 		else if (MPIer::master) {
+
+#if _DEBUG >= 2
+			if (MPIer::master) log_handler.info( "debug: receiving data from thread ", r);
+#endif
 			MPIer::recv(r, job_info_buf);
 			job_info.insert(job_info.end(), job_info_buf.begin(), job_info_buf.end());
 
@@ -143,6 +184,10 @@ VOID_T run_simulation(VOID_T)
 		}
 		MPIer::barrier();
 	}
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: saving dyn_info");
+#endif
 
 	// output
 	if (MPIer::master) {
@@ -161,6 +206,11 @@ VOID_T run_simulation(VOID_T)
 		}
 		out_handler.info("done.");
 	}
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: run_simulation done");
+#endif
+
 }
 
 int main(int argc, char** argv)
@@ -199,6 +249,7 @@ int main(int argc, char** argv)
 	scatter::bcast_vars();
 
 	// run program
+
 #if _DEBUG >= 1
 	if (MPIer::master) log_handler.info( "debug: start running core part");
 #endif

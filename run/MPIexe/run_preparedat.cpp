@@ -48,22 +48,36 @@ VOID_T run_preparedat(VOID_T)
 #endif
 
 	// assign job
-	//std::vector<UINT_T> mybatch = MPIer::assign_job_random(grid_obj.get_Ntot());
-	std::vector<UINT_T> mybatch = MPIer::assign_job(grid_obj.get_Ntot());
+	std::vector<UINT_T> mybatch = MPIer::assign_job_random(grid_obj.get_Ntot());
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: allocating fef space");
 #endif
+
 	// allocate space for fef
 	grid_obj.alloc_fef_space();
 	
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: looping");
 #endif
-	// do job!
-	for (UINT_T index : mybatch) {
+
+	// setup timer
+	DOUBLE_T next_report_percent = 0.1;
+	if (MPIer::master) timer::tic(99);
+
+	// -- do job! -- //
+	UINT_T index;
+	for (UINT_T i = 0, N = mybatch.size(); i < N; ++i) {
+		index = mybatch[i];
+
 		// calc fef between |0> & |1>, the index^th element
 		grid_obj.calc_fef(0, 1, index);
+
+		// timer
+		if (MPIer::master and (i / static_cast<DOUBLE_T>(i)) >= next_report_percent) {
+			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc(99));
+			next_report_percent += 0.1;
+		}
 	}
 
 	std::vector<DOUBLE_T> &fef = grid_obj.get_fef_ref();
