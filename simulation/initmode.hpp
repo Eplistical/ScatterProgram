@@ -13,9 +13,10 @@ namespace enumspace{
 		RING, 
 		RP_GAUSSIAN,
 		P_GAUSSIAN,
+		P_GAUSSIAN_NON_NEGATIVE,
 
 		First = DELTA,
-		Last = P_GAUSSIAN,
+		Last = P_GAUSSIAN_NON_NEGATIVE,
 	};
 	const boost::bimap<std::string, initmode_enum> initmode_dict = 
 		boost::assign::list_of<boost::bimap<std::string, initmode_enum>::relation>
@@ -23,6 +24,7 @@ namespace enumspace{
 		("ring", initmode_enum::RING)
 		("rp_gaussian", initmode_enum::RP_GAUSSIAN)
 		("p_gaussian", initmode_enum::P_GAUSSIAN)
+		("p_gaussian_non_negative", initmode_enum::P_GAUSSIAN_NON_NEGATIVE)
 		;
 };
 #endif

@@ -48,6 +48,10 @@ VOID_T simulation::generate_initstate(VOID_T){
 				r.push_back(initravg.at(d));
 				p.push_back(randomer::normal(initpavg.at(d), sigmap.at(d)));
 			}
+			else if(initmode.at(d) == initmode_enum::P_GAUSSIAN_NON_NEGATIVE){
+				r.push_back(initravg.at(d));
+				p.push_back(abs(randomer::normal(initpavg.at(d), sigmap.at(d))));
+			}
 		}
 		// insert r, p for traj^th particle to rp
 		rp.insert(rp.end(), r.begin(), r.end());
