@@ -33,10 +33,10 @@ VOID_T run_surface(VOID_T){
 	out_handler.info("surfaces:\n", "i^th surf & d^dimension");
 	out_handler.tabout("x", "U(x)", "F(x)", "gamma(x)", "gamma'(x)");
 	// loop output
-	for(UINT_T i = 0; i < surfnum; ++i){
-		for(UINT_T d = 0, Ndim = rem::dim; d < Ndim; ++d){
+	for(UINT_T d = 0; d < rem::dim; ++d){
+		for(UINT_T i = 0; i < surfnum; ++i){
 			out_handler.drawline('#');
-			out_handler.info("i = ", i, "d = ", d);
+			out_handler.info("d = ", d, "i = ", i);
 			for(auto& x : grid_obj.get_grid(d)){
 				U = surfaces_obj.fU(i, d, x);
 				F = surfaces_obj.fF(i, d, x);

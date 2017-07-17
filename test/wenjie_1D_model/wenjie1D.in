@@ -1,0 +1,53 @@
+$rem
+    jobname     wenjie1D
+    jobtype     simulation
+	loaddat		true
+    dim         1
+	hbar		1
+    kT          0.01
+    Gamma0      0.01
+$end
+
+$grid
+	rmin		-10		
+	rmax		3	
+	Nr			10000
+
+	#-- fef related --#
+
+	bandwidth	1.5
+	derange		3e-5	3e-6
+$end
+
+$simulation
+    Ntraj       5000
+    mass        1
+    EndT        10000
+    Nstep       40000
+    Anastep     100
+
+	#-- init state relateda --#
+
+    initTemp    1
+    vibstate    0
+	elestate	0
+    initmode    p_gaussian
+	initravg	0
+	initpavg	0
+$end
+
+$surfaces
+    surfnum     	2
+	cutoff_gamma	0
+
+    surfmode   harmonic	harmonic 
+	@surfpara
+		9e-6 	0 		0	
+		9e-6 	0 		7.071067812
+	@end
+
+    gammamode	constant
+	@gammapara
+		1
+	@end
+$end

@@ -101,7 +101,7 @@ static VOID_T _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enu
 	log_handler.info_nonewline("debug: _CME: dynamic mode is ", enumspace::dynamics_mode_dict.right.at(mode), ". ");
 #endif
 
- 	//ptcl.hop( _CME_hopper(ptcl, trajID, mode) );
+ 	ptcl.hop( _CME_hopper(ptcl, trajID, mode) );
     velocity_verlet(ptcl, mode, _CME_get_Force);
 
 #if _DEBUG >= 4

@@ -1,0 +1,226 @@
+{
+    "rem": {
+        "jobname": {
+            "value": [
+                "wenjie1D"
+            ],
+            "datatype": "S",
+            "datamodel": "s"
+        },
+        "jobtype": {
+            "value": [
+                "simulation"
+            ],
+            "datatype": "s",
+            "datamodel": "s"
+        },
+        "dim": {
+            "value": [
+                "1"
+            ],
+            "datatype": "i",
+            "datamodel": "s"
+        },
+        "loaddat": {
+            "value": [
+                "1"
+            ],
+            "datatype": "b",
+            "datamodel": "s"
+        },
+        "kt": {
+            "value": [
+                "0.01"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
+        },
+        "gamma0": {
+            "value": [
+                "0.01"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
+        },
+        "hbar": {
+            "value": [
+                "1"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
+        }
+    },
+    "grid": {
+        "rmin": {
+            "value": [
+                "-10"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        },
+        "rmax": {
+            "value": [
+                "3"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        },
+        "nr": {
+            "value": [
+                "10000"
+            ],
+            "datatype": "i",
+            "datamodel": "v"
+        },
+        "bandwidth": {
+            "value": [
+                "1.5"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
+        },
+        "derange": {
+            "value": [
+                "3e-5",
+                "3e-6"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        }
+    },
+    "simulation": {
+        "ntraj": {
+            "value": [
+                "5000"
+            ],
+            "datatype": "i",
+            "datamodel": "s"
+        },
+        "mass": {
+            "value": [
+                "1"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        },
+        "endt": {
+            "value": [
+                "10000"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
+        },
+        "nstep": {
+            "value": [
+                "40000"
+            ],
+            "datatype": "i",
+            "datamodel": "s"
+        },
+        "anastep": {
+            "value": [
+                "100"
+            ],
+            "datatype": "i",
+            "datamodel": "s"
+        },
+        "inittemp": {
+            "value": [
+                "1"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
+        },
+        "vibstate": {
+            "value": [
+                "0"
+            ],
+            "datatype": "i",
+            "datamodel": "s"
+        },
+        "elestate": {
+            "value": [
+                "0"
+            ],
+            "datatype": "i",
+            "datamodel": "s"
+        },
+        "initmode": {
+            "value": [
+                "p_gaussian"
+            ],
+            "datatype": "s",
+            "datamodel": "v"
+        },
+        "initravg": {
+            "value": [
+                "0"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        },
+        "initpavg": {
+            "value": [
+                "0"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        }
+    },
+    "surfaces": {
+        "surfnum": {
+            "value": [
+                "2"
+            ],
+            "datatype": "s",
+            "datamodel": "s"
+        },
+        "surfmode": {
+            "value": [
+                "harmonic",
+                "harmonic"
+            ],
+            "datatype": "s",
+            "datamodel": "v"
+        },
+        "surfpara": {
+            "value": [
+                [
+                    "9e-6",
+                    "0",
+                    "0"
+                ],
+                [
+                    "9e-6",
+                    "0",
+                    "7.071067812"
+                ]
+            ],
+            "datatype": "s",
+            "datamodel": "b"
+        },
+        "gammamode": {
+            "value": [
+                "constant"
+            ],
+            "datatype": "s",
+            "datamodel": "v"
+        },
+        "gammapara": {
+            "value": [
+                [
+                    "1"
+                ]
+            ],
+            "datatype": "s",
+            "datamodel": "b"
+        },
+        "cutoff_gamma": {
+            "value": [
+                "0"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
+        }
+    }
+}
