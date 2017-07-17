@@ -9,14 +9,16 @@
 #include "ioer_macros.hpp"
 #include "ioer_exceptions.hpp"
 
-namespace ioer {
+namespace ioer 
+{
 	using namespace std;
 
 	// path for standard I/O (i.e. screen I/O)
 	const string STDIO_PATH = "" ;
 
 	// output manager class
-	class io_base_t{
+	class io_base_t
+	{
 		protected:
 			unordered_map<string, fstream> _fpdict;
 			// helpers
@@ -31,18 +33,19 @@ namespace ioer {
 			}
 
 		public:
-			explicit io_base_t() {
-			};
+			explicit io_base_t() = default;
 			explicit io_base_t(const string& path, ios::openmode mode)
 			{ 
 				open(path, mode);	
 			}
-			~io_base_t() { 
-				for (auto& it : _fpdict) {
-					it.second.close();
-				}
-			}
-			// no copy or assign
+			// fstream dtor should be called due to RAII
+			virtual ~io_base_t() = default;
+
+			// can move 
+			io_base_t(io_base_t&& other) = default;
+			io_base_t& operator=(io_base_t&& other) = default;
+
+			// no copy 
 			io_base_t(const io_base_t& other) = delete;
 			io_base_t& operator=(const io_base_t& other) = delete;
 
@@ -59,6 +62,7 @@ namespace ioer {
 					}
 				}
 			}
+
 			void close(const string& path) noexcept
 			{
 				if (path != STDIO_PATH) {

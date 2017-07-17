@@ -3,11 +3,13 @@
 // module for ioer exceptions
 
 #include <string>
-#include <stdexcept>
+#include <exception>
 
-namespace ioer{
+namespace ioer
+{
 	// Exceptions
-	class IOError : std::exception{
+	class IOError : std::exception
+	{
 		protected:
 			std::string _title;
 			std::string _msg;
@@ -20,27 +22,33 @@ namespace ioer{
 			virtual const char* what() const noexcept{ return _msg.c_str(); }
 	};
 
-	class FileNotOpenedError : public IOError{
+	class FileNotOpenedError : public IOError
+	{
 		public:
-			explicit FileNotOpenedError(const std::string& msg = ""){
+			explicit FileNotOpenedError(const std::string& msg = "")
+			{
 				_title = "FileNotOpenedError"; 
 				_msg = (msg == "")?_title:(_title + ":" + msg);
 			} 
 			~FileNotOpenedError() = default;
 	};
 
-	class FileNotExistError : public IOError{
+	class FileNotExistError : public IOError
+	{
 		public:
-			explicit FileNotExistError(const std::string& msg = ""){
+			explicit FileNotExistError(const std::string& msg = "")
+			{
 				_title = "FileNotExistError"; 
 				_msg = (msg == "")?_title:(_title + ":" + msg);
 			} 
 			~FileNotExistError() = default;
 	};
 
-	class FileModeIncompatibleError : public IOError{
+	class FileModeIncompatibleError : public IOError
+	{
 		public:
-			explicit FileModeIncompatibleError(const std::string& msg = ""){
+			explicit FileModeIncompatibleError(const std::string& msg = "")
+			{
 				_title = "FileModeIncompatibleError"; 
 				_msg = (msg == "")?_title:(_title + ":" + msg);
 			} 

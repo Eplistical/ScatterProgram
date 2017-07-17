@@ -13,53 +13,63 @@
 #include "ioer_var.hpp"
 #include "ioer_exceptions.hpp"
 
-namespace ioer {
+namespace ioer 
+{
 	using namespace std;
 	using namespace type_traiter;
 	using ioer::io_base_obj;
 
-	class _pair_output_functor_t {
-		private:
+	class _pair_output_functor_t 
+	{
+		protected:
 			string _path; 
 			string _dlm;
 			size_t _width;
 			bool _keyfirst;
 			bool _nonewline;
+			bool _flush;
 		public:
-			explicit _pair_output_functor_t(const string& path, const string& dlm, size_t width, bool keyfirst, bool nonewline) 
-				: _path(path), _dlm(dlm), _width(width), _keyfirst(keyfirst), _nonewline(nonewline) {
-				}
-			~_pair_output_functor_t() {
-			};
+			explicit _pair_output_functor_t(const string& path, const string& dlm, size_t width, bool keyfirst, bool nonewline, bool flush) 
+				: _path(path), _dlm(dlm), _width(width), _keyfirst(keyfirst), _nonewline(nonewline), _flush(flush) {  }
+			virtual ~_pair_output_functor_t() = default;
 
-			// no copy or assign
+			// can move
+			_pair_output_functor_t(_pair_output_functor_t&&) = default;
+			_pair_output_functor_t& operator=(_pair_output_functor_t&&) = default;
+
+			// no copy 
 			_pair_output_functor_t(const _pair_output_functor_t&) = delete;
 			_pair_output_functor_t& operator=(const _pair_output_functor_t&) = delete;
 
 			// setter
-			void config(const string& path, const string& dlm, size_t width, bool keyfirst, bool nonewline) {
+			void config(const string& path, const string& dlm, size_t width, bool keyfirst, bool nonewline, bool flush) 
+			{
 				_path = path;
 				_dlm = dlm;
 				_width = width;
 				_keyfirst = keyfirst;
 				_nonewline = nonewline;
+				_flush = flush;
 			}
 
 			// operator()
 			template<typename KeyType, typename ValType>
 				typename enable_if< is_direct_outputable< ValType >::value, const _pair_output_functor_t&>::type
-				operator()(const KeyType& key, const ValType& val) const{
+				operator()(const KeyType& key, const ValType& val) const
+				{
 					if(_keyfirst) 
-						io_base_obj[_path] <<  setw(_width) << key << _dlm << setw(_width) << val;
+						io_base_obj[_path] << setw(_width) << key << _dlm << setw(_width) << val;
 					else 
 						io_base_obj[_path] <<  setw(_width) << val << _dlm << setw(_width) << key;
 					if(!_nonewline) io_base_obj[_path] <<  "\n";
+					if (_flush) io_base_obj[_path] << flush;
 					return *this;
 				}
 
 			template<typename KeyType, typename ValType>
 				typename enable_if< is_sequence_container<ValType>::value, const _pair_output_functor_t& >::type
-				operator()(const KeyType& key, const ValType& val) const{
+				operator()(const KeyType& key, const ValType& val) const
+				{
 					if(_keyfirst) {
 						io_base_obj[_path] <<  setw(_width) << key << _dlm;
 						for(auto& it : val) io_base_obj[_path] <<  setw(_width) << it;
@@ -69,40 +79,71 @@ namespace ioer {
 						io_base_obj[_path] <<  _dlm << setw(_width) << key ;
 					}
 					if(!_nonewline) io_base_obj[_path] <<  "\n";
+					if (_flush) io_base_obj[_path] << flush;
 					return *this;
 				}
 	}; // class _pair_output_functor_t
 
-	class output_t {
+	class output_t 
+	{
 		protected:
 			string _path;
 
 			size_t _width = 16;
 			string _dlm = " ";
+			bool _flush = false;
 
 			// functors
 			_pair_output_functor_t _pair_output_functor_obj;
 
 		public:
 			explicit output_t(const string& path = STDIO_PATH, ios::openmode mode = ios::out)
-				: 	_path(path), _pair_output_functor_obj(STDIO_PATH, _dlm, _width, true, false)
+				: 	_path(path), _pair_output_functor_obj(STDIO_PATH, _dlm, _width, true, false, false)
 			{ 
 				io_base_obj.open(path, mode | ios::out);
 			}
 
-			~output_t() { };
+			virtual ~output_t() = default;
 
-			// no copy or assign
+			// can move
+			output_t(output_t&&) = default;
+			output_t& operator=(output_t&&) = default;
+			
+			// no copy 
 			output_t(const output_t&) = delete;
 			output_t& operator=(const output_t&) = delete;
 			
 			// getter
-			size_t width(void) { return _width; }
-			string dlm(void) { return _dlm; }
+			size_t width(void)
+			{
+				return _width; 
+			}
+
+			string dlm(void) 
+			{
+				return _dlm; 
+			}
+
+			bool is_flush(void) 
+			{
+				return _flush; 
+			}
 
 			// setter
-			size_t set_width(size_t width) { _width = width; }
-			string set_dlm(const string& dlm) { _dlm = dlm; }
+			void set_width(size_t width) 
+			{
+				_width = width; 
+			}
+
+			void set_dlm(const string& dlm) 
+			{
+				_dlm = dlm; 
+			}
+
+			void set_flush(bool flush) 
+			{
+				_flush = flush; 
+			}
 
 			// open/close
 			void open(const string& path, ios::openmode mode = ios::out) 
@@ -123,10 +164,13 @@ namespace ioer {
 			void newline(void)
 			{
 				io_base_obj.at(_path) << "\n"; 
+				if (_flush) io_base_obj.at(_path) << flush; 
 			}
+
 			void drawline(char c, size_t len = 32) 
 			{
 				io_base_obj.at(_path) << string(len, c) << "\n"; 
+				if (_flush) io_base_obj.at(_path) << flush; 
 			}
 
 			// -- info -- //
@@ -135,6 +179,7 @@ namespace ioer {
 				_info(const ParamType& x) 
 				{
 					io_base_obj.at(_path) << x;
+					if (_flush) io_base_obj.at(_path) << flush; 
 				}
 
 			template<typename ParamType>
@@ -144,6 +189,7 @@ namespace ioer {
 					for (auto& xi : x) {
 						io_base_obj.at(_path) << xi << " ";
 					}
+					if (_flush) io_base_obj.at(_path) << flush; 
 				}
 
 			template<typename ParamType, typename ... Types>
@@ -172,6 +218,7 @@ namespace ioer {
 				_tabout(const ParamType& x) 
 				{
 					io_base_obj.at(_path) << setw(_width) << x;
+					if (_flush) io_base_obj.at(_path) << flush; 
 				}
 
 			template<typename ParamType>
@@ -181,6 +228,7 @@ namespace ioer {
 					for (auto& xi : x) {
 						io_base_obj.at(_path) << setw(_width) << xi;
 					}
+					if (_flush) io_base_obj.at(_path) << flush; 
 				}
 
 			template<typename ParamType, typename ... Types>
@@ -207,7 +255,7 @@ namespace ioer {
 			const _pair_output_functor_t&
 				keyval(bool _keyfirst = true, bool _nonewline = false)
 				{
-					_pair_output_functor_obj.config(_path, _dlm, _width, _keyfirst, _nonewline); 
+					_pair_output_functor_obj.config(_path, _dlm, _width, _keyfirst, _nonewline, _flush); 
 					return _pair_output_functor_obj;
 				}
 

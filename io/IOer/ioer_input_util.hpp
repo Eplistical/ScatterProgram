@@ -13,12 +13,14 @@
 #include "ioer_var.hpp"
 #include "ioer_exceptions.hpp"
 
-namespace ioer {
+namespace ioer
+{
 	using namespace std;
 	using namespace type_traiter;
 	using ioer::io_base_obj;
 
-	class input_t {
+	class input_t 
+	{
 		protected:
 			string _path;
 
@@ -33,17 +35,35 @@ namespace ioer {
 			}
 			virtual ~input_t() = default;
 
-			// no copy or assign
+			// can move
+			input_t(input_t&&) = default;
+			input_t& operator=(input_t&&) = default;
+			
+			// no copy 
 			input_t(const input_t&) = delete;
 			input_t& operator=(const input_t&) = delete;
 			
 			// getter
-			size_t width(void) { return _width; }
-			string dlm(void) { return _dlm; }
+			size_t width(void) 
+			{
+				return _width; 
+			}
+
+			string dlm(void) 
+			{
+				return _dlm; 
+			}
 
 			// setter
-			size_t set_width(size_t width) { _width = width; }
-			string set_dlm(const string& dlm) { _dlm = dlm; }
+			size_t set_width(size_t width)
+			{
+				_width = width; 
+			}
+
+			string set_dlm(const string& dlm) 
+			{
+				_dlm = dlm; 
+			}
 
 			// open/close
 			void open(const string& path, ios::openmode mode = ios::in) 
@@ -51,6 +71,7 @@ namespace ioer {
 				io_base_obj.open(path, mode);
 				_path = path;
 			}
+
 			void close(void) 
 			{
 				io_base_obj.close(_path);

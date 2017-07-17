@@ -6,7 +6,8 @@
 #include "ioer_macros.hpp"
 #include "io_base_t.hpp"
 
-namespace ioer {
+namespace ioer 
+{
 	extern io_base_t io_base_obj;
 };
 
