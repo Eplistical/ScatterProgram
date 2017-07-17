@@ -89,17 +89,17 @@ static VOID_T _electronic_fef(const DOUBLE_T hbar,
 //  calc fef between S0 & S1, for a single poINT_T r (labeled by index)
 // 	S0 has fewer el
 VOID_T scatter::grid_t::calc_fef(	UINT_T S0, 
-								UINT_T S1, 
-								UINT_T index)
+									UINT_T S1, 
+									UINT_T index,
+									DOUBLE_T * const force,
+									DOUBLE_T * const efric,
+									DOUBLE_T * const fBCME)
 {
 	using namespace scatter::rem;
 	using namespace scatter::grid;
 	using scatter::surfaces_obj;
 	const std::vector<DOUBLE_T> r = index_to_r(index);
 	const UINT_T Ntot = get_Ntot();
-	DOUBLE_T * const force = &_fef[index * dim];
-	DOUBLE_T * const efric = &_fef[_forcelen + index * dim2];
-	DOUBLE_T * const fBCME = &_fef[_forcelen + _efriclen + index * dim];
     // h, h'
     const DOUBLE_T h = surfaces_obj.fU(S1, r) - surfaces_obj.fU(S0, r);
     const std::vector<DOUBLE_T> nabla_h = surfaces_obj.fF(S0, r) - surfaces_obj.fF(S1, r);

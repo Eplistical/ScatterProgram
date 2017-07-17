@@ -32,7 +32,7 @@ namespace scatter{
 			// -- setters --//
 			std::vector<DOUBLE_T>& get_fef_ref(VOID_T);
 			VOID_T alloc_fef_space(VOID_T);
-			VOID_T calc_fef(UINT_T S0, UINT_T S1, UINT_T index);
+			VOID_T calc_fef(UINT_T S0, UINT_T S1, UINT_T index, DOUBLE_T * const force, DOUBLE_T * const efric, DOUBLE_T * const fBCME);
 
 			// -- getters -- //
 			std::vector<DOUBLE_T> get_grid(UINT_T d) const;
