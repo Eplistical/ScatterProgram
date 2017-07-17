@@ -12,13 +12,13 @@ class ScatterPath(object):
     def __init__(self, infile):
         self.pathdict["infile"] = os.path.abspath(infile)
         self.pathdict["jsonfile"] = self.pathdict["infile"] + '.json'
-        self.pathdict["parent_dir"] = os.path.dirname(self.pathdict["infile"])
+        self.pathdict["outdir"] = os.path.dirname(self.pathdict["infile"])
         with open(self.pathdict["jsonfile"], 'r') as f:
             self.pathdict["jsoninfo"] = json.load(f)
 
         jobname = self.pathdict["jsoninfo"]['rem']['jobname']['value'][0]
-        fmt = self.pathdict["parent_dir"] + '/' + jobname + '.{}'
-        fmt_hidden = self.pathdict["parent_dir"] + '/.' + jobname + '.{}'
+        fmt = self.pathdict["outdir"] + '/' + jobname + '.{}'
+        fmt_hidden = self.pathdict["outdir"] + '/.' + jobname + '.{}'
 
         self.pathdict["outfile"] = fmt.format('out')
         self.pathdict["surface_outfile"] = fmt.format('surface.out')
