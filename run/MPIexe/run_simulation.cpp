@@ -90,6 +90,7 @@ VOID_T run_simulation(VOID_T)
 	// particle collections
 	ParticleCollectionType ptcl;
 	
+
 	// -- do job! -- //
 	for (UINT_T index : mybatch) {
 		// load init state
@@ -136,7 +137,7 @@ VOID_T run_simulation(VOID_T)
 			job_info.insert(job_info.end(), job_info_buf.begin(), job_info_buf.end());
 
 			for (const auto& it : algorithms) {
-				MPIer::recv(0, dyn_info_buf);
+				MPIer::recv(r, dyn_info_buf);
 				dyn_info[it].insert(dyn_info[it].end(), dyn_info_buf.begin(), dyn_info_buf.end());
 			}
 		}

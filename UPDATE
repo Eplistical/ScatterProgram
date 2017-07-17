@@ -1,6 +1,7 @@
 v0.4
 (in progress)
 - use type macro to make types more stable
+- add run_simulation with MPI
 
 
 v0.3
