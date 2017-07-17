@@ -13,8 +13,10 @@ STRING_T scatter::io::logfile;
 
 STRING_T scatter::io::arg_outfile;
 STRING_T scatter::io::arg_logfile;
+STRING_T scatter::io::arg_outdir;
 
-STRING_T scatter::io::parent_dir;
+STRING_T scatter::io::indir;
+STRING_T scatter::io::outdir;
 
 ioer::output_t scatter::io::out_handler;
 ioer::output_t scatter::io::log_handler;
@@ -26,56 +28,72 @@ VOID_T scatter::io::load_var(VOID_T)
 	using namespace scatter::io;
 
 	fs::path infile(rem::infile);
+	// infile & jsonfile
 	infile = fs::absolute(infile);
-	parent_dir = infile.parent_path().string();
-	if(parent_dir[parent_dir.length() - 1] != '/'){
-		parent_dir += "/";
-	}
-
 	const STRING_T fname = infile.filename().string();
 	const STRING_T stem = infile.stem().string();
+	indir = infile.parent_path().string();
+	if(indir[indir.length() - 1] != '/') {
+		indir += "/";
+	}
+	jsonfile = fname + ".json";
+	outdir = indir;
 
-	jsonfile = parent_dir + fname + ".json";
-	datfile = parent_dir + "." + rem::jobname + ".dat";
-	initfile = parent_dir + "." + rem::jobname +  ".init";
-	outfile = parent_dir + rem::jobname + ".out";
-	logfile = parent_dir + rem::jobname + ".log";
+	// override outdir 
+	if (arg_outdir.size() > 0) {
+		outdir = arg_outdir;
+		if(outdir[outdir.length() - 1] != '/') {
+			outdir += "/";
+		}
+	}
+
+	// output & log & datafile
+	datfile = "." + rem::jobname + ".dat";
+	initfile = "." + rem::jobname +  ".init";
+	outfile = rem::jobname + ".out";
+	logfile = rem::jobname + ".log";
 
 	// overriden by command line args
 	if (arg_outfile.size() > 0) {
 		if (arg_outfile == "STDOUT") 
 			outfile = STRING_T("");
 		else
-			outfile = parent_dir + arg_outfile;
+			outfile = outdir + arg_outfile;
 	}
 
 	if (arg_logfile.size() > 0) {
 		if (arg_logfile == "STDOUT") 
 			logfile = STRING_T("");
 		else
-			logfile = parent_dir + arg_logfile;
+			logfile = outdir + arg_logfile;
 	}
-
 }
 
-// prINT_T out io parameters
+// print out io parameters
 VOID_T scatter::io::print_var(VOID_T)
 {
 	using namespace scatter::io;
 	out_handler.info("io info");
 	out_handler.drawline('-');
 	out_handler.keyval()
-		("parent_dir", parent_dir)
+		("indir", indir)
+		("outdir", outdir)
 		("jsonfile", jsonfile)
+		("outfile", outfile)
+		("logfile", logfile)
 		("datfile", datfile)
 		("initfile", initfile)
-		("outfile", outfile)
 		;
 	out_handler.drawline('-');
 }
 
+// init out & log file output manager
 VOID_T scatter::io::handler_init(VOID_T)
 {
-	out_handler.open(outfile, std::ios::out);
-	log_handler.open(logfile, std::ios::out);
+	if (outfile != "") {
+		out_handler.open(outdir + outfile, std::ios::out);
+	}
+	if (logfile != "") {
+		log_handler.open(outdir + logfile, std::ios::out);
+	}
 }

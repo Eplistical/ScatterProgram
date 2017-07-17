@@ -25,13 +25,13 @@ VOID_T rwinit(CHAR_T op)
 
 	using scatter::simulation::r0p0;
 	if (op == 'w') {
-		output_t dest(scatter::io::initfile, std::ios::out | std::ios::binary);
+		output_t dest(io::outdir + io::initfile, std::ios::out | std::ios::binary);
 		dest.write(dim, mass, inittemp);
 		dest.write(r0p0);
 		dest.close();
 	}
 	if (op == 'r') {
-		input_t source(scatter::io::initfile, std::ios::in | std::ios::binary);
+		input_t source(io::indir + io::initfile, std::ios::in | std::ios::binary);
 		// -- check header, no assignment -- //
 		auto mass_read = mass;
 		auto dim_read = dim;
@@ -65,7 +65,7 @@ VOID_T rwdat(CHAR_T op){
 	using scatter::rem::Gamma0;
 
 	if (op == 'w') {
-		output_t dest(scatter::io::datfile, std::ios::out | std::ios::binary);
+		output_t dest(io::outdir + io::datfile, std::ios::out | std::ios::binary);
 		// -- header part -- //
 		dest.write(dim, surfnum, kT, Gamma0, mass);
 		// surfaces para info
@@ -84,7 +84,7 @@ VOID_T rwdat(CHAR_T op){
 	}
 	else if (op == 'r') {
 		//// NOT FINISHED HERE
-		input_t source(scatter::io::datfile, std::ios::in | std::ios::binary);
+		input_t source(io::indir + io::datfile, std::ios::in | std::ios::binary);
 
 		// -- check header part, no assignment -- //
 		auto dim_read = dim;
@@ -133,25 +133,25 @@ VOID_T rwdat(CHAR_T op){
 
 // API
 VOID_T scatter::io::savedat(VOID_T){
-    out_handler.info_nonewline("saving data to " + scatter::io::datfile + " ...  ");
+    out_handler.info_nonewline("saving data to " + io::outdir + io::datfile + " ...  ");
     rwdat('w');
     out_handler.info("done");
 }
 
 VOID_T scatter::io::loaddat(VOID_T){
-    out_handler.info_nonewline("loading data from " + scatter::io::datfile + " ...  ");
+    out_handler.info_nonewline("loading data from " + io::indir + io::datfile + " ...  ");
     rwdat('r');
     out_handler.info("done");
 }
 
 VOID_T scatter::io::saveinit(VOID_T){
-    out_handler.info_nonewline("saving r0p0 to " + scatter::io::initfile + " ...  ");
+    out_handler.info_nonewline("saving r0p0 to " + io::outdir + io::initfile + " ...  ");
     rwinit('w');
     out_handler.info("done");
 }
 
 VOID_T scatter::io::loadinit(VOID_T){
-    out_handler.info_nonewline("loading r0p0 from " + scatter::io::initfile + " ...  ");
+    out_handler.info_nonewline("loading r0p0 from " + io::indir + io::initfile + " ...  ");
     rwinit('r');
     out_handler.info("done");
 }

@@ -25,6 +25,7 @@ static po::variables_map _parse_arg(INT_T argc, char** argv){
 		("jobtype,t", po::value<STRING_T>(), "jobtype to overide infile")
 		("outfile,o", po::value<STRING_T>(), "output file path")
 		("logfile,l", po::value<STRING_T>(), "log file path")
+		("outdir,s", po::value<STRING_T>(), "directory for output")
 		;
 	// parse and store rst to vm, may throw
 	po::variables_map vm; 
@@ -64,6 +65,9 @@ BOOL_T scatter::arg_parser(INT_T argc, char** argv){
 	}
 	if(vm.count("logfile")){
 		io::arg_logfile = vm["logfile"].as<STRING_T>();
+	}
+	if(vm.count("outdir")){
+		io::arg_outdir = vm["outdir"].as<STRING_T>();
 	}
 	return true;
 }
