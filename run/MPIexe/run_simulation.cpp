@@ -146,7 +146,7 @@ VOID_T run_simulation(VOID_T)
 		}
 
 		// timer
-		if (MPIer::master and (i / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
+		if (MPIer::master and ((i + 1) / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
 			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc(99));
 			next_report_percent += 0.1;
 		}
@@ -191,7 +191,7 @@ VOID_T run_simulation(VOID_T)
 
 	// output
 	if (MPIer::master) {
-		STRING_T dyn_info_file = io::parent_dir + rem::jobname + STRING_T(".dyn_info.dat");
+		STRING_T dyn_info_file = io::outdir + rem::jobname + STRING_T(".dyn_info.dat");
 		out_handler.info_nonewline("saving particle dynamic info to ", dyn_info_file, "... ");
 		UINT_T Nalgorithm = algorithms.size();
 		UINT_T single_traj_info_size = dyn_info[algorithms[0]].size() / Ntraj;
@@ -215,6 +215,7 @@ VOID_T run_simulation(VOID_T)
 
 int main(int argc, char** argv)
 {
+try{
 	// MPI setup
 	MPIer::setup();
 
@@ -267,4 +268,9 @@ int main(int argc, char** argv)
 	}
 
 	MPIer::finalize();
+
+}catch (const ioer::IOError& e){
+	std::cout << e.what() << "\n";
+	io::print_var();
+}
 }

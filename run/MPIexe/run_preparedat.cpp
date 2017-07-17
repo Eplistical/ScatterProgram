@@ -74,7 +74,7 @@ VOID_T run_preparedat(VOID_T)
 		grid_obj.calc_fef(0, 1, index);
 
 		// timer
-		if (MPIer::master and (i / static_cast<DOUBLE_T>(i)) >= next_report_percent) {
+		if (MPIer::master and ((i + 1) / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
 			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc(99));
 			next_report_percent += 0.1;
 		}

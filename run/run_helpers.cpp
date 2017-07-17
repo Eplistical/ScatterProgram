@@ -20,7 +20,7 @@ using namespace scatter;
 VOID_T scatter::infile_parser(VOID_T){
 	// load path of infile & init rapidjson obj first
 	io::load_var();
-	rapidjson::Document&& doc = json::load_json_file(io::jsonfile);
+	rapidjson::Document&& doc = json::load_json_file(io::indir + io::jsonfile);
 	rem::load_var(doc);
 	// this time load datfile, initfile, etc
 	io::load_var();
