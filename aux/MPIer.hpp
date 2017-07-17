@@ -85,7 +85,9 @@ namespace MPIer{
 			INT_T tag = rank; // default tag: rank of from thread
 			UINT_T _size = x.size();
 			MPI::COMM_WORLD.Send(&_size, 1, typemap[typeid(UINT_T)], to, tag);
-			MPI::COMM_WORLD.Send(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], to, tag);
+			if (_size != 0) {
+				MPI::COMM_WORLD.Send(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], to, tag);
+			}
 		}
 
 	template<typename ParamType, typename ... Types>
@@ -124,7 +126,9 @@ namespace MPIer{
 			UINT_T _size;
 			MPI::COMM_WORLD.Recv(&_size, 1, typemap[typeid(UINT_T)], from, tag);
 			x.resize(_size);
-			MPI::COMM_WORLD.Recv(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], from, tag);
+			if (_size != 0) {
+				MPI::COMM_WORLD.Recv(&x[0], x.size(), typemap[typeid(typename ParamType::value_type)], from, tag);
+			}
 		}
 
 	template<typename ParamType, typename ... Types>
