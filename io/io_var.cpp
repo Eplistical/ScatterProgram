@@ -11,6 +11,9 @@ STRING_T scatter::io::initfile;
 STRING_T scatter::io::outfile;
 STRING_T scatter::io::logfile;
 
+STRING_T scatter::io::arg_outfile;
+STRING_T scatter::io::arg_logfile;
+
 STRING_T scatter::io::parent_dir;
 
 ioer::output_t scatter::io::out_handler;
@@ -37,6 +40,22 @@ VOID_T scatter::io::load_var(VOID_T)
 	initfile = parent_dir + "." + rem::jobname +  ".init";
 	outfile = parent_dir + rem::jobname + ".out";
 	logfile = parent_dir + rem::jobname + ".log";
+
+	// overriden by command line args
+	if (arg_outfile.size() > 0) {
+		if (arg_outfile == "STDOUT") 
+			outfile = STRING_T("");
+		else
+			outfile = parent_dir + arg_outfile;
+	}
+
+	if (arg_logfile.size() > 0) {
+		if (arg_logfile == "STDOUT") 
+			logfile = STRING_T("");
+		else
+			logfile = parent_dir + arg_logfile;
+	}
+
 }
 
 // prINT_T out io parameters

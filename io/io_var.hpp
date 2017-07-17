@@ -13,6 +13,9 @@ namespace scatter{
         extern STRING_T outfile;
         extern STRING_T logfile;
 
+        extern STRING_T arg_outfile;
+        extern STRING_T arg_logfile;
+
 		extern STRING_T parent_dir;
 
 		extern ioer::output_t out_handler;

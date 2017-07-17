@@ -19,10 +19,12 @@ static po::variables_map _parse_arg(INT_T argc, char** argv){
 	// setup
 	po::options_description desc("Options");
 	desc.add_options()
-		("help,h", "prINT_T help message")
+		("help,h", "print help message")
 		("infile,i", po::value<STRING_T>(), "input file path")
 		("nproc,n", po::value<UINT_T>(), "# of processors" )
 		("jobtype,t", po::value<STRING_T>(), "jobtype to overide infile")
+		("outfile,o", po::value<STRING_T>(), "output file path")
+		("logfile,l", po::value<STRING_T>(), "log file path")
 		;
 	// parse and store rst to vm, may throw
 	po::variables_map vm; 
@@ -56,6 +58,12 @@ BOOL_T scatter::arg_parser(INT_T argc, char** argv){
 	}
 	if(vm.count("jobtype")){
 		rem::jobtype = vm["jobtype"].as<STRING_T>();
+	}
+	if(vm.count("outfile")){
+		io::arg_outfile = vm["outfile"].as<STRING_T>();
+	}
+	if(vm.count("logfile")){
+		io::arg_logfile = vm["logfile"].as<STRING_T>();
 	}
 	return true;
 }
