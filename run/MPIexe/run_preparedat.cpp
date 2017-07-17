@@ -1,5 +1,6 @@
 #include "types.hpp"
 #include <algorithm>
+#include <iterator>
 #include <cassert>
 #include "timer.hpp"
 #include "io.hpp"
@@ -54,7 +55,6 @@ VOID_T run_preparedat(VOID_T)
 	if (MPIer::master) log_handler.info( "debug: allocating fef space");
 #endif
 
-	// allocate space for fef
 	grid_obj.alloc_fef_space();
 	
 #if _DEBUG >= 2
@@ -67,11 +67,19 @@ VOID_T run_preparedat(VOID_T)
 
 	// -- do job! -- //
 	UINT_T index;
+
+	std::vector<DOUBLE_T> force(mybatch.size() * rem::dim);
+	std::vector<DOUBLE_T> efric(mybatch.size() * rem::dim2);
+	std::vector<DOUBLE_T> fBCME(mybatch.size() * rem::dim);
+
 	for (UINT_T i = 0, N = mybatch.size(); i < N; ++i) {
 		index = mybatch[i];
 
 		// calc fef between |0> & |1>, the index^th element
-		grid_obj.calc_fef(0, 1, index);
+		grid_obj.calc_fef(0, 1, index, 
+							&force[rem::dim * i], 
+							&efric[rem::dim2 * i],
+							&fBCME[rem::dim * i]);
 
 		// timer
 		if (MPIer::master and ((i + 1) / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
@@ -80,20 +88,90 @@ VOID_T run_preparedat(VOID_T)
 		}
 	}
 
-	std::vector<DOUBLE_T> &fef = grid_obj.get_fef_ref();
-	DOUBLE_T *tmp = NULL;
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: collecting data");
 #endif
-	// reduce results, not using MPIer here because the feature has not been added
-	if (MPIer::master)
-		MPI::COMM_WORLD.Reduce(MPI_IN_PLACE, &fef[0], grid_obj.get_feflen(), MPI_DOUBLE, MPI_SUM, 0);
-	else
-		MPI::COMM_WORLD.Reduce(&fef[0], tmp, grid_obj.get_feflen(), MPI_DOUBLE, MPI_SUM, 0);
+
+	// -- collect recorded data -- //
+	std::vector<UINT_T> batch_buf;
+	std::vector<DOUBLE_T> force_buf, efric_buf, fBCME_buf;
+
+	for (UINT_T r = 1; r < MPIer::size; ++r) {
+		if (MPIer::rank == r) {
+			MPIer::send(0, mybatch, force, efric, fBCME);
+		}
+		else if (MPIer::master) {
+#if _DEBUG >= 2
+			if (MPIer::master) log_handler.info( "debug: receiving data from thread ", r);
+#endif
+			MPIer::recv(r, batch_buf, force_buf, efric_buf, fBCME_buf);
+			mybatch.insert(mybatch.end(), 
+							std::make_move_iterator(batch_buf.begin()),
+							std::make_move_iterator(batch_buf.end())
+							);
+			force.insert(force.end(), 
+							std::make_move_iterator(force_buf.begin()),
+							std::make_move_iterator(force_buf.end())
+							);
+			efric.insert(efric.end(), 
+							std::make_move_iterator(efric_buf.begin()),
+							std::make_move_iterator(efric_buf.end())
+							);
+			fBCME.insert(fBCME.end(), 
+							std::make_move_iterator(fBCME_buf.begin()),
+							std::make_move_iterator(fBCME_buf.end())
+							);
+		}
+		MPIer::barrier();
+	}
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: sorting indices");
+#endif
+
+	// -- sort data -- //
+	if (MPIer::master) {
+		std::vector<UINT_T> index_vec(mybatch.size());
+		std::sort(index_vec.begin(), index_vec.end(), 
+					[&mybatch](UINT_T i, UINT_T j) { return mybatch[i] < mybatch[j]; });
+		force_buf.clear();
+		efric_buf.clear();
+		fBCME_buf.clear();
+
+		for (UINT_T i : index_vec) {
+			force_buf.insert(force_buf.end(), force.begin() + i * rem::dim, force.begin() + (i + 1) * rem::dim);
+			efric_buf.insert(efric_buf.end(), efric.begin() + i * rem::dim2, efric.begin() + (i + 1) * rem::dim2);
+			fBCME_buf.insert(fBCME_buf.end(), fBCME.begin() + i * rem::dim, fBCME.begin() + (i + 1) * rem::dim);
+		}
+	}
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: combining into fef");
+#endif
+
+	// -- combine force, efric, fBCME into grid_obj.fef -- //
+	if (MPIer::master) {
+		std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
+		fef.clear();
+		fef.insert(fef.end(), 
+					std::make_move_iterator(force_buf.begin()),
+					std::make_move_iterator(force_buf.end())
+					);
+		fef.insert(fef.end(), 
+					std::make_move_iterator(efric_buf.begin()),
+					std::make_move_iterator(efric_buf.end())
+					);
+		fef.insert(fef.end(), 
+					std::make_move_iterator(fBCME_buf.begin()),
+					std::make_move_iterator(fBCME_buf.end())
+					);
+		log_handler.info( "fef len: ", fef.size());
+	}
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: saving results");
 #endif
+
 	// savedat
 	if (MPIer::master) 
 		savedat();

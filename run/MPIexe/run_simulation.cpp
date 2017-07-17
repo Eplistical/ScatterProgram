@@ -4,6 +4,7 @@
 
 #include "types.hpp"
 #include <algorithm>
+#include <iterator>
 #include <cassert>
 #include <unordered_map>
 #include "timer.hpp"
@@ -75,7 +76,6 @@ VOID_T run_simulation(VOID_T)
 #endif
 
 	// basic para
-	std::vector<UINT_T> job_info = mybatch;
 	const UINT_T Nrecord = Nstep / Anastep + 1;
 	std::vector<DOUBLE_T>&& tmp = std::vector<DOUBLE_T>();
 	particle_t init_ptcl;
@@ -137,7 +137,10 @@ VOID_T run_simulation(VOID_T)
 				// record particle info 
 				if (step % Anastep == 0) {
 					tmp = ptcl[it].extract_info();
-					dyn_info[it].insert(dyn_info[it].end(), tmp.begin(), tmp.end());
+					dyn_info[it].insert(dyn_info[it].end(), 
+										std::make_move_iterator(tmp.begin()), 
+										std::make_move_iterator(tmp.end())
+										);
 				}
 				// evolve
 				(*dynamic_algorithms[it])(ptcl[it], index);
@@ -155,16 +158,16 @@ VOID_T run_simulation(VOID_T)
 	MPIer::barrier();
 
 #if _DEBUG >= 2
-	if (MPIer::master) log_handler.info( "debug: collecting info");
+	if (MPIer::master) log_handler.info( "debug: collecting data");
 #endif
 
-	// -- collect recorded info -- //
-	vector<UINT_T> job_info_buf; 
+	// -- collect recorded data -- //
+	vector<UINT_T> mybatch_buf; 
 	vector<DOUBLE_T> dyn_info_buf; 
 
 	for (UINT_T r = 1; r < MPIer::size; ++r) {
 		if (MPIer::rank == r) {
-			MPIer::send(0, job_info);
+			MPIer::send(0, mybatch);
 			for (const auto& it : algorithms) {
 				MPIer::send(0, dyn_info[it]);
 			}
@@ -174,12 +177,18 @@ VOID_T run_simulation(VOID_T)
 #if _DEBUG >= 2
 			if (MPIer::master) log_handler.info( "debug: receiving data from thread ", r);
 #endif
-			MPIer::recv(r, job_info_buf);
-			job_info.insert(job_info.end(), job_info_buf.begin(), job_info_buf.end());
+			MPIer::recv(r, mybatch_buf);
+			mybatch.insert(mybatch.end(), 
+							std::make_move_iterator(mybatch_buf.begin()), 
+							std::make_move_iterator(mybatch_buf.end())
+							);
 
 			for (const auto& it : algorithms) {
 				MPIer::recv(r, dyn_info_buf);
-				dyn_info[it].insert(dyn_info[it].end(), dyn_info_buf.begin(), dyn_info_buf.end());
+				dyn_info[it].insert(dyn_info[it].end(), 
+									std::make_move_iterator(dyn_info_buf.begin()), 
+									std::make_move_iterator(dyn_info_buf.end())
+									);
 			}
 		}
 		MPIer::barrier();
@@ -200,7 +209,7 @@ VOID_T run_simulation(VOID_T)
 							Ntraj, dim, 
 							Nalgorithm,
 							single_traj_info_size,
-							job_info);
+							mybatch);
 		for (const auto& it : algorithms) {
 			io::save_noclose(dyn_info_file, dyn_info[it]);
 		}
