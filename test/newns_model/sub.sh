@@ -9,13 +9,16 @@ ROOT=/data/home/Eplistical/code/ScatterProgram
 BIN=$ROOT/build/bin
 SCRIPT=$ROOT/script
 
+SCRATCHDIR=/scratch/Eplistical/${PBS_JOBID}
+mkdir -p $SCRATCHDIR
+
 jobname=newns_model
 
 $SCRIPT/main ${jobname}.in
 
-mpirun -n 96 $BIN/run_preparedat -t preparedat -i ${jobname}.in
-mv ${jobname}.out ${jobname}.preparedat.out
-mv ${jobname}.log ${jobname}.preparedat.log
+mpirun -n 96 $BIN/run_preparedat -t preparedat -i ${jobname}.in -s $SCRATCHDIR
+mv $SCRATCHDIR/${jobname}.out ./${jobname}.preparedat.out
+mv $SCRATCHDIR/${jobname}.log ./${jobname}.preparedat.log
 
 << EOF
 
