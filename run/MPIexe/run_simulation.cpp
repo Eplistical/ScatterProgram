@@ -67,15 +67,18 @@ VOID_T run_simulation(VOID_T)
 		io::loadinit();
 		io::loaddat();
 	}
-	// ATTENTION: LARGE MEMORY REQUIREMENT
-	/*
 	MPIer::bcast(0, simulation::r0p0);
+
+	/*
+	// ATTENTION: LARGE MEMORY REQUIREMENT
 	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 	MPIer::bcast(0, fef);
 	*/
 	// use shared memory to store fef, in order to reduce memory usage
-	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
-	
+	DOUBLE_T* fef_data_ptr;
+	if (MPIer::master) fef_data_ptr = &grid_obj.get_fef_ref()[0];
+	MPIer::make_sm(0, fef_data_ptr, grid_obj.get_feflen());
+	grid_obj.set_fef_data_ptr(fef_data_ptr);
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: setting up parameters");
@@ -111,7 +114,6 @@ VOID_T run_simulation(VOID_T)
 
 	// particle collections
 	ParticleCollectionType ptcl;
-	
 
 	// setup timer
 	DOUBLE_T next_report_percent = 0.1;
@@ -137,6 +139,7 @@ VOID_T run_simulation(VOID_T)
 			ptcl[it] = init_ptcl;
 		}
 		step = 0;
+
 		while (step < Nstep) {
 			// loop over all its
 			for (const auto& it : algorithms) {
@@ -153,7 +156,6 @@ VOID_T run_simulation(VOID_T)
 			}
 			++step;
 		}
-
 		// timer
 		if (MPIer::master and ((i + 1) / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
 			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc(99));
@@ -230,7 +232,6 @@ VOID_T run_simulation(VOID_T)
 
 int main(int argc, char** argv)
 {
-try{
 	// MPI setup
 	MPIer::setup();
 
@@ -283,9 +284,4 @@ try{
 	}
 
 	MPIer::finalize();
-
-}catch (const ioer::IOError& e){
-	std::cout << e.what() << "\n";
-	io::print_var();
-}
 }
