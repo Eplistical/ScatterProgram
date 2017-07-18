@@ -62,23 +62,55 @@ VOID_T run_simulation(VOID_T)
 	if (MPIer::master) log_handler.info( "debug: loading init & dat file");
 #endif
 
-	// load init & fef data
-	if (MPIer::master) {
+	// load init data
+	if (MPIer::master) 
 		io::loadinit();
-		io::loaddat();
-	}
 	MPIer::bcast(0, simulation::r0p0);
 
-	/*
-	// ATTENTION: LARGE MEMORY REQUIREMENT
-	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
-	MPIer::bcast(0, fef);
-	*/
-	// use shared memory to store fef, in order to reduce memory usage
+	// load fef data, use shared memory. 
+	MPIer::setup_sm();
+	if (MPIer::master) 
+		io::loaddat();
+
+	// from master process, send data to all master_sm
+	INT_T is_master_sm;
+	for (UINT_T r = 1; r < MPIer::size; ++r) {
+		if (MPIer::master) {
+			MPIer::recv(r, is_master_sm);
+			if (is_master_sm == 1) {
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: sending fef data to thread ", r);
+#endif
+
+				MPIer::send(r, grid_obj.get_fef_ref());
+			}
+		}
+		else if (MPIer::rank == r) {
+			is_master_sm = MPIer::master_sm ? 1 : 0;
+			MPIer::send(0, is_master_sm);
+			if (is_master_sm == 1) {
+				MPIer::recv(0, grid_obj.get_fef_ref());
+			}
+		}
+
+		MPIer::barrier();
+	}
+
+	// allocate shared memory in each sub-communicator, and set fef_data_ptr pointing to shared memory for all processes
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: assigning fef_data_ptr");
+#endif
+
 	DOUBLE_T* fef_data_ptr;
-	if (MPIer::master) fef_data_ptr = &grid_obj.get_fef_ref()[0];
+	if (MPIer::master_sm) 
+		fef_data_ptr = &grid_obj.get_fef_ref()[0];
+
 	MPIer::make_sm(0, fef_data_ptr, grid_obj.get_feflen());
 	grid_obj.set_fef_data_ptr(fef_data_ptr);
+
+	MPIer::barrier();
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: setting up parameters");
