@@ -109,14 +109,14 @@
         },
         "endt": {
             "value": [
-                "10000"
+                "50000"
             ],
             "datatype": "d",
             "datamodel": "s"
         },
         "nstep": {
             "value": [
-                "40000"
+                "200000"
             ],
             "datatype": "i",
             "datamodel": "s"

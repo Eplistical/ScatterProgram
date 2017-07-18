@@ -52,12 +52,6 @@ VOID_T run_preparedat(VOID_T)
 	std::vector<UINT_T> mybatch = MPIer::assign_job_random(grid_obj.get_Ntot());
 
 #if _DEBUG >= 2
-	if (MPIer::master) log_handler.info( "debug: allocating fef space");
-#endif
-
-	grid_obj.alloc_fef_space();
-	
-#if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: looping");
 #endif
 

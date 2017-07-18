@@ -67,6 +67,7 @@ VOID_T run_simulation(VOID_T)
 		io::loadinit();
 		io::loaddat();
 	}
+	// ATTENTION: LARGE MEMORY REQUIREMENT
 	MPIer::bcast(0, simulation::r0p0);
 	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 	MPIer::bcast(0, fef);

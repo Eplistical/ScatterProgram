@@ -22,8 +22,8 @@ $end
 $simulation
     Ntraj       5000
     mass        14000		55000
-    EndT        10000
-    Nstep       40000
+    EndT        50000
+    Nstep       200000
     Anastep     100
 
 	#-- init state relateda --#
