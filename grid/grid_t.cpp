@@ -28,12 +28,19 @@ grid_t::grid_t( const std::vector<DOUBLE_T>& rmin,
 	_forceoffset = 0;
 	_efricoffset = _forcelen;
 	_fBCMEoffset = _forcelen + _efriclen;
+
+	_fef_data_ptr = _fef.data();
 }
 
 // setter
 std::vector<DOUBLE_T>& grid_t::get_fef_ref(VOID_T) 
 {
 	return _fef;
+}
+
+DOUBLE_T* grid_t::get_fef_data_ptr(VOID_T)
+{
+	return _fef_data_ptr;
 }
 
 VOID_T grid_t::alloc_fef_space(VOID_T)
@@ -120,17 +127,23 @@ UINT_T grid_t::get_feflen(VOID_T) const
 
 std::vector<DOUBLE_T> grid_t::get_force(const std::vector<DOUBLE_T>& r) const
 {
-	return subvec(_fef, r_to_index(r) * dim, dim);
+	const UINT_T begin = r_to_index(r) * dim;
+	return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + dim);
+	//return subvec(_fef, r_to_index(r) * dim, dim);
 }
 
 std::vector<DOUBLE_T> grid_t::get_efric(const std::vector<DOUBLE_T>& r) const
 {
-	return subvec(_fef, _efricoffset + r_to_index(r) * dim2, dim2);
+	const UINT_T begin = _efricoffset + r_to_index(r) * dim2;
+	return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + dim2);
+	//return subvec(_fef, _efricoffset + r_to_index(r) * dim2, dim2);
 }
 
 std::vector<DOUBLE_T> grid_t::get_fBCME(const std::vector<DOUBLE_T>& r) const
 {
-	return subvec(_fef, _fBCMEoffset + r_to_index(r) * dim, dim);
+	const UINT_T begin = _fBCMEoffset + r_to_index(r) * dim;
+	return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + dim);
+	//return subvec(_fef, _fBCMEoffset + r_to_index(r) * dim, dim);
 }
 
 // -- r_to_index -- //

@@ -33,10 +33,20 @@ namespace MPIer{
 			{typeid(UINT_T), MPI_UINT32_T},
 			{typeid(DOUBLE_T), MPI_DOUBLE},
 		};
+	// MPI Windows
+	std::vector<MPI_Win> win_vec;
 
+	// all-communicator variables
 	static INT_T size;
 	static INT_T rank;
 	static BOOL_T master;
+
+	// shared-memory communicator variable
+	static MPI_Comm comm_sm;
+	static INT_T size_sm;
+	static INT_T rank_sm;
+	static BOOL_T master_sm;
+	static BOOL_T sm_flag;
 
 	// -- init/finalize --//
 	inline VOID_T setup(VOID_T) 
@@ -45,6 +55,9 @@ namespace MPIer{
 		size = MPI::COMM_WORLD.Get_size();
 		rank = MPI::COMM_WORLD.Get_rank();
 		master = (rank == 0);
+
+		// shared-memory not opened
+		sm_flag = false;
 	}
 
 	inline VOID_T finalize(VOID_T) 
@@ -241,6 +254,18 @@ namespace MPIer{
 		return mybatch;
 	}
 
+	// -- init_sm -- //
+	VOID_T init_sm(VOID_T) {
+		if (!sm_flag) {
+			MPI_Comm_split_type(MPI::COMM_WORLD, MPI_COMM_TYPE_SHARED, 0, MPI_INFO_NULL, &comm_sm);
+			MPI_Comm_rank(comm_sm, &rank_sm);
+			MPI_Comm_size(comm_sm, &size_sm);
+			master_sm = (rank_sm == 0);
+			sm_flag = true;
+		}
+	}
+
+	// -- make_sm -- //
 };
 
 

@@ -13,6 +13,10 @@ namespace scatter{
 			std::vector<DOUBLE_T> _dr;
 			std::vector<UINT_T> _Nr;
 			std::vector<DOUBLE_T> _fef;
+
+			// careful w/ raw pointer
+			DOUBLE_T* _fef_data_ptr;
+
 			UINT_T _forcelen;
 			UINT_T _efriclen;
 			UINT_T _fBCMElen;
@@ -31,6 +35,8 @@ namespace scatter{
 
 			// -- setters --//
 			std::vector<DOUBLE_T>& get_fef_ref(VOID_T);
+			DOUBLE_T* get_fef_data_ptr(VOID_T);
+
 			VOID_T alloc_fef_space(VOID_T);
 			VOID_T calc_fef(UINT_T S0, UINT_T S1, UINT_T index, DOUBLE_T * const force, DOUBLE_T * const efric, DOUBLE_T * const fBCME);
 

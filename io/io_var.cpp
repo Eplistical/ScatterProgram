@@ -58,14 +58,14 @@ VOID_T scatter::io::load_var(VOID_T)
 		if (arg_outfile == "STDOUT") 
 			outfile = STRING_T("");
 		else
-			outfile = outdir + arg_outfile;
+			outfile = arg_outfile;
 	}
 
 	if (arg_logfile.size() > 0) {
 		if (arg_logfile == "STDOUT") 
 			logfile = STRING_T("");
 		else
-			logfile = outdir + arg_logfile;
+			logfile = arg_logfile;
 	}
 }
 

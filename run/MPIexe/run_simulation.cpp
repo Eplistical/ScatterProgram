@@ -68,9 +68,14 @@ VOID_T run_simulation(VOID_T)
 		io::loaddat();
 	}
 	// ATTENTION: LARGE MEMORY REQUIREMENT
+	/*
 	MPIer::bcast(0, simulation::r0p0);
 	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 	MPIer::bcast(0, fef);
+	*/
+	// use shared memory to store fef, in order to reduce memory usage
+	std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
+	
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: setting up parameters");
