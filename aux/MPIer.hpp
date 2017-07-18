@@ -255,8 +255,8 @@ namespace MPIer{
 		return mybatch;
 	}
 
-	// -- init_sm -- //
-	VOID_T init_sm(VOID_T) {
+	// -- setup_sm -- //
+	VOID_T setup_sm(VOID_T) {
 		if (!sm_flag) {
 			MPI_Comm_split_type(MPI::COMM_WORLD, MPI_COMM_TYPE_SHARED, 0, MPI_INFO_NULL, &comm_sm);
 			MPI_Comm_rank(comm_sm, &rank_sm);
@@ -273,7 +273,7 @@ namespace MPIer{
 	{
 		if (N == 0) return;
 
-		init_sm();
+		setup_sm();
 
 		INT_T disp_unit = sizeof(ParamType);
 		MPI_Aint WINSIZE = N * disp_unit;
@@ -293,6 +293,9 @@ namespace MPIer{
 			MPI_Win_allocate_shared(0, disp_unit, MPI_INFO_NULL, comm_sm, &data_ptr, &win_sm);
 			MPI_Win_shared_query(win_sm, root, &WINSIZE, &disp_unit, &data_ptr);
 		}
+
+		// synchoronize
+		MPI_Win_fence(0, win_sm);
 	}
 };
 
