@@ -10,6 +10,7 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#include <cstring>
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -266,6 +267,33 @@ namespace MPIer{
 	}
 
 	// -- make_sm -- //
+	template<typename ParamType>
+		inline typename enable_if<is_fundamental<ParamType>::value && (!is_bool<ParamType>::value), VOID_T>::type
+	make_sm(INT_T root, ParamType*& data_ptr, UINT_T N) 
+	{
+		if (N == 0) return;
+
+		init_sm();
+
+		INT_T disp_unit = sizeof(ParamType);
+		MPI_Aint WINSIZE = N * disp_unit;
+		win_vec.push_back(MPI_Win());
+		MPI_Win& win_sm = win_vec.back();
+		ParamType* orig = data_ptr;
+
+		// create shared memory
+		if (rank_sm == root) {
+			// alloc share mem on master
+			MPI_Win_allocate_shared(WINSIZE, disp_unit, MPI_INFO_NULL, comm_sm, &data_ptr, &win_sm);
+			// copy data to shared memory
+			memcpy(data_ptr, orig, WINSIZE);
+		}
+		else {
+			// query shared mem on non-master
+			MPI_Win_allocate_shared(0, disp_unit, MPI_INFO_NULL, comm_sm, &data_ptr, &win_sm);
+			MPI_Win_shared_query(win_sm, root, &WINSIZE, &disp_unit, &data_ptr);
+		}
+	}
 };
 
 
