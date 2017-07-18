@@ -35,26 +35,27 @@ namespace scatter{
 
 			// -- setters --//
 			std::vector<DOUBLE_T>& get_fef_ref(VOID_T);
-			DOUBLE_T* get_fef_data_ptr(VOID_T);
+			VOID_T set_fef_data_ptr(DOUBLE_T* ptr);
 
 			VOID_T alloc_fef_space(VOID_T);
 			VOID_T calc_fef(UINT_T S0, UINT_T S1, UINT_T index, DOUBLE_T * const force, DOUBLE_T * const efric, DOUBLE_T * const fBCME);
 
 			// -- getters -- //
 			std::vector<DOUBLE_T> get_grid(UINT_T d) const;
-			std::vector<DOUBLE_T> get_rmin(VOID_T) const;
-			std::vector<DOUBLE_T> get_rmax(VOID_T) const;
-			std::vector<DOUBLE_T> get_dr(VOID_T) const;
-			std::vector<UINT_T> get_Nr(VOID_T) const;
+			std::vector<DOUBLE_T> get_rmin(VOID_T) const noexcept;
+			std::vector<DOUBLE_T> get_rmax(VOID_T) const noexcept;
+			std::vector<DOUBLE_T> get_dr(VOID_T) const noexcept;
+			std::vector<UINT_T> get_Nr(VOID_T) const noexcept;
 			DOUBLE_T get_rmin(UINT_T d) const;
 			DOUBLE_T get_rmax(UINT_T d) const;
 			DOUBLE_T get_dr(UINT_T d) const;
 			UINT_T get_Nr(UINT_T d) const;
-			UINT_T get_Ntot(VOID_T) const;
-			UINT_T get_forcelen(VOID_T) const;
-			UINT_T get_efriclen(VOID_T) const;
-			UINT_T get_fBCMElen(VOID_T) const;
-			UINT_T get_feflen(VOID_T) const;
+			UINT_T get_Ntot(VOID_T) const noexcept;
+			UINT_T get_forcelen(VOID_T) const noexcept;
+			UINT_T get_efriclen(VOID_T) const noexcept;
+			UINT_T get_fBCMElen(VOID_T) const noexcept;
+			UINT_T get_feflen(VOID_T) const noexcept;
+			DOUBLE_T* set_fef_data_ptr(VOID_T) const noexcept;
 			std::vector<DOUBLE_T> get_force(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_efric(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_fBCME(const std::vector<DOUBLE_T>& r) const;
