@@ -1,4 +1,5 @@
-#include "types.hpp"
+#include "scatter_basic.hpp"
+#include <sstream>
 #include "vector.hpp"
 #include "matrixop.hpp"
 #include "randomer.hpp"
@@ -6,57 +7,64 @@
 #include "simulation.hpp"
 #include "evolve.hpp"
 #include "dynamics_mode.hpp"
+#include "run.hpp"
 
+using scatter::grid_obj;
 using namespace scatter;
-using namespace scatter::simulation;
-const INT_T dim = scatter::rem::dim;
 
-static std::vector<DOUBLE_T> _EF_get_Force(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
-    // m enters with ranforce
-    const std::vector<DOUBLE_T> force;// = para.get_force(ptcl.r);
-    const std::vector<DOUBLE_T> efric;// = para.get_efric(ptcl.r);
-    // efric_p = [efric] * [p]
-    std::vector<DOUBLE_T>&& efric_p = matrixop::matvec(efric, ptcl.p);
+using rem::dim;
+using rem::kT;
+
+using simulation::mass;
+using simulation::dt;
+using simulation::velocity_verlet;
+
+static std::vector<DOUBLE_T> _EF_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) 
+{
+    // force
+    std::vector<DOUBLE_T>&& force = grid_obj.get_force(ptcl.r);
+    // [efric] * [p]
+    std::vector<DOUBLE_T>&& efric_p = matrixop::matvec(grid_obj.get_efric(ptcl.r), ptcl.p);
     return force - efric_p / mass + ptcl.ranforce;
 }
 
-static std::vector<DOUBLE_T> _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mode){
-    std::vector<DOUBLE_T> ranforce;
-	/*
-    const std::vector<DOUBLE_T> efric = para.get_efric(ptcl.r);
+static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mode)
+{
+    std::vector<DOUBLE_T>&& force = grid_obj.get_force(ptcl.r);
+    std::vector<DOUBLE_T>&& efric = grid_obj.get_efric(ptcl.r);
+
     // if efric << force, ranforce = 0
-    const std::vector<DOUBLE_T> force = para.get_force(ptcl.r);
-    if(norm(efric) < 1e-8 * min(abs(force))){
-        ranforce.assign(dim, 0.0);
-        return ranforce;
+    if(norm(efric) < 1e-8 * min(abs(force))) {
+		ptcl.ranforce.assign(dim, 0);
     }
+
     std::vector<DOUBLE_T> eva, evt;
 	matrixop::hdiag(efric, eva, evt);
 
     // deal with negetive eva
-    if(eva[0] < 0.0 or eva[1] < 0.0){
-        // one eva is negative but very close to 0 
-		// (likely to be a numerical error)
-		// set it to 0
-        if(eva[0] < 0.0 and abs(eva[0]) < 1e-6 * abs(eva[1])){
-            eva[0] = 0.0;
-        }
-        else if(eva[1] < 0.0 and abs(eva[1]) < 1e-6 * abs(eva[0])){
-            eva[1] = 0.0;
-        }
-    }
-    // gaussian random
-    for(INT_T d = 0; d < dim; ++d){
-		eva[0] = randomer::normal(0.0, sqrt(2.0 * rem::kT * eva[d] / dt));
-    }
-    ranforce =  matrixop::matvec(evt, eva);
-	*/
-    return ranforce;
+	DOUBLE_T meaneva = mean(eva);
+	DOUBLE_T sigma;
+
+	// negative but very close to 0 (likely to be a numerical error) set to 0
+	for (auto& it : eva) {
+		if (it < 0.0 and abs(it) < 1e-6 * meaneva) {
+			it = 0.0;
+		}
+		else {
+			std::ostringstream errmsg;
+			errmsg << "Negative eva found: " << it;
+			throw scatter::NegativeEigenValueError(errmsg.str());
+		}
+		// get gaussian random
+		sigma = 2.0 * kT * it / dt;
+		it = randomer::normal(0.0, sigma);
+	}
+    ptcl.ranforce =  matrixop::matvec(evt, eva);
 }
 
 static VOID_T _EF(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
-    ptcl.ranforce = _EF_get_Ranforce(ptcl, mode);
-    //velocity_verlet(ptcl, mode, _EF_get_Force);
+    _EF_get_Ranforce(ptcl, mode);
+    velocity_verlet(ptcl, mode, _EF_get_Force);
 }
 
 // API
