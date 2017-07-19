@@ -22,7 +22,6 @@ static po::variables_map _parse_arg(INT_T argc, char** argv){
 		("help,h", "print help message")
 		("infile,i", po::value<STRING_T>(), "input file path")
 		("nproc,n", po::value<UINT_T>(), "# of processors" )
-		("jobtype,t", po::value<STRING_T>(), "jobtype to overide infile")
 		("outfile,o", po::value<STRING_T>(), "output file path")
 		("logfile,l", po::value<STRING_T>(), "log file path")
 		("outdir,s", po::value<STRING_T>(), "directory for output")
@@ -56,9 +55,6 @@ BOOL_T scatter::arg_parser(INT_T argc, char** argv){
 	}
 	if(vm.count("nproc")){
 		rem::threadNum = vm["nproc"].as<UINT_T>();
-	}
-	if(vm.count("jobtype")){
-		rem::jobtype = vm["jobtype"].as<STRING_T>();
 	}
 	if(vm.count("outfile")){
 		io::arg_outfile = vm["outfile"].as<STRING_T>();

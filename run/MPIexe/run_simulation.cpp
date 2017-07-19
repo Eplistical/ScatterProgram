@@ -290,7 +290,6 @@ int main(int argc, char** argv)
 	if(MPIer::master) {
 		// parse infile 
 		if(setup(argc, argv) != 0) return 0; 
-		assert(rem::jobtype == "simulation");
 	}
 
 	// -- program begin -- //

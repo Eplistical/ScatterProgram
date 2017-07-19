@@ -1,6 +1,5 @@
 $rem
     jobname     newns_model
-    jobtype     simulation
 	loaddat		true
     dim         2
 	hbar		1

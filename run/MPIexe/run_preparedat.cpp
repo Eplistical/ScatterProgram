@@ -179,7 +179,6 @@ int main(int argc, char** argv)
 	// parse infile 
 	if(MPIer::master) {
 		if(setup(argc, argv) != 0) return 0; 
-		assert(rem::jobtype == "preparedat");
 	}
 
 	// -- program begin -- //

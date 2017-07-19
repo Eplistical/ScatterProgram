@@ -60,28 +60,5 @@ def main():
     logging.info(now() + ' complete loading infile & translate to json.')
 
 
-    """
-    # run!
-    BIN_DIR = FILE_DIR + '/../build/bin'
-    os.system(BIN_DIR + '/scatter -i ' + infile)
-
-    # job analysis
-    jobtype = jsondata['rem']['jobtype']['value'][0]
-
-    if jobtype == 'simulation':
-        # make sure one has init file
-        if args.prepinit:
-            logging.info(now() + ' preparing init file: ' + initfile)
-            prepinit(jsondata)
-        assert(os.path.exists(initfile))
-        assert(validinitfile(initfile, jsondata))
-
-        # if outfile exists, make a backup
-        if os.path.exists(outfile):
-            logging.info(now() + ' existing output file detected, backed up.')
-            os.rename(outfile, infile_DIR + '.' + jobname + '.last.out')
-    """
-
-
 if __name__ == '__main__':
     main()

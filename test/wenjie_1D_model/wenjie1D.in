@@ -1,6 +1,5 @@
 $rem
     jobname     wenjie1D
-    jobtype     simulation
 	loaddat		true
     dim         1
 	hbar		1

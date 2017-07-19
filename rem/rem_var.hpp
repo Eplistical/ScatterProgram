@@ -11,7 +11,6 @@ namespace scatter{
 		extern UINT_T threadNum;
 		// job control parameters
 		extern STRING_T jobname;
-		extern STRING_T jobtype;
 		extern BOOL_T loaddat;
 		// basic parameters for the system(useful both for structure & dynamics)
 		extern UINT_T dim;

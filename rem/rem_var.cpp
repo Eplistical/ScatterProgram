@@ -11,7 +11,6 @@ STRING_T scatter::rem::infile;
 
 // job control parameters
 STRING_T scatter::rem::jobname;
-STRING_T scatter::rem::jobtype;
 BOOL_T scatter::rem::loaddat;
 
 // basic parameters for the system(useful both for structure & dynamics)
@@ -28,7 +27,6 @@ VOID_T scatter::rem::load_var(const rapidjson::Document& doc){
 	using json::load_param;
 	load_param(doc, "rem")
 		("jobname", jobname)
-		("jobtype", jobtype)
 		("loaddat", loaddat)
 		("dim", dim)
 		("hbar", hbar)
@@ -45,7 +43,6 @@ VOID_T scatter::rem::print_var(VOID_T){
 	out_handler.drawline('-');
 	out_handler.keyval()
 		("jobname", jobname)
-		("jobtype", jobtype)
 		("loaddat", loaddat)
 		("dim", dim)
 		("hbar", hbar)

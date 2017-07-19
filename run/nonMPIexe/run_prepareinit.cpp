@@ -47,7 +47,6 @@ VOID_T run_prepareinit()
 
 int main(int argc, char** argv){
 	if(setup(argc, argv) != 0) return 0; 
-	assert(rem::jobtype == "prepareinit");
 	// -- program begin -- //
 	out_handler.info(timer::now());
 	timer::tic();

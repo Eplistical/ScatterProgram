@@ -50,7 +50,6 @@ VOID_T run_surface(VOID_T){
 
 int main(int argc, char** argv){
 	if(setup(argc, argv) != 0) return 0; 
-	assert(rem::jobtype == "surface");
 	// -- program begin -- //
 	out_handler.info(timer::now());
 	timer::tic();
