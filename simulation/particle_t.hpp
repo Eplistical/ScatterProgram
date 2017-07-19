@@ -2,7 +2,7 @@
 #define _SCATTER_PARTICLE_T_HPP
 // module for single particle class
 #include "types.hpp"
-#include <vector>
+#include "vector.hpp"
 
 namespace scatter{
 	class particle_t{
@@ -21,16 +21,6 @@ namespace scatter{
 
 			// setter
 			VOID_T hop(UINT_T s) noexcept {surf = s;}
-
-			// getter
-			std::vector<DOUBLE_T> extract_info(VOID_T) const noexcept
-			{
-				// get info in a single vector (surf, r, p)
-				std::vector<DOUBLE_T> rst { static_cast<DOUBLE_T>(surf) };
-				rst.insert(rst.end(), r.begin(), r.end());
-				rst.insert(rst.end(), p.begin(), p.end());
-				return rst;
-			}
 	};
 };
 

@@ -68,9 +68,11 @@ VOID_T run_simulation(VOID_T)
 	MPIer::bcast(0, simulation::r0p0);
 
 	// load fef data, use shared memory. 
-	MPIer::setup_sm();
 	if (MPIer::master) 
 		io::loaddat();
+
+	if (MPIer::master)
+		out_handler.info_nonewline("sending fef data to sub-commmunicator leaders ... ");
 
 	// from master process, send data to all master_sm
 	INT_T is_master_sm;
@@ -97,7 +99,15 @@ VOID_T run_simulation(VOID_T)
 		MPIer::barrier();
 	}
 
+	if (MPIer::master) {
+		out_handler.info_nonewline( "done. ");
+		out_handler.info(timer::toc());
+	}
+
 	// allocate shared memory in each sub-communicator, and set fef_data_ptr pointing to shared memory for all processes
+
+	if (MPIer::master)
+		out_handler.info_nonewline("Preparing shared memory ... ");
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: assigning fef_data_ptr");
@@ -112,11 +122,16 @@ VOID_T run_simulation(VOID_T)
 
 	MPIer::barrier();
 
+	if (MPIer::master) {
+		out_handler.info_nonewline( "done. ");
+		out_handler.info(timer::toc());
+	}
+
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: setting up parameters");
 #endif
 
-	// basic para
+	// basic para 
 	const UINT_T Nrecord = Nstep / Anastep + 1;
 	std::vector<DOUBLE_T>&& tmp = std::vector<DOUBLE_T>();
 	particle_t init_ptcl;
@@ -149,7 +164,6 @@ VOID_T run_simulation(VOID_T)
 
 	// setup timer
 	DOUBLE_T next_report_percent = 0.1;
-	if (MPIer::master) timer::tic(99);
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: start loop");
@@ -177,7 +191,7 @@ VOID_T run_simulation(VOID_T)
 			for (const auto& it : algorithms) {
 				// record particle info 
 				if (step % Anastep == 0) {
-					tmp = ptcl[it].extract_info();
+					tmp = extract_info(ptcl[it]);
 					dyn_info[it].insert(dyn_info[it].end(), 
 										std::make_move_iterator(tmp.begin()), 
 										std::make_move_iterator(tmp.end())
@@ -190,18 +204,17 @@ VOID_T run_simulation(VOID_T)
 		}
 		// timer
 		if (MPIer::master and ((i + 1) / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
-			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc(99));
+			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc());
 			next_report_percent += 0.1;
 		}
 	}
 
 	MPIer::barrier();
 
-#if _DEBUG >= 2
-	if (MPIer::master) log_handler.info( "debug: collecting data");
-#endif
-
 	// -- collect recorded data -- //
+	if (MPIer::master) 
+		out_handler.info_nonewline( "collecting dynamic data ... ");
+
 	vector<UINT_T> mybatch_buf; 
 	vector<DOUBLE_T> dyn_info_buf; 
 
@@ -234,19 +247,22 @@ VOID_T run_simulation(VOID_T)
 		MPIer::barrier();
 	}
 
-#if _DEBUG >= 2
-	if (MPIer::master) log_handler.info( "debug: saving dyn_info");
-#endif
+	if (MPIer::master) {
+		out_handler.info_nonewline( "done. ");
+		out_handler.info(timer::toc());
+	}
 
-	// output
+	// -- save dynamic data to <jobname>.dyn_info.dat -- //
+	if (MPIer::master) 
+		out_handler.info_nonewline( "saving dyn_info");
+
 	if (MPIer::master) {
 		STRING_T dyn_info_file = io::outdir + rem::jobname + STRING_T(".dyn_info.dat");
-		out_handler.info_nonewline("saving particle dynamic info to ", dyn_info_file, "... ");
 		UINT_T Nalgorithm = algorithms.size();
 		UINT_T single_traj_info_size = dyn_info[algorithms[0]].size() / Ntraj;
 
 		io::save_noclose( dyn_info_file, 
-							Ntraj, dim, 
+							dim, Ntraj,
 							Nalgorithm,
 							single_traj_info_size,
 							mybatch);
@@ -256,16 +272,19 @@ VOID_T run_simulation(VOID_T)
 		out_handler.info("done.");
 	}
 
-#if _DEBUG >= 2
-	if (MPIer::master) log_handler.info( "debug: run_simulation done");
-#endif
+	if (MPIer::master) {
+		out_handler.info_nonewline( "done. ");
+		out_handler.info(timer::toc());
+	}
 
+	// -- DONE -- //
 }
 
 int main(int argc, char** argv)
 {
 	// MPI setup
 	MPIer::setup();
+	MPIer::setup_sm();
 
 	// parse infile 
 	if(MPIer::master) {

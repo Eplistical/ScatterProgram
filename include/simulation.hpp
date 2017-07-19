@@ -7,7 +7,5 @@
 #include "../simulation/initmode.hpp"
 #include "../simulation/initstate.hpp"
 #include "../simulation/dynamic_algorithms.hpp"
-#include "../simulation/analmode.hpp"
-#include "../simulation/anal.hpp"
 
 #endif

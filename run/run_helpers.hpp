@@ -4,7 +4,7 @@
 #include "types.hpp"
 namespace scatter{
 	VOID_T infile_parser(VOID_T);
-	int setup(int argc, char** argv);
+	INT_T setup(INT_T argc, CHAR_T** argv);
 }
 
 #endif

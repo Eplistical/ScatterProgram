@@ -5,7 +5,7 @@
 #include "../run/runmode.hpp"
 #include "../run/run_var.hpp"
 #include "../run/run_helpers.hpp"
-//#include "../run/run_simulation.hpp"
-//#include "../run/run_surface.hpp"
+#include "../run/anal.hpp"
+#include "../run/analmode.hpp"
 
 #endif
