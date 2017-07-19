@@ -41,6 +41,16 @@ namespace scatter
 			} 
 			~FileNotFoundError() = default;
 	};
+
+	class NegativeEigenValueError : public ScatterError
+	{
+		public:
+			explicit NegativeEigenValueError(const std::string& msg = ""){
+				_title = "NegativeEigenValueError"; 
+				_msg = (msg == "")?_title:(_title + ":" + msg);
+			} 
+			~NegativeEigenValueError() = default;
+	};
 };
 
 #endif
