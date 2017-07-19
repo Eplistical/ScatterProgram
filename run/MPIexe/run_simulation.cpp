@@ -24,6 +24,8 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
+using simulation::algorithms;
+
 // type for info recorder
 template<typename ParamType>
 	using InfoRecoderType = unordered_map<enumspace::dynamics_mode_enum, vector<ParamType> >;
@@ -135,23 +137,6 @@ VOID_T run_simulation(VOID_T)
 	const UINT_T Nrecord = Nstep / Anastep + 1;
 	std::vector<DOUBLE_T>&& tmp = std::vector<DOUBLE_T>();
 	particle_t init_ptcl;
-
-	// alogrithms to run
-	std::vector<enumspace::dynamics_mode_enum> algorithms
-	{
-		enumspace::dynamics_mode_enum::CME,
-		//enumspace::dynamics_mode_enum::BCME,
-		//enumspace::dynamics_mode_enum::EF,
-	};
-
-	// show algorithms 
-	if (MPIer::master) {
-		out_handler.info_nonewline("algorithms: ");
-		for (auto& it : algorithms) {
-			out_handler.info_nonewline(enumspace::dynamics_mode_dict.right.at(it), ", ");
-		}
-		out_handler.newline();
-	}
 
 	// containers for info
 	InfoRecoderType<DOUBLE_T> dyn_info;

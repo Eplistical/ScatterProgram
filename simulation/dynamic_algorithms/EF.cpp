@@ -47,13 +47,16 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mod
 
 	// negative but very close to 0 (likely to be a numerical error) set to 0
 	for (auto& it : eva) {
-		if (it < 0.0 and abs(it) < 1e-6 * meaneva) {
-			it = 0.0;
-		}
-		else {
-			std::ostringstream errmsg;
-			errmsg << "Negative eva found: " << it;
-			throw scatter::NegativeEigenValueError(errmsg.str());
+		if (it < 0.0) {
+			if(abs(it) < 1e-6 * meaneva) {
+				it = 0.0;
+			}
+			else {
+				std::ostringstream errmsg;
+				std::cout << it << " <-neg " << std::endl;
+				errmsg << "Negative eva found: " << it;
+				throw scatter::NegativeEigenValueError(errmsg.str());
+			}
 		}
 		// get gaussian random
 		sigma = 2.0 * kT * it / dt;
