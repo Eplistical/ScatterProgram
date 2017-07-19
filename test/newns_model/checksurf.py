@@ -31,6 +31,9 @@ def checksurf():
             for i in range(surfnum):
                 data = loadmatrix(f, start="d = ", printheader=False)
                 ax.plot(data[:,0], data[:,1], label='d{}i{}'.format(d, i))
+
+            ax.plot(data[:,0], data[:,3], '--', label='d{}g'.format(d))
+
     plt.legend()
     plt.show()
 

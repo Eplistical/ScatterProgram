@@ -22,9 +22,9 @@ $end
 $simulation
     Ntraj       5000
     mass        14000		55000
-    EndT        50000
-    Nstep       200000
-    Anastep     100
+    EndT        500000
+    Nstep       2000000
+    Anastep     10000
 
 	#-- init state relateda --#
 
@@ -50,7 +50,7 @@ $surfaces
 
     gammamode	gaussian	fermi
 	@gammapara
-		1		1		0.4		0
-		1		0		0.64	0
+		1		1		4		0
+		2		0		0.64	0
 	@end
 $end
