@@ -6,7 +6,7 @@
 using scatter::io::out_handler;
 
 // args passed by command line
-UINT_T scatter::rem::threadNum;
+UINT_T scatter::rem::threadNum = 1;
 STRING_T scatter::rem::infile;
 
 // job control parameters
