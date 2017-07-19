@@ -125,7 +125,7 @@ std::vector<T1> operator/(const T2& a, const std::vector<T1>& v1){
 }
 
 template<typename T>
-T abs(const std::vector<T>& v){
+std::vector<T> abs(const std::vector<T>& v){
     const size_t N = v.size();
     std::vector<T> rst(N);
     for(size_t j = 0;j < N;j++) 
