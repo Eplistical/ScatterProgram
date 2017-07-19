@@ -4,5 +4,5 @@ Program for high dimensional scattering problem, comparing behaviours of
 * Broadened classical master equation (BCME) 
 * Electronic friction (EF).
 
-Require C++14 to compile.
+Require C++11 to compile.
 Not yet completed.
