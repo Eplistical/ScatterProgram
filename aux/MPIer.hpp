@@ -66,6 +66,11 @@ namespace MPIer{
 		MPI::Finalize();
 	}
 
+	inline VOID_T abort(INT_T errorcode = MPI_ERR_OTHER) 
+	{
+		MPI::COMM_WORLD.Abort(errorcode);
+	}
+
 	// -- barrier -- //
 	inline VOID_T barrier(VOID_T) 
 	{
