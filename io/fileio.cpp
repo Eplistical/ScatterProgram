@@ -103,13 +103,12 @@ VOID_T rwdat(CHAR_T op){
 		// surfaces & gamma para info 
 		auto gammapara_read = gammapara;
 		auto surfpara_read = surfpara;
-		for (UINT_T i = 0; i < 1; ++i) {
+		for (UINT_T i = 0; i < dim; ++i) {
 			source.read(gammapara_read[i]);
 			assert(gammapara[i] == gammapara_read[i]);
 		}
-		for (UINT_T i = 0; i < surfnum; ++i) {
+		for (UINT_T i = 0; i < surfnum * dim; ++i) {
 			source.read(surfpara_read[i]);
-			//std::cout << i << "\t" << surfpara[i] << "\t" << surfpara_read[i] << std::endl;
 			assert(surfpara[i] == surfpara_read[i]);
 		}
 
