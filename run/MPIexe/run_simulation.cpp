@@ -102,10 +102,8 @@ VOID_T run_simulation(VOID_T)
 		MPIer::barrier();
 	}
 
-	if (MPIer::master) {
-		out_handler.info_nonewline( "done. ");
-		out_handler.info(timer::toc());
-	}
+	if (MPIer::master) 
+		out_handler.info( "done. ", timer::toc());
 
 	// allocate shared memory in each sub-communicator, and set fef_data_ptr pointing to shared memory for all processes
 
@@ -125,10 +123,8 @@ VOID_T run_simulation(VOID_T)
 
 	MPIer::barrier();
 
-	if (MPIer::master) {
-		out_handler.info_nonewline( "done. ");
-		out_handler.info(timer::toc());
-	}
+	if (MPIer::master) 
+		out_handler.info( "done. ", timer::toc());
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: setting up parameters");
@@ -207,7 +203,7 @@ VOID_T run_simulation(VOID_T)
 
 		// timer
 		if (MPIer::master and ((i + 1) / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
-			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc());
+			out_handler.info(next_report_percent * 100, " \% done, ", timer::toc());
 			next_report_percent += 0.1;
 		}
 	}
@@ -249,10 +245,8 @@ VOID_T run_simulation(VOID_T)
 		MPIer::barrier();
 	}
 
-	if (MPIer::master) {
-		out_handler.info_nonewline( "done. ");
-		out_handler.info(timer::toc());
-	}
+	if (MPIer::master) 
+		out_handler.info( "done. ", timer::toc());
 
 	// -- save dynamic data to <jobname>.dyn_info.dat -- //
 	if (MPIer::master) 
@@ -271,13 +265,12 @@ VOID_T run_simulation(VOID_T)
 		for (const auto& it : algorithms) {
 			io::save_noclose(dyn_info_file, dyn_info[it]);
 		}
-		out_handler.info("done.");
+
+		out_handler.info("done. ", timer::toc());
 	}
 
-	if (MPIer::master) {
-		out_handler.info_nonewline( "done. ");
-		out_handler.info(timer::toc());
-	}
+	if (MPIer::master) 
+		out_handler.info("done. ", timer::toc());
 
 	// -- DONE -- //
 }

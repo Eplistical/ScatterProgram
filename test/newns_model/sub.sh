@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -N L('w')D
 #PBS -l walltime=100:00:00
-#PBS -l mem=120GB
-#PBS -l nodes=1:ppn=48
+#PBS -l mem=200GB
+#PBS -l nodes=2:ppn=48
 
 cd $PBS_O_WORKDIR
 ROOT=/data/home/Eplistical/code/ScatterProgram
@@ -21,7 +21,7 @@ jobname=newns_model
 $SCRIPT/main ${jobname}.in
 
 base=${jobname}.simulation
-mpirun -n 48 $BIN/run_simulation -i ${jobname}.in -s ${SCRATCHDIR} -o ${base}.out -l ${base}.log
+mpirun -n 96 $BIN/run_simulation -i ${jobname}.in -s ${SCRATCHDIR} -o ${base}.out -l ${base}.log
 mv $SCRATCHDIR/${jobname}.dyn_info.dat .
 mv $SCRATCHDIR/${base}.out .
 mv $SCRATCHDIR/${base}.log .
