@@ -34,6 +34,7 @@ def checkdyn():
     Anastep = int(jsoninfo['simulation']['anastep']['value'][0])
     Nrecord = int(Nstep / Anastep);
     dt = float(jsoninfo['simulation']['endt']['value'][0]) / float(jsoninfo['simulation']['nstep']['value'][0])
+    Nalgorithm = len(jsoninfo['simulation']['algorithms']['value'][0])
     # info piece structure: (surf, r, p, Ek, Ep) 
     infopiece_size = dim * 4 + 1
 
@@ -43,7 +44,6 @@ def checkdyn():
     #     ... 
 
     single_traj_info_size = Nrecord * infopiece_size
-    Nalgorithm = 3
 
     # datatype
     datatype = np.dtype(
@@ -92,7 +92,7 @@ def checkdyn():
         axes[0,1].plot(tarr, dyn_Nout)
 
 
-    #plt.show()
+    plt.show()
 
 
 

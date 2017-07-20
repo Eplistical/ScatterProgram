@@ -168,7 +168,8 @@
         },
         "algorithms": {
             "value": [
-                "CME"
+                "CME",
+                "BCME"
             ],
             "datatype": "s",
             "datamodel": "v"
