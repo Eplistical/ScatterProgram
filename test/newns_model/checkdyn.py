@@ -4,6 +4,12 @@ import os
 import argparse
 import json
 import numpy as np
+import matplotlib as mpl
+cmd = 'python -c "import matplotlib.pyplot as plt;plt.figure()"'
+HAVE_DISPLAY = ('save' not in sys.argv) and (os.system(cmd) == 0)
+if not HAVE_DISPLAY:
+    mpl.use('Agg')
+
 from matplotlib import pyplot as plt
 from aux import *
 
@@ -36,8 +42,8 @@ def checkdyn():
     # | alg2traj1, alg2traj2, ..., alg2trajN | 
     #     ... 
 
-    Nalgorithm = 1
     single_traj_info_size = Nrecord * infopiece_size
+    Nalgorithm = 3
 
     # datatype
     datatype = np.dtype(
@@ -52,13 +58,10 @@ def checkdyn():
                     )
 
     info = np.fromfile(paths.dyn_info_file, dtype=datatype, count=1)
-    print(info['dim'][0], info['Ntraj'][0], info['Nalgorithm'][0],
-            info['single_traj_info_size'][0])
-    print(dim, Ntraj, Nalgorithm, single_traj_info_size)
     assert (dim == info['dim'][0])
     assert (Ntraj == info['Ntraj'][0])
-    assert (Nalgorithm == info['Nalgorithm'][0])
     assert (single_traj_info_size == info['single_traj_info_size'][0])
+    assert (Nalgorithm == info['Nalgorithm'][0])
 
     data = info['data'][0].reshape(Nalgorithm, Ntraj, Nrecord, infopiece_size)
     tarr = np.arange(Nrecord) * dt;
@@ -67,6 +70,7 @@ def checkdyn():
     for i in range(Nalgorithm):
         dyninfo = data[i,:,:,:]
         finalinfo = dyninfo[:,-1,:]
+        print(finalinfo)
 
         dyn_ravg = np.mean(dyninfo[:,:,0 * dim + 1:1 * dim + 1], 0)
         dyn_pavg = np.mean(dyninfo[:,:,1 * dim + 1:2 * dim + 1], 0)
@@ -88,7 +92,7 @@ def checkdyn():
         axes[0,1].plot(tarr, dyn_Nout)
 
 
-    plt.show()
+    #plt.show()
 
 
 

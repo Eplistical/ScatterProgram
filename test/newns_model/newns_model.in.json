@@ -7,13 +7,6 @@
             "datatype": "S",
             "datamodel": "s"
         },
-        "jobtype": {
-            "value": [
-                "simulation"
-            ],
-            "datatype": "s",
-            "datamodel": "s"
-        },
         "dim": {
             "value": [
                 "2"
@@ -109,21 +102,21 @@
         },
         "endt": {
             "value": [
-                "500000"
+                "5000"
             ],
             "datatype": "d",
             "datamodel": "s"
         },
         "nstep": {
             "value": [
-                "2000000"
+                "20000"
             ],
             "datatype": "i",
             "datamodel": "s"
         },
         "anastep": {
             "value": [
-                "10000"
+                "100"
             ],
             "datatype": "i",
             "datamodel": "s"
@@ -171,6 +164,13 @@
                 "20"
             ],
             "datatype": "d",
+            "datamodel": "v"
+        },
+        "algorithms": {
+            "value": [
+                "CME"
+            ],
+            "datatype": "s",
             "datamodel": "v"
         }
     },

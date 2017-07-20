@@ -21,9 +21,16 @@ $end
 $simulation
     Ntraj       5000
     mass        14000		55000
+<<<<<<< Updated upstream
+    EndT        5000
+    Nstep       20000
+    Anastep     100
+=======
     EndT        500000
     Nstep       2000000
     Anastep     10000
+	Algorithms	CME 
+>>>>>>> Stashed changes
 
 	#-- init state relateda --#
 
