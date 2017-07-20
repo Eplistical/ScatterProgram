@@ -1,0 +1,29 @@
+#!/bin/bash
+
+mem=100
+nodes=1
+ppn=48
+
+cat >> sub.sh << EOF
+#PBS -N L('w')D
+#PBS -l walltime=400:00:00
+#PBS -l mem=${mem}GB
+#PBS -l nodes=${nodes}:ppn=${ppn}
+
+cd \$PBS_O_WORKDIR
+ROOT=/data/home/Eplistical/code/ScatterProgram
+BIN=\$ROOT/build/bin
+SCRIPT=\$ROOT/script
+
+SCRATCHDIR=/scratch/Eplistical/\${PBS_JOBID}
+mkdir -p \$SCRATCHDIR
+
+if [ -f ".pbs.log" ]; then
+	rm .pbs.log
+fi
+
+jobname=newns_model
+
+$SCRIPT/main ${jobname}.in
+
+EOF

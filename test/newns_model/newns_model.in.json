@@ -161,7 +161,7 @@
         "initpavg": {
             "value": [
                 "0",
-                "20"
+                "40"
             ],
             "datatype": "d",
             "datamodel": "v"

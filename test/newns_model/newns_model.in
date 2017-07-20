@@ -33,7 +33,7 @@ $simulation
 	elestate	0
     initmode    ring  	p_gaussian
 	initravg	0	  	-15
-	initpavg	0		20
+	initpavg	0		40
 $end
 
 $surfaces
