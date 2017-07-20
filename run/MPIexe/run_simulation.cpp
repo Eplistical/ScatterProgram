@@ -256,7 +256,7 @@ VOID_T run_simulation(VOID_T)
 
 	// -- save dynamic data to <jobname>.dyn_info.dat -- //
 	if (MPIer::master) 
-		out_handler.info_nonewline( "saving dyn_info to ", io::outdir + rem::jobname + STRING_T(".dyn_info.dat"));
+		out_handler.info_nonewline( "saving dyn_info to ", io::outdir + rem::jobname + STRING_T(".dyn_info.dat ... "));
 
 	if (MPIer::master) {
 		STRING_T dyn_info_file = io::outdir + rem::jobname + STRING_T(".dyn_info.dat");
