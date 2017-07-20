@@ -21,7 +21,7 @@ jobname=newns_model
 $SCRIPT/main ${jobname}.in
 
 base=${jobname}.simulation
-mpirun -n 48 $BIN/run_simulation -i ${jobname}.in -o ${base}.out -l ${base}.log
+mpirun -n 48 $BIN/run_simulation -i ${jobname}.in -s ${SCRATCHDIR} -o ${base}.out -l ${base}.log
 mv $SCRATCHDIR/${jobname}.dyn_info.dat .
 mv $SCRATCHDIR/${base}.out .
 mv $SCRATCHDIR/${base}.log .

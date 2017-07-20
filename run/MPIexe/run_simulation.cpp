@@ -2,7 +2,7 @@
 #include "debugtools.hpp"
 #endif
 
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include <algorithm>
 #include <iterator>
 #include <cassert>
@@ -25,6 +25,7 @@ using namespace std;
 using namespace scatter;
 
 using simulation::algorithms;
+using simulation::dynamic_algorithms;
 
 // type for info recorder
 template<typename ParamType>
@@ -189,7 +190,17 @@ VOID_T run_simulation(VOID_T)
 										);
 				}
 				// evolve
-				(*dynamic_algorithms[it])(ptcl[it], index);
+				try {
+					(*dynamic_algorithms[it])(ptcl[it], index);
+				} catch (const scatter::OutofRangeError& e) {
+					std::cout 
+						<< "thread " << MPIer::rank 
+						<< ": catched OutofRangeError on traj " << index 
+						<< " with algorithm " << enumspace::dynamics_mode_dict.right.at(it)
+						<< ". errmsg: " << e.what() 
+						<< "\n";
+					MPIer::abort();
+				}
 			}
 			++step;
 		}
@@ -245,7 +256,7 @@ VOID_T run_simulation(VOID_T)
 
 	// -- save dynamic data to <jobname>.dyn_info.dat -- //
 	if (MPIer::master) 
-		out_handler.info_nonewline( "saving dyn_info");
+		out_handler.info_nonewline( "saving dyn_info to ", io::outdir + rem::jobname + STRING_T(".dyn_info.dat"));
 
 	if (MPIer::master) {
 		STRING_T dyn_info_file = io::outdir + rem::jobname + STRING_T(".dyn_info.dat");
