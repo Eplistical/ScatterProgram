@@ -52,6 +52,17 @@ namespace scatter
 		// broadcast simulation para
 		MPIer::bcast(0, simulation::mass, simulation::omega, simulation::Ntraj, simulation::Nstep, simulation::EndT, 
 						simulation::dt, simulation::Anastep, simulation::inittemp, simulation::vibstate, simulation::elestate);
+
+		UINT_T Nalgorithm = simulation::algorithms.size();
+		MPIer::bcast(0, Nalgorithm);
+		simulation::algorithms.resize(Nalgorithm);
+
+		for (UINT_T i = 0; i < Nalgorithm; ++i) {
+			if (MPIer::master)
+				tmp = enumspace::dynamics_mode_dict.right.at(simulation::algorithms[i]);
+			MPIer::bcast(0, tmp);
+			simulation::algorithms[i] = enumspace::dynamics_mode_dict.left.at(tmp);
+		}
 	}
 };
 

@@ -154,10 +154,16 @@ VOID_T run_simulation(VOID_T)
 	if (MPIer::master) log_handler.info( "debug: start loop");
 #endif
 
+	MPIer::barrier();
+
 	// -- do job! -- //
 	UINT_T index;
 	for (UINT_T i = 0, N = mybatch.size(); i < N; ++i) {
 		index = mybatch[i];
+
+#if _DEBUG >= 2
+	if (MPIer::master) log_handler.info( "debug: propagating trajectory ", index);
+#endif
 
 		// load init state
 		init_ptcl = particle_t(elestate);
@@ -187,6 +193,7 @@ VOID_T run_simulation(VOID_T)
 			}
 			++step;
 		}
+
 		// timer
 		if (MPIer::master and ((i + 1) / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
 			out_handler.info(next_report_percent * 100, " \% Done, ", timer::toc());
@@ -220,7 +227,6 @@ VOID_T run_simulation(VOID_T)
 							std::make_move_iterator(mybatch_buf.begin()), 
 							std::make_move_iterator(mybatch_buf.end())
 							);
-
 			for (const auto& it : algorithms) {
 				MPIer::recv(r, dyn_info_buf);
 				dyn_info[it].insert(dyn_info[it].end(), 
