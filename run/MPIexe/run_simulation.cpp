@@ -53,6 +53,7 @@ VOID_T run_simulation(VOID_T)
 #endif
 
 	surfaces_obj = surfaces_t(surfnum);
+	surfaces_obj.set_abs_gamma_threash(gamma_cutoff);
 	surfaces_obj.set_gamma(gammamode, gammapara);
 	surfaces_obj.set_energy(surfmode, surfpara);
 

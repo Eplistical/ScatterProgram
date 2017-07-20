@@ -13,6 +13,7 @@ std::vector<UINT_T> scatter::grid::Nr;
 // fef related
 DOUBLE_T scatter::grid::bandwidth;
 std::vector<DOUBLE_T> scatter::grid::derange;
+DOUBLE_T scatter::grid::gamma_cutoff;
 
 // init grid parameters 
 VOID_T scatter::grid::load_var(const rapidjson::Document& doc){
@@ -24,6 +25,7 @@ VOID_T scatter::grid::load_var(const rapidjson::Document& doc){
 		("Nr", Nr)
 		("bandwidth", bandwidth)
 		("derange", derange)
+		("gamma_cutoff", gamma_cutoff)
 		;
 	std::vector<DOUBLE_T> _omega;
 }
@@ -39,6 +41,7 @@ VOID_T scatter::grid::print_var(VOID_T){
 		("Nr", Nr)
 		("bandwidth", bandwidth)
 		("derange", derange)
+		("gamma_cutoff", gamma_cutoff)
 		;
 
 	out_handler.drawline('-');

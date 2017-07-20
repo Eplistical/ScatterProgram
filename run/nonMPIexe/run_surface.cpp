@@ -28,6 +28,7 @@ VOID_T run_surface(VOID_T){
 	DOUBLE_T U, F, G, Gder;
 	grid_obj = grid_t(rmin, rmax, Nr);
 	surfaces_obj = surfaces_t(surfnum);
+	surfaces_obj.set_abs_gamma_threash(gamma_cutoff);
 	surfaces_obj.set_gamma(gammamode, gammapara);
 	surfaces_obj.set_energy(surfmode, surfpara);
 	out_handler.info("surfaces:\n", "i^th surf & d^dimension");
