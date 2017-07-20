@@ -82,6 +82,13 @@
             ],
             "datatype": "d",
             "datamodel": "v"
+        },
+        "gamma_cutoff": {
+            "value": [
+                "6e-4"
+            ],
+            "datatype": "d",
+            "datamodel": "s"
         }
     },
     "simulation": {

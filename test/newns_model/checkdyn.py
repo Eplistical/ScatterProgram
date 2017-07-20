@@ -4,6 +4,7 @@ import os
 import argparse
 import json
 import numpy as np
+
 import matplotlib as mpl
 cmd = 'python -c "import matplotlib.pyplot as plt;plt.figure()"'
 HAVE_DISPLAY = ('save' not in sys.argv) and (os.system(cmd) == 0)
