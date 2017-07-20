@@ -59,7 +59,7 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mod
 			}
 		}
 		// get gaussian random
-		sigma = 2.0 * kT * it / dt;
+		sigma = sqrt(2.0 * kT * it / dt);
 		it = randomer::normal(0.0, sigma);
 	}
     ptcl.ranforce =  matrixop::matvec(evt, eva);
