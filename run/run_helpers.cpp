@@ -17,7 +17,8 @@ using scatter::io::log_handler;
 using namespace std;
 using namespace scatter;
 
-VOID_T scatter::infile_parser(VOID_T){
+VOID_T scatter::infile_parser(VOID_T) 
+{
 	// load path of infile & init rapidjson obj first
 	io::load_var();
 	rapidjson::Document&& doc = json::load_json_file(io::indir + io::jsonfile);
@@ -32,11 +33,11 @@ VOID_T scatter::infile_parser(VOID_T){
 int scatter::setup(int argc, char** argv) 
 {
 	// No argument list
-	if(argc == 1){
+	if(argc == 1) {
 		cout << "No input, use -h to see help info" << "\n";
 		return -1;
 	}
-	if(arg_parser(argc, argv) == false){
+	if(arg_parser(argc, argv) == false) {
 		return -1;
 	}
 	// parse infile 
