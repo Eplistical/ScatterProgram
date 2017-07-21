@@ -26,21 +26,23 @@ VOID_T rwinit(CHAR_T op)
 	using scatter::simulation::r0p0;
 	if (op == 'w') {
 		output_t dest(io::outdir + io::initfile, std::ios::out | std::ios::binary);
-		dest.write(dim, mass, inittemp);
+		dest.write(dim, Ntraj, inittemp, mass);
 		dest.write(r0p0);
 		dest.close();
 	}
 	if (op == 'r') {
 		input_t source(io::indir + io::initfile, std::ios::in | std::ios::binary);
 		// -- check header, no assignment -- //
-		auto mass_read = mass;
 		auto dim_read = dim;
+		auto Ntraj_read = Ntraj;
 		auto inittemp_read = inittemp;
-		source.read(dim_read, mass_read, inittemp_read);
+		auto mass_read = mass;
+		source.read(dim_read, Ntraj_read, inittemp_read, mass_read);
 
 		assert(dim == dim_read);
-		assert(mass == mass_read);
+		assert(Ntraj == Ntraj_read);
 		assert(inittemp == inittemp_read);
+		assert(mass == mass_read);
 
 		// -- read data part -- //
 		r0p0.resize(2 * dim * Ntraj);
