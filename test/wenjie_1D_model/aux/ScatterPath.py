@@ -35,7 +35,7 @@ class ScatterPath(object):
         self.pathdict["initfile"] = fmt_hidden.format('init')
         self.pathdict["datfile"] = fmt_hidden.format('dat')
 
-        self.pathdict["dyn_info_file"] = fmt.format('dyn_info.dat')
+        self.pathdict["dyn_file"] = fmt.format('dyn.dat')
 
     def __getattr__(self, name):
         return self.pathdict[name]

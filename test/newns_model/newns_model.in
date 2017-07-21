@@ -10,7 +10,7 @@ $end
 $grid
 	rmin		-2			-15 	
 	rmax		2			-0.22
-	Nr			6000		10000
+	Nr			1000		2000
 
 	#-- fef related --#
 

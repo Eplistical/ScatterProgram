@@ -64,6 +64,7 @@ def checkdat():
     fBCMEshape = [dim] + Nr
     fBCMEshape.reverse()
 
+    print(force.size, forceshape)
     force = force.reshape(forceshape)
     efric = efric.reshape(efricshape)
     fBCME = fBCME.reshape(fBCMEshape)
@@ -82,11 +83,42 @@ def checkdat():
                     100)
 
         fig = plt.figure()
-        ax = fig.add_subplot(111, projection=proj)
-        cf = ax.contourf(x, y, data, levels=levels, cmap=plt.cm.jet)
+        ax = fig.add_subplot(111, projection=None)
+        cf = ax.contourf(rarr[0], rarr[1], data, levels=levels, cmap=plt.cm.jet)
         plt.colorbar(cf)
-        saveto = '{}.png'.format(i)
+        saveto = 'fBCME{}.png'.format(i)
         fig.savefig(saveto, dpi=2 * fig.dpi)
 
+    datalim = forcelim
+    delta = 1e-10
+    for i in range(dim):
+        data = force[:,:,i]
+        levels = np.linspace(
+                    max(np.min(data) - delta, datalim[0]),
+                    min(np.max(data) + delta, datalim[1]),
+                    100)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection=None)
+        cf = ax.contourf(rarr[0], rarr[1], data, levels=levels, cmap=plt.cm.jet)
+        plt.colorbar(cf)
+        saveto = 'force{}.png'.format(i)
+        fig.savefig(saveto, dpi=2 * fig.dpi)
+
+    datalim = efriclim
+    delta = 1e-10
+    for i in range(dim**2):
+        data = efric[:,:,i]
+        levels = np.linspace(
+                    max(np.min(data) - delta, datalim[0]),
+                    min(np.max(data) + delta, datalim[1]),
+                    100)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection=None)
+        cf = ax.contourf(rarr[0], rarr[1], data, levels=levels, cmap=plt.cm.jet)
+        plt.colorbar(cf)
+        saveto = 'efric{}.png'.format(i)
+        fig.savefig(saveto, dpi=2 * fig.dpi)
 
 checkdat()

@@ -18,7 +18,6 @@ class ScatterPath(object):
 
         jobname = self.pathdict["jsoninfo"]['rem']['jobname']['value'][0]
         fmt = self.pathdict["outdir"] + '/' + jobname + '.{}'
-        fmt_hidden = self.pathdict["outdir"] + '/.' + jobname + '.{}'
 
         self.pathdict["outfile"] = fmt.format('out')
         self.pathdict["surface_outfile"] = fmt.format('surface.out')
@@ -31,11 +30,9 @@ class ScatterPath(object):
         self.pathdict["simulation_logfile"] = fmt.format('simulation.log')
         self.pathdict["prepareinit_logfile"] = fmt.format('prepareinit.log')
         self.pathdict["preaparedat_logfile"] = fmt.format('preparedat.log')
-
-        self.pathdict["initfile"] = fmt_hidden.format('init')
-        self.pathdict["datfile"] = fmt_hidden.format('dat')
-
-        self.pathdict["dyn_info_file"] = fmt.format('dyn_info.dat')
+        self.pathdict["initfile"] = fmt.format('init')
+        self.pathdict["datfile"] = fmt.format('fef.dat')
+        self.pathdict["dyn_file"] = fmt.format('dyn.dat')
 
     def __getattr__(self, name):
         return self.pathdict[name]

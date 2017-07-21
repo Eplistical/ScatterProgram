@@ -98,7 +98,7 @@ def checkdyn():
         axes[1,1].hist(final_n_vib_dist, bins=21, align='left', rwidth= 0.5, range=(0, 20), normed=True)
 
 
-    plt.show()
+    fig.savefig('3.png', dpi=fig.dpi * 2)
 
 
 
