@@ -3,10 +3,10 @@
 *.*~
 *.dat
 **/*.dat
-**/.*.dat
 *.init
 **/*.init
-**/.*.init
+**/*.pyc
+**/*.png
 1.sh
 build/
 sync_version.py
