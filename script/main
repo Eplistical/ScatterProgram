@@ -45,15 +45,6 @@ def parsearg():
     return args
 
 
-def prepinit(jsondata):
-    """prepare init file for given json data"""
-
-
-def validinitfile(initfile, jsondata):
-    """check if an init file is valid"""
-    return True
-
-
 def main():
     args = parsearg()
     infile = os.path.abspath(args.infile)
@@ -112,5 +103,8 @@ def main():
                 )
     print(command)
 
+
 if __name__ == '__main__':
     main()
+
+# END

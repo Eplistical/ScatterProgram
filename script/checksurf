@@ -49,6 +49,8 @@ def checksurf():
         fig.savefig(args.saveto, dpi=fig.dpi * 2)
 
 
-
 if __name__ == '__main__':
     checksurf()
+
+
+# END
