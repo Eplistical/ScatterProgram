@@ -2,7 +2,7 @@
 #PBS -N L('w')D
 #PBS -l walltime=100:00:00
 #PBS -l mem=120GB
-#PBS -l nodes=2:ppn=48
+#PBS -l nodes=1:ppn=48
 cd $PBS_O_WORKDIR
 ROOT=/data/home/Eplistical/code/ScatterProgram
 SCRIPT=$ROOT/script

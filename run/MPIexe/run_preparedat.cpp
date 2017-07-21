@@ -103,12 +103,6 @@ VOID_T run_preparedat(VOID_T)
 
 			MPIer::recv(r, batch_buf, force_buf, efric_buf, fBCME_buf);
 
-			mybatch.insert(mybatch.end(), batch_buf.begin(), batch_buf.end()); 
-			force.insert(force.end(), force_buf.begin(), force_buf.end()); 
-			efric.insert(efric.end(), efric_buf.begin(), efric_buf.end()); 
-			fBCME.insert(fBCME.end(), fBCME_buf.begin(), fBCME_buf.end()); 
-
-			/*
 			mybatch.insert(mybatch.end(), 
 							std::make_move_iterator(batch_buf.begin()),
 							std::make_move_iterator(batch_buf.end())
@@ -128,7 +122,6 @@ VOID_T run_preparedat(VOID_T)
 							std::make_move_iterator(fBCME_buf.begin()),
 							std::make_move_iterator(fBCME_buf.end())
 							);
-			*/
 		}
 		MPIer::barrier();
 	}
@@ -165,24 +158,18 @@ VOID_T run_preparedat(VOID_T)
 		std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 		fef.clear();
 
-		fef.insert(fef.end(), force.begin(), force.end()); 
-		fef.insert(fef.end(), efric.begin(), efric.end()); 
-		fef.insert(fef.end(), fBCME.begin(), fBCME.end()); 
-
-		/*
 		fef.insert(fef.end(), 
-					std::make_move_iterator(force_buf.begin()),
-					std::make_move_iterator(force_buf.end())
+					std::make_move_iterator(force.begin()),
+					std::make_move_iterator(force.end())
 					);
 		fef.insert(fef.end(), 
-					std::make_move_iterator(efric_buf.begin()),
-					std::make_move_iterator(efric_buf.end())
+					std::make_move_iterator(efric.begin()),
+					std::make_move_iterator(efric.end())
 					);
 		fef.insert(fef.end(), 
-					std::make_move_iterator(fBCME_buf.begin()),
-					std::make_move_iterator(fBCME_buf.end())
+					std::make_move_iterator(fBCME.begin()),
+					std::make_move_iterator(fBCME.end())
 					);
-		*/
 		out_handler.info( "done. ", timer::toc());
 	}
 

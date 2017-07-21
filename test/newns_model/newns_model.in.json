@@ -85,7 +85,7 @@
         },
         "gamma_cutoff": {
             "value": [
-                "6e-4"
+                "0"
             ],
             "datatype": "d",
             "datamodel": "s"
