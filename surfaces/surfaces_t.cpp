@@ -53,6 +53,20 @@ UINT_T surfaces_t::get_surf_number(VOID_T) const
 	return _Nsurf; 
 }
 
+STRING_T surfaces_t::get_gamma_expr(VOID_T) const
+{
+	return _gamma.get_expr();
+}
+
+STRING_T surfaces_t::get_energy_expr(VOID_T) const
+{
+	STRING_T rst;
+	for (UINT_T i = 0; i < _Nsurf; ++i) {
+		rst += _energy.at(i).get_expr();
+	}
+	return rst;
+}
+
 single_surf_t surfaces_t::get_gamma(VOID_T) const
 {
 	return _gamma; 

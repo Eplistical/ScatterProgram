@@ -51,6 +51,16 @@ namespace scatter
 			} 
 			~NegativeEigenValueError() = default;
 	};
+
+	class InvalidModeError : public ScatterError
+	{
+		public:
+			explicit InvalidModeError(const std::string& msg = ""){
+				_title = "InvalidModeError"; 
+				_msg = (msg == "")?_title:(_title + ":" + msg);
+			} 
+			~InvalidModeError() = default;
+	};
 };
 
 #endif

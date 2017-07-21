@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include <vector>
 #include "io.hpp"
 #include "json_toolkit.hpp"
@@ -34,7 +34,7 @@ VOID_T scatter::surfaces::load_var(const rapidjson::Document& doc)
 		;
 }
 
-// prINT_T out surfaces parameters
+// print out surfaces parameters
 VOID_T scatter::surfaces::print_var(VOID_T)
 {
 	using namespace scatter::surfaces;
@@ -45,25 +45,43 @@ VOID_T scatter::surfaces::print_var(VOID_T)
 		("cutoff_gamma", cutoff_gamma)
 		;
 
-	out_handler.keyval()("surfmode", "");
-	for(auto& it : surfmode) {
-		out_handler.keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
+	UINT_T dim = surfmode.size() / surfnum;
+
+	out_handler.info("surfaces para: \n");
+	for (UINT_T i = 0; i < surfnum; ++i) {
+		for (UINT_T d = 0; d < dim; ++d) {
+			out_handler.info("i = ", i, ", d = ", d, "\n\n", get_surface_expr(surfmode[d], surfpara[d]));
+		}
 	}
 
-	out_handler.keyval()("surfpara", "");
-	for(auto& it : surfpara) {
-		out_handler.keyval()("", it);
-	}
-
-	out_handler.keyval()("gammamode", "");
-	for(auto& it : gammamode) {
-		out_handler.keyval()("", enumspace::mode_to_string(it, enumspace::surfmode_dict));
-	}
-
-	out_handler.keyval()("gammapara", "");
-	for(auto& it : gammapara) {
-		out_handler.keyval()("", it);
+	out_handler.info("gamma para: \n");
+	for (UINT_T d = 0; d < dim; ++d) {
+		out_handler.info("d = ", d, "\n\n", get_surface_expr(gammamode[d], gammapara[d]));
 	}
 
 	out_handler.drawline('-');
+}
+
+STRING_T scatter::surfaces::get_surface_expr(enumspace::surfmode_enum mode, const std::vector<DOUBLE_T>& para)
+{
+	using namespace surfaces_collection;
+	using namespace enumspace;
+	switch(mode){
+		case surfmode_enum::CONSTANT:
+			return constant(para).get_expr(); break;
+		case surfmode_enum::STEP:
+			return step(para).get_expr(); break;
+		case surfmode_enum::HARMONIC:
+			return harmonic(para).get_expr(); break;
+		case surfmode_enum::FERMI:
+			return fermi(para).get_expr(); break;
+		case surfmode_enum::GAUSSIAN:
+			return gaussian(para).get_expr(); break;
+		case surfmode_enum::MORSE:
+			return morse(para).get_expr(); break;
+		case surfmode_enum::NEWNS:
+			return newns(para).get_expr(); break;
+		default:
+			throw scatter::InvalidModeError("cannot find surfmode: " + surfmode_dict.right.at(mode));
+	}
 }

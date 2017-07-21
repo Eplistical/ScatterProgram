@@ -19,6 +19,7 @@ namespace scatter {
 
 		VOID_T load_var(const rapidjson::Document& doc);
 		VOID_T print_var(VOID_T);
+		STRING_T get_surface_expr(enumspace::surfmode_enum mode, const std::vector<DOUBLE_T>& para);
 	};
 };
 

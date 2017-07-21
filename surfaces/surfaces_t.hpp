@@ -28,6 +28,8 @@ namespace scatter{
 			VOID_T set_abs_gamma_threash(DOUBLE_T x);
 			// getter
 			UINT_T get_surf_number(VOID_T) const;
+			STRING_T get_gamma_expr(VOID_T) const;
+			STRING_T get_energy_expr(VOID_T) const;
 			single_surf_t get_gamma(VOID_T) const;
 			single_surf_t get_energy(INT_T i) const;
 			std::vector<DOUBLE_T> get_gamma_para(INT_T d) const; 
