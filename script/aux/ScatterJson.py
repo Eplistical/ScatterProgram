@@ -17,7 +17,7 @@ class ScatterJson(object):
                 self.flatten_data[name] = self._convertdata(piece)
 
     def __getattr__(self, name):
-        return self.flatten_data[name]
+        return self.flatten_data[name.lower()]
 
     @staticmethod
     def _convertdata(piece):
