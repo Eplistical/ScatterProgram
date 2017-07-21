@@ -59,7 +59,7 @@ def checkdyn():
                     ]
                     )
 
-    info = np.fromfile(paths.dyn_info_file, dtype=datatype, count=1)
+    info = np.fromfile(paths.dyn_file, dtype=datatype, count=1)
     assert (dim == info['dim'][0])
     assert (Ntraj == info['Ntraj'][0])
     assert (single_traj_info_size == info['single_traj_info_size'][0])
@@ -69,7 +69,9 @@ def checkdyn():
     tarr = np.arange(Nrecord) * dt;
 
     fig, axes = plt.subplots(2,2)
+    vibfig, vibaxes = plt.subplots(1,1)
     for i in range(Nalgorithm):
+        # dynamic
         dyninfo = data[i,:,:,:]
         finalinfo = dyninfo[:,-1,:]
         print(finalinfo)
@@ -90,15 +92,21 @@ def checkdyn():
         final_Ek_dist = finalinfo[:,3 * dim + 1:4 * dim + 1]
         final_E_dist = final_Ek_dist + final_Ep_dist
 
-        final_n_vib_dist = np.round((final_E_dist[:,0] / 0.008) - 0.5)
+        # 
+        final_Ex_dist_filt = final_E_dist[:,0][np.where(final_r_dist[:,1] < -20)]
+        final_n_vib_dist = np.round((final_Ex_dist_filt / 0.008) - 0.5)
 
         axes[0,0].plot(tarr, dyn_ravg[:,0])
         axes[1,0].plot(tarr, dyn_ravg[:,1])
         axes[0,1].plot(tarr, dyn_Nout)
-        axes[1,1].hist(final_n_vib_dist, bins=21, align='left', rwidth= 0.5, range=(0, 20), normed=True)
 
+        ax = vibaxes
+        ax.hist(final_n_vib_dist, bins=21, align='left', rwidth= 0.5, range=(0, 20), normed=True)
+        ax.set_xlim(0, 20)
+        ax.set_ylim(0, 0.5)
 
-    fig.savefig('3.png', dpi=fig.dpi * 2)
+    #fig.savefig('3.png', dpi=fig.dpi * 2)
+    plt.show()
 
 
 

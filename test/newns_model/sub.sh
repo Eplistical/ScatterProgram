@@ -2,7 +2,7 @@
 #PBS -N L('w')D
 #PBS -l walltime=100:00:00
 #PBS -l mem=120GB
-#PBS -l nodes=1:ppn=48
+#PBS -l nodes=2:ppn=48
 cd $PBS_O_WORKDIR
 ROOT=/data/home/Eplistical/code/ScatterProgram
 SCRIPT=$ROOT/script
@@ -24,13 +24,6 @@ echo $CWD
 eval $CMD
 mv $SCRATCHDIR/* .
 
-jobtype=preparedat
-base=${jobname}.${jobtype}
-CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`
-echo $CWD
-eval $CMD
-mv $SCRATCHDIR/* .
-
 jobtype=simulation
 base=${jobname}.${jobtype}
 CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`
@@ -38,9 +31,16 @@ echo $CWD
 eval $CMD
 mv $SCRATCHDIR/* .
 
-python3 checkdat.py ${infile}
+#python3 checkdat.py ${infile}
 
 <<EOF
+jobtype=preparedat
+base=${jobname}.${jobtype}
+CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`
+echo $CWD
+eval $CMD
+mv $SCRATCHDIR/* .
+
 jobtype=surface
 base=${jobname}.${jobtype}
 CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`

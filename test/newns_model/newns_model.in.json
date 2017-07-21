@@ -168,7 +168,7 @@
         "initpavg": {
             "value": [
                 "0",
-                "40"
+                "20"
             ],
             "datatype": "d",
             "datamodel": "v"
@@ -176,7 +176,8 @@
         "algorithms": {
             "value": [
                 "CME",
-                "BCME"
+                "BCME",
+                "EF"
             ],
             "datatype": "s",
             "datamodel": "v"

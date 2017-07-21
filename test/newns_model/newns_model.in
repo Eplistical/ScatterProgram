@@ -25,7 +25,7 @@ $simulation
     EndT        500000
     Nstep       2000000
     Anastep     10000
-	Algorithms	CME BCME 
+	Algorithms	CME BCME EF
 
 	#-- init state relateda --#
 
@@ -34,7 +34,7 @@ $simulation
 	elestate	0
     initmode    ring  	p_gaussian
 	initravg	0	  	-15
-	initpavg	0		40
+	initpavg	0		20
 $end
 
 $surfaces
