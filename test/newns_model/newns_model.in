@@ -10,13 +10,13 @@ $end
 $grid
 	rmin		-2			-15 	
 	rmax		2			-0.22
-	Nr			1000		2000
+	Nr			6000		10000
 
 	#-- fef related --#
 
 	bandwidth	1.5
 	derange		3e-5	3e-6
-	gamma_cutoff 0 			#6e-4
+	gamma_cutoff 6e-4
 $end
 
 $simulation

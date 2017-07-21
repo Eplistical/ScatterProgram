@@ -17,10 +17,6 @@ VOID_T simulation::generate_initstate(VOID_T){
 	// get simulation properties
 	const std::vector<DOUBLE_T> sigmar = pow(inittemp / omega.at(elestate) / omega.at(elestate) / mass, 0.5);
 	const std::vector<DOUBLE_T> sigmap = pow(inittemp * mass, 0.5);
-	out_handler.keyval()
-		("sigmap ", sigmap)
-		("initravg ", initravg)
-		("initpavg ", initpavg);
 
 	// prepare r0p0
 	std::vector<DOUBLE_T> r, p, rp;

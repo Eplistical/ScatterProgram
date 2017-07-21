@@ -17,10 +17,21 @@ fi
 jobname=newns_model
 infile=${jobname}.in
 
-rm *.png
-
+jobtype=prepareinit
+base=${jobname}.${jobtype}
+CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype}`
+echo $CWD
+eval $CMD
+mv $SCRATCHDIR/* .
 
 jobtype=preparedat
+base=${jobname}.${jobtype}
+CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`
+echo $CWD
+eval $CMD
+mv $SCRATCHDIR/* .
+
+jobtype=simulation
 base=${jobname}.${jobtype}
 CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`
 echo $CWD
@@ -30,13 +41,6 @@ mv $SCRATCHDIR/* .
 python3 checkdat.py ${infile}
 
 <<EOF
-jobtype=simulation
-base=${jobname}.${jobtype}
-CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`
-echo $CWD
-eval $CMD
-mv $SCRATCHDIR/* .
-
 jobtype=surface
 base=${jobname}.${jobtype}
 CMD=`$SCRIPT/main --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`

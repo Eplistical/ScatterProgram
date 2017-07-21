@@ -62,8 +62,8 @@
         },
         "nr": {
             "value": [
-                "1000",
-                "2000"
+                "6000",
+                "10000"
             ],
             "datatype": "i",
             "datamodel": "v"
@@ -85,7 +85,7 @@
         },
         "gamma_cutoff": {
             "value": [
-                "0"
+                "6e-4"
             ],
             "datatype": "d",
             "datamodel": "s"

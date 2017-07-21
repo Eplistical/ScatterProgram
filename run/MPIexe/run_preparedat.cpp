@@ -28,6 +28,8 @@ VOID_T run_preparedat(VOID_T)
 	using namespace grid;
 	using namespace surfaces;
 	using scatter::io::savedat;
+	using rem::dim;
+	using rem::dim2;
 
 	// -- setup grid_obj & surfaces_obj -- //
 	if (MPIer::master) 
@@ -46,11 +48,11 @@ VOID_T run_preparedat(VOID_T)
 	if (MPIer::master) 
 		out_handler.info_nonewline( "setting up jobs & space ... ");
 
-	//std::vector<UINT_T> mybatch = MPIer::assign_job_random(grid_obj.get_Ntot());
-	std::vector<UINT_T> mybatch = MPIer::assign_job(grid_obj.get_Ntot());
-	std::vector<DOUBLE_T> force(mybatch.size() * rem::dim);
-	std::vector<DOUBLE_T> efric(mybatch.size() * rem::dim2);
-	std::vector<DOUBLE_T> fBCME(mybatch.size() * rem::dim);
+	std::vector<UINT_T> mybatch = MPIer::assign_job_random(grid_obj.get_Ntot());
+	//std::vector<UINT_T> mybatch = MPIer::assign_job(grid_obj.get_Ntot());
+	std::vector<DOUBLE_T> force(mybatch.size() * dim);
+	std::vector<DOUBLE_T> efric(mybatch.size() * dim2);
+	std::vector<DOUBLE_T> fBCME(mybatch.size() * dim);
 
 	if (MPIer::master) 
 		out_handler.info( "done. ", timer::toc());
@@ -70,9 +72,9 @@ VOID_T run_preparedat(VOID_T)
 
 		// calc fef between |0> & |1>, the index^th element
 		grid_obj.calc_fef(0, 1, index, 
-							&force[rem::dim * i], 
-							&efric[rem::dim2 * i],
-							&fBCME[rem::dim * i]);
+							&force[dim * i], 
+							&efric[dim2 * i],
+							&fBCME[dim * i]);
 
 		// timer
 		if (MPIer::master and ((i + 1) / static_cast<DOUBLE_T>(N)) >= next_report_percent) {
@@ -130,26 +132,33 @@ VOID_T run_preparedat(VOID_T)
 		out_handler.info( "done. ", timer::toc());
 
 	// -- sort data -- //
-	/*
 	if (MPIer::master) {
 		out_handler.info_nonewline( "sorting data ... ");
 
 		std::vector<UINT_T> index_vec(mybatch.size());
+		for (UINT_T i = 0; i < mybatch.size(); ++i) {
+			index_vec[i] = i;
+		}
+
 		std::sort(index_vec.begin(), index_vec.end(), 
 					[&mybatch](UINT_T i, UINT_T j) { return mybatch[i] < mybatch[j]; });
+
 		force_buf.clear();
 		efric_buf.clear();
 		fBCME_buf.clear();
 
-		for (UINT_T i : index_vec) {
-			force_buf.insert(force_buf.end(), force.begin() + i * rem::dim, force.begin() + (i + 1) * rem::dim);
-			efric_buf.insert(efric_buf.end(), efric.begin() + i * rem::dim2, efric.begin() + (i + 1) * rem::dim2);
-			fBCME_buf.insert(fBCME_buf.end(), fBCME.begin() + i * rem::dim, fBCME.begin() + (i + 1) * rem::dim);
+		for (UINT_T idx : index_vec) {
+			force_buf.insert(force_buf.end(), force.begin() + idx * dim, force.begin() + (idx + 1) * dim);
+			efric_buf.insert(efric_buf.end(), efric.begin() + idx * dim2, efric.begin() + (idx + 1) * dim2);
+			fBCME_buf.insert(fBCME_buf.end(), fBCME.begin() + idx * dim, fBCME.begin() + (idx + 1) * dim);
 		}
+
+		force.swap(force_buf);
+		efric.swap(efric_buf);
+		fBCME.swap(fBCME_buf);
 
 		out_handler.info( "done. ", timer::toc());
 	}
-	*/
 
 	// -- combine force, efric, fBCME into grid_obj.fef -- //
 	if (MPIer::master) {
