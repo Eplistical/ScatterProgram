@@ -13,10 +13,11 @@ class ScatterPath(object):
         self.pathdict["infile"] = os.path.abspath(infile)
         self.pathdict["jsonfile"] = self.pathdict["infile"] + '.json'
         self.pathdict["outdir"] = os.path.dirname(self.pathdict["infile"])
-        with open(self.pathdict["jsonfile"], 'r') as f:
-            self.pathdict["jsoninfo"] = json.load(f)
 
-        jobname = self.pathdict["jsoninfo"]['rem']['jobname']['value'][0]
+        with open(self.pathdict["jsonfile"], 'r') as f:
+            self.pathdict["jsondata"] = json.load(f)
+
+        jobname = self.pathdict["jsondata"]['rem']['jobname']['value'][0]
         fmt = self.pathdict["outdir"] + '/' + jobname + '.{}'
 
         self.pathdict["outfile"] = fmt.format('out')

@@ -3,7 +3,7 @@ import json
 import os
 import argparse
 from pprint import pprint
-from qctojson import *
+from aux.qctojson import *
 import logging
 from datetime import datetime
 

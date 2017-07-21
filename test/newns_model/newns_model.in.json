@@ -188,7 +188,7 @@
             "value": [
                 "2"
             ],
-            "datatype": "s",
+            "datatype": "i",
             "datamodel": "s"
         },
         "surfmode": {
@@ -226,7 +226,7 @@
                     "0"
                 ]
             ],
-            "datatype": "s",
+            "datatype": "d",
             "datamodel": "b"
         },
         "gammamode": {
@@ -252,7 +252,7 @@
                     "0"
                 ]
             ],
-            "datatype": "s",
+            "datatype": "d",
             "datamodel": "b"
         },
         "cutoff_gamma": {
