@@ -2,8 +2,7 @@ v0.5
 (in progress)
 - removed rem::jobtype parameter, it is considered as redundent
 - added Electronic Friction algorithm
-
-
+- CME, BCME, and EF now all work for newns/morse potential
 
 v0.4
 - use type macro to make types more stable
