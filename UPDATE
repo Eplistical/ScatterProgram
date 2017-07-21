@@ -1,3 +1,6 @@
+v0.6 
+(in progress)
+
 v0.5
 - removed rem::jobtype parameter, it is considered as redundent
 - added Electronic Friction algorithm
