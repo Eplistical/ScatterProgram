@@ -137,9 +137,9 @@ VOID_T run_simulation(VOID_T)
 	particle_t init_ptcl;
 
 	// containers for info
-	InfoRecoderType<DOUBLE_T> dyn_info;
+	InfoRecoderType<DOUBLE_T> dyn;
 	for (const auto& it : algorithms) {
-		dyn_info[it] = std::vector<DOUBLE_T>();
+		dyn[it] = std::vector<DOUBLE_T>();
 	}
 
 	// particle collections
@@ -181,7 +181,7 @@ VOID_T run_simulation(VOID_T)
 				// record particle info 
 				if (step % Anastep == 0) {
 					tmp = extract_info(ptcl[it]);
-					dyn_info[it].insert(dyn_info[it].end(), 
+					dyn[it].insert(dyn[it].end(), 
 										std::make_move_iterator(tmp.begin()), 
 										std::make_move_iterator(tmp.end())
 										);
@@ -216,13 +216,13 @@ VOID_T run_simulation(VOID_T)
 		out_handler.info_nonewline( "collecting dynamic data ... ");
 
 	vector<UINT_T> mybatch_buf; 
-	vector<DOUBLE_T> dyn_info_buf; 
+	vector<DOUBLE_T> dyn_buf; 
 
 	for (UINT_T r = 1; r < MPIer::size; ++r) {
 		if (MPIer::rank == r) {
 			MPIer::send(0, mybatch);
 			for (const auto& it : algorithms) {
-				MPIer::send(0, dyn_info[it]);
+				MPIer::send(0, dyn[it]);
 			}
 		}
 		else if (MPIer::master) {
@@ -236,10 +236,10 @@ VOID_T run_simulation(VOID_T)
 							std::make_move_iterator(mybatch_buf.end())
 							);
 			for (const auto& it : algorithms) {
-				MPIer::recv(r, dyn_info_buf);
-				dyn_info[it].insert(dyn_info[it].end(), 
-									std::make_move_iterator(dyn_info_buf.begin()), 
-									std::make_move_iterator(dyn_info_buf.end())
+				MPIer::recv(r, dyn_buf);
+				dyn[it].insert(dyn[it].end(), 
+									std::make_move_iterator(dyn_buf.begin()), 
+									std::make_move_iterator(dyn_buf.end())
 									);
 			}
 		}
@@ -249,22 +249,22 @@ VOID_T run_simulation(VOID_T)
 	if (MPIer::master) 
 		out_handler.info( "done. ", timer::toc());
 
-	// -- save dynamic data to <jobname>.dyn_info.dat -- //
+	// -- save dynamic data to <jobname>.dyn.dat -- //
 	if (MPIer::master) 
-		out_handler.info_nonewline( "saving dyn_info to ", io::outdir + rem::jobname + STRING_T(".dyn_info.dat ... "));
+		out_handler.info_nonewline( "saving dyn to ", io::outdir + rem::jobname + STRING_T(".dyn.dat ... "));
 
 	if (MPIer::master) {
-		STRING_T dyn_info_file = io::outdir + rem::jobname + STRING_T(".dyn_info.dat");
+		STRING_T dyn_file = io::outdir + rem::jobname + STRING_T(".dyn.dat");
 		UINT_T Nalgorithm = algorithms.size();
-		UINT_T single_traj_info_size = dyn_info[algorithms[0]].size() / Ntraj;
+		UINT_T single_traj_info_size = dyn[algorithms[0]].size() / Ntraj;
 
-		io::save_noclose( dyn_info_file, 
+		io::save_noclose( dyn_file, 
 							dim, Ntraj,
 							Nalgorithm,
 							single_traj_info_size,
 							mybatch);
 		for (const auto& it : algorithms) {
-			io::save_noclose(dyn_info_file, dyn_info[it]);
+			io::save_noclose(dyn_file, dyn[it]);
 		}
 
 		out_handler.info("done. ", timer::toc());

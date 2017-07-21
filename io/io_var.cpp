@@ -48,8 +48,8 @@ VOID_T scatter::io::load_var(VOID_T)
 	}
 
 	// output & log & datafile
-	datfile = "." + rem::jobname + ".dat";
-	initfile = "." + rem::jobname +  ".init";
+	datfile = rem::jobname + ".fef.dat";
+	initfile = rem::jobname +  ".init";
 	outfile = rem::jobname + ".out";
 	logfile = rem::jobname + ".log";
 

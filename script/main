@@ -68,9 +68,9 @@ def main():
 
     # paths
     jobname = jsondata['rem']['jobname']['value'][0]
-    initfile = infile_DIR + '/.' + jobname + '.init'
-    datfile = infile_DIR + '/.' + jobname + '.dat'
-    logfile = infile_DIR + '/.' + jobname + '.log'
+    initfile = infile_DIR + '/' + jobname + '.init'
+    datfile = infile_DIR + '/' + jobname + '.fef.dat'
+    logfile = infile_DIR + '/' + jobname + '.log'
     outfile = infile_DIR + '/' + jobname + '.out'
 
     # switcher

@@ -29,7 +29,7 @@ VOID_T run_preparedat(VOID_T)
 	using namespace surfaces;
 	using scatter::io::savedat;
 
-	// setup objs using paras 
+	// -- setup grid_obj & surfaces_obj -- //
 	if (MPIer::master) 
 		out_handler.info_nonewline( "setting up grid_obj and surfaces_obj ... ");
 
@@ -42,11 +42,12 @@ VOID_T run_preparedat(VOID_T)
 	if (MPIer::master) 
 		out_handler.info( "done. ", timer::toc());
 
+	// -- assign job -- //
 	if (MPIer::master) 
 		out_handler.info_nonewline( "setting up jobs & space ... ");
 
-	// assign job
-	std::vector<UINT_T> mybatch = MPIer::assign_job_random(grid_obj.get_Ntot());
+	//std::vector<UINT_T> mybatch = MPIer::assign_job_random(grid_obj.get_Ntot());
+	std::vector<UINT_T> mybatch = MPIer::assign_job(grid_obj.get_Ntot());
 	std::vector<DOUBLE_T> force(mybatch.size() * rem::dim);
 	std::vector<DOUBLE_T> efric(mybatch.size() * rem::dim2);
 	std::vector<DOUBLE_T> fBCME(mybatch.size() * rem::dim);
@@ -64,7 +65,7 @@ VOID_T run_preparedat(VOID_T)
 		index = mybatch[i];
 
 #if _DEBUG >= 2
-			if (MPIer::master) log_handler.info( "debug: calculating fef for point ", index);
+		if (MPIer::master) log_handler.info( "debug: calculating fef for point ", index);
 #endif
 
 		// calc fef between |0> & |1>, the index^th element
@@ -95,26 +96,39 @@ VOID_T run_preparedat(VOID_T)
 			MPIer::send(0, mybatch, force, efric, fBCME);
 		}
 		else if (MPIer::master) {
+
 #if _DEBUG >= 2
 			if (MPIer::master) log_handler.info( "debug: receiving data from thread ", r);
 #endif
+
 			MPIer::recv(r, batch_buf, force_buf, efric_buf, fBCME_buf);
+
+			mybatch.insert(mybatch.end(), batch_buf.begin(), batch_buf.end()); 
+			force.insert(force.end(), force_buf.begin(), force_buf.end()); 
+			efric.insert(efric.end(), efric_buf.begin(), efric_buf.end()); 
+			fBCME.insert(fBCME.end(), fBCME_buf.begin(), fBCME_buf.end()); 
+
+			/*
 			mybatch.insert(mybatch.end(), 
 							std::make_move_iterator(batch_buf.begin()),
 							std::make_move_iterator(batch_buf.end())
 							);
+
 			force.insert(force.end(), 
 							std::make_move_iterator(force_buf.begin()),
 							std::make_move_iterator(force_buf.end())
 							);
+
 			efric.insert(efric.end(), 
 							std::make_move_iterator(efric_buf.begin()),
 							std::make_move_iterator(efric_buf.end())
 							);
+
 			fBCME.insert(fBCME.end(), 
 							std::make_move_iterator(fBCME_buf.begin()),
 							std::make_move_iterator(fBCME_buf.end())
 							);
+			*/
 		}
 		MPIer::barrier();
 	}
@@ -123,6 +137,7 @@ VOID_T run_preparedat(VOID_T)
 		out_handler.info( "done. ", timer::toc());
 
 	// -- sort data -- //
+	/*
 	if (MPIer::master) {
 		out_handler.info_nonewline( "sorting data ... ");
 
@@ -141,7 +156,7 @@ VOID_T run_preparedat(VOID_T)
 
 		out_handler.info( "done. ", timer::toc());
 	}
-
+	*/
 
 	// -- combine force, efric, fBCME into grid_obj.fef -- //
 	if (MPIer::master) {
@@ -149,6 +164,12 @@ VOID_T run_preparedat(VOID_T)
 
 		std::vector<DOUBLE_T>& fef = grid_obj.get_fef_ref();
 		fef.clear();
+
+		fef.insert(fef.end(), force.begin(), force.end()); 
+		fef.insert(fef.end(), efric.begin(), efric.end()); 
+		fef.insert(fef.end(), fBCME.begin(), fBCME.end()); 
+
+		/*
 		fef.insert(fef.end(), 
 					std::make_move_iterator(force_buf.begin()),
 					std::make_move_iterator(force_buf.end())
@@ -161,7 +182,7 @@ VOID_T run_preparedat(VOID_T)
 					std::make_move_iterator(fBCME_buf.begin()),
 					std::make_move_iterator(fBCME_buf.end())
 					);
-
+		*/
 		out_handler.info( "done. ", timer::toc());
 	}
 

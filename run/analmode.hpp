@@ -9,11 +9,11 @@
 
 namespace enumspace{
 	enum class analmode_enum {
-		dyn_info,
+		dyn,
 		final_info,
 		hop_info,
 
-		First = dyn_info,
+		First = dyn,
 		Last = hop_info
 	};
 };
