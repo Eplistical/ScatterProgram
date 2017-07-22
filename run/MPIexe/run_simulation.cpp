@@ -1,7 +1,3 @@
-#ifdef _DEBUG
-#include "debugtools.hpp"
-#endif
-
 #include "scatter_basic.hpp"
 #include <algorithm>
 #include <iterator>
@@ -189,12 +185,13 @@ VOID_T run_simulation(VOID_T)
 				// evolve
 				try {
 					(*dynamic_algorithms[it])(ptcl[it], index);
-				} catch (const scatter::OutofRangeError& e) {
+				} catch (const scatter::ScatterError& e) {
 					std::cout 
 						<< "thread " << MPIer::rank 
-						<< ": catched OutofRangeError on traj " << index 
+						<< ": catched ScatterError on traj " << index 
 						<< " with algorithm " << enumspace::dynamics_mode_dict.right.at(it)
-						<< ". errmsg: " << e.what() 
+						<< ".\nerrmsg:"
+						<< e.what() 
 						<< "\n";
 					MPIer::abort();
 				}

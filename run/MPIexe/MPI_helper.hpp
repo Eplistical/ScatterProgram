@@ -21,7 +21,7 @@ namespace scatter
 		// broadcast grid para
 		MPIer::bcast(0, grid::rmin, grid::rmax, grid::Nr, grid::bandwidth, grid::derange, grid::gamma_cutoff);
 		// broadcast surfaces para
-		MPIer::bcast(0, surfaces::surfnum, surfaces::cutoff_gamma);
+		MPIer::bcast(0, surfaces::surfnum);
 
 		STRING_T tmp;
 		surfaces::gammamode.resize(rem::dim);
