@@ -179,7 +179,6 @@ namespace ioer
 				_info(const ParamType& x) 
 				{
 					io_base_obj.at(_path) << x;
-					if (_flush) io_base_obj.at(_path) << flush; 
 				}
 
 			template<typename ParamType>
@@ -189,13 +188,13 @@ namespace ioer
 					for (auto& xi : x) {
 						io_base_obj.at(_path) << xi << " ";
 					}
-					if (_flush) io_base_obj.at(_path) << flush; 
 				}
 
 			template<typename ParamType, typename ... Types>
 				void _info(const ParamType& x, const Types& ... otherx) 
 				{
 					_info(x);
+					if (_flush) io_base_obj.at(_path) << flush; 
 					_info(otherx ...);
 				}
 
@@ -218,7 +217,6 @@ namespace ioer
 				_tabout(const ParamType& x) 
 				{
 					io_base_obj.at(_path) << setw(_width) << x;
-					if (_flush) io_base_obj.at(_path) << flush; 
 				}
 
 			template<typename ParamType>
@@ -228,13 +226,13 @@ namespace ioer
 					for (auto& xi : x) {
 						io_base_obj.at(_path) << setw(_width) << xi;
 					}
-					if (_flush) io_base_obj.at(_path) << flush; 
 				}
 
 			template<typename ParamType, typename ... Types>
 				void _tabout(const ParamType& x, const Types& ... otherx) 
 				{
 					_tabout(x);
+					if (_flush) io_base_obj.at(_path) << flush; 
 					_tabout(otherx ...);
 				}
 
@@ -317,6 +315,7 @@ namespace ioer
 				void _write(const ParamType& x, const Types& ... otherx) 
 				{
 					_write(x);
+					if (_flush) io_base_obj.at(_path) << flush;
 					_write(otherx ...);
 				}
 

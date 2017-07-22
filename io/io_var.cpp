@@ -92,8 +92,10 @@ VOID_T scatter::io::handler_init(VOID_T)
 {
 	if (outfile != "") {
 		out_handler.open(outdir + outfile, std::ios::out);
+		out_handler.set_flush(true);
 	}
 	if (logfile != "") {
 		log_handler.open(outdir + logfile, std::ios::out);
+		log_handler.set_flush(true);
 	}
 }
