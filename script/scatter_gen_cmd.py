@@ -8,7 +8,7 @@ import logging
 from datetime import datetime
 
 FILE_DIR = os.path.dirname(os.path.abspath(__file__))
-BIN_DIR = FILE_DIR + '/../build/bin'
+BIN_DIR = FILE_DIR
 
 TIMEFMT = ' %Y-%m-%d %H:%M:%S'
 

@@ -11,8 +11,6 @@ using scatter::io::out_handler;
 namespace NS = scatter::surfaces;
 using enumspace::surfmode_enum;
 
-DOUBLE_T NS::cutoff_gamma;
-
 UINT_T NS::surfnum;
 std::vector<surfmode_enum> NS::surfmode;
 std::vector<std::vector<DOUBLE_T> > NS::surfpara;
@@ -26,7 +24,6 @@ VOID_T scatter::surfaces::load_var(const rapidjson::Document& doc)
 	using json::load_param;
 	load_param(doc, "surfaces")
 		("surfnum", surfnum)
-		("cutoff_gamma", cutoff_gamma)
 		("surfmode", surfmode, enumspace::surfmode_dict)
 		("surfpara", surfpara)
 		("gammamode", gammamode, enumspace::surfmode_dict)
@@ -42,7 +39,6 @@ VOID_T scatter::surfaces::print_var(VOID_T)
 	out_handler.drawline('-');
 	out_handler.keyval()
 		("surfnum", surfnum)
-		("cutoff_gamma", cutoff_gamma)
 		;
 
 	UINT_T dim = surfmode.size() / surfnum;
@@ -50,7 +46,7 @@ VOID_T scatter::surfaces::print_var(VOID_T)
 	out_handler.info("surfaces para: \n");
 	for (UINT_T i = 0; i < surfnum; ++i) {
 		for (UINT_T d = 0; d < dim; ++d) {
-			out_handler.info("i = ", i, ", d = ", d, "\n\n", get_surface_expr(surfmode[d], surfpara[d]));
+			out_handler.info("i = ", i, ", d = ", d, "\n\n", get_surface_expr(surfmode[i * dim + d], surfpara[i * dim + d]));
 		}
 	}
 

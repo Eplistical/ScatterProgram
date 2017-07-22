@@ -29,6 +29,7 @@ def checksurf():
     fig, axes = plt.subplots(jsondata.dim)
 
     with open(paths.surface_outfile, 'r') as f:
+        goforward(f, '#####')
         for d in range(jsondata.dim):
             ax = axes[d] if jsondata.dim > 1 else axes
             for i in range(jsondata.surfnum):

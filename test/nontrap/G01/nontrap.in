@@ -1,0 +1,56 @@
+$rem
+    jobname     nontrap
+	loaddat		true
+    dim         2
+	hbar		1
+    kT          0.001
+    Gamma0      0.01
+$end
+
+$grid
+	rmin		-5			-15 	
+	rmax		5			5
+	Nr			15000		12500
+
+	#-- fef related --#
+
+	bandwidth	1.5
+	derange		3e-5	3e-6
+	gamma_cutoff 6e-4
+$end
+
+$simulation
+    Ntraj       5000
+    mass        14000		55000
+    EndT        500000
+    Nstep       2000000
+    Anastep     10000
+	Algorithms	CME BCME EF
+
+	#-- init state relateda --#
+
+    initTemp    0.0005
+    vibstate    15
+	elestate	0
+    initmode    ring  	p_gaussian
+	initravg	0	  	-15
+	initpavg	0		80
+$end
+
+$surfaces
+    surfnum     	2
+
+    surfmode   harmonic morse harmonic fermi
+	@surfpara
+		0.896 	0 		0					# i = 0, d = 0
+		0.011	-0.011	0.64	-3.5		# i = 0, d = 1
+		0.896 	0 		0.2					# i = 1, d = 0
+		0.2		0 	    -0.67  	-3.2		# i = 1, d = 1
+	@end
+
+    gammamode	gaussian	fermi
+	@gammapara
+		1		1		4		0
+		2		0		0.64	0
+	@end
+$end

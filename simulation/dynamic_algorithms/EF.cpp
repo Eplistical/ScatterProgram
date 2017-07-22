@@ -1,5 +1,7 @@
 #include "scatter_basic.hpp"
 #include <sstream>
+#include <iomanip>
+#include "io.hpp"
 #include "vector.hpp"
 #include "matrixop.hpp"
 #include "randomer.hpp"
@@ -34,7 +36,7 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mod
     std::vector<DOUBLE_T>&& efric = grid_obj.get_efric(ptcl.r);
 
     // if efric << force, ranforce = 0
-    if(norm(efric) < 1e-8 * min(abs(force))) {
+    if(norm(efric) < 1e-3 * min(abs(force))) {
 		ptcl.ranforce.assign(dim, 0);
     }
 
@@ -42,18 +44,31 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mod
 	matrixop::hdiag(efric, eva, evt);
 
     // deal with negetive eva
-	DOUBLE_T meaneva = mean(eva);
+	DOUBLE_T meaneva = norm(eva) / eva.size();
 	DOUBLE_T sigma;
 
-	// negative but very close to 0 (likely to be a numerical error) set to 0
 	for (auto& it : eva) {
 		if (it < 0.0) {
-			if(abs(it) < 1e-6 * meaneva) {
+		// negative but very close to 0 (likely to be a numerical error) set to 0
+			if(abs(it) < 1e-2 * meaneva) {
 				it = 0.0;
 			}
 			else {
 				std::ostringstream errmsg;
-				std::cout << it << " <-neg " << std::endl;
+				std::cout << grid_obj.r_to_index(ptcl.r) << "\n";
+				std::cout << "efric: \n"; 
+				for (auto& k : efric) {
+					std::cout << std::setprecision(16) <<  k << "\n";
+				}
+				std::cout << "eva: \n"; 
+				for (auto& k : eva) {
+					std::cout << std::setprecision(16) <<  k << "\n";
+				}
+
+				std::cout << "evt: \n"; 
+				for (auto& k : evt) {
+					std::cout << std::setprecision(16) <<  k << "\n";
+				}
 				errmsg << "Negative eva found: " << it;
 				throw scatter::NegativeEigenValueError(errmsg.str());
 			}
