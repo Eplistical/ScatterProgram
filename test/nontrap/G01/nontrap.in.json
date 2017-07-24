@@ -14,13 +14,6 @@
             "datatype": "i",
             "datamodel": "s"
         },
-        "loaddat": {
-            "value": [
-                "1"
-            ],
-            "datatype": "b",
-            "datamodel": "s"
-        },
         "kt": {
             "value": [
                 "0.001"

@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -N L('w')D
 #PBS -l walltime=100:00:00
-#PBS -l mem=4GB
-#PBS -l nodes=1:ppn=1
+#PBS -l mem=60GB
+#PBS -l nodes=2:ppn=10
 
 cd $PBS_O_WORKDIR
 ROOT=/data/home/Eplistical/code/ScatterProgram
@@ -21,7 +21,7 @@ function runcmd() {
 	base=${1}.${2}
 	echo ${3}
 	CMD=`python3 $BIN/scatter_gen_cmd.py --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${2} --nproc ${3}`
-	echo $CWD
+	echo $CMD
 	eval $CMD
 	mv $SCRATCHDIR/* .
 }
@@ -29,9 +29,14 @@ function runcmd() {
 jobname=easy
 nproc=1
 
+<<EOF
 jobtype=prepareinit
 runcmd ${jobname} ${jobtype} ${nproc}
 
 jobtype=surface
 runcmd ${jobname} ${jobtype} ${nproc}
+EOF
 
+jobtype=simulation
+nproc=${PBS_NP}
+runcmd ${jobname} ${jobtype} ${nproc}

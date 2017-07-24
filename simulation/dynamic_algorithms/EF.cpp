@@ -1,5 +1,6 @@
 #include "scatter_basic.hpp"
 #include <sstream>
+#include <cassert>
 #include <iomanip>
 #include "io.hpp"
 #include "vector.hpp"
@@ -36,7 +37,7 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mod
     std::vector<DOUBLE_T>&& efric = grid_obj.get_efric(ptcl.r);
 
     // if efric << force, ranforce = 0
-    if(norm(efric) < 1e-3 * min(abs(force))) {
+    if(norm(efric) < 1e-6 * min(abs(force))) {
 		ptcl.ranforce.assign(dim, 0);
     }
 
@@ -50,14 +51,24 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mod
 	for (auto& it : eva) {
 		if (it < 0.0) {
 		// negative but very close to 0 (likely to be a numerical error) set to 0
-			if(abs(it) < 1e-2 * meaneva) {
+			if(abs(it) < 1e-6 * meaneva) {
 				it = 0.0;
 			}
 			else {
 				std::ostringstream errmsg;
 				std::cout << grid_obj.r_to_index(ptcl.r) << "\n";
+
+				std::cout << "r: \n"; 
+				for (auto& k : ptcl.r) {
+					std::cout << std::setprecision(16) <<  k << "\n";
+				}
 				std::cout << "efric: \n"; 
 				for (auto& k : efric) {
+					std::cout << std::setprecision(16) <<  k << "\n";
+				}
+				std::cout << "EFRIC: \n"; 
+				auto EFRIC = grid_obj.get_efric(ptcl.r);
+				for (auto& k : EFRIC) {
 					std::cout << std::setprecision(16) <<  k << "\n";
 				}
 				std::cout << "eva: \n"; 

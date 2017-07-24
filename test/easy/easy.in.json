@@ -23,7 +23,7 @@
         },
         "gamma0": {
             "value": [
-                "0.08"
+                "0.03"
             ],
             "datatype": "d",
             "datamodel": "s"
@@ -55,8 +55,8 @@
         },
         "nr": {
             "value": [
-                "15000",
-                "12500"
+                "100",
+                "200"
             ],
             "datatype": "i",
             "datamodel": "v"
@@ -102,21 +102,21 @@
         },
         "endt": {
             "value": [
-                "500000"
+                "5"
             ],
             "datatype": "d",
             "datamodel": "s"
         },
         "nstep": {
             "value": [
-                "2000000"
+                "20"
             ],
             "datatype": "i",
             "datamodel": "s"
         },
         "anastep": {
             "value": [
-                "10000"
+                "1"
             ],
             "datatype": "i",
             "datamodel": "s"

@@ -1,6 +1,5 @@
 $rem
     jobname     nontrap
-	loaddat		true
     dim         2
 	hbar		1
     kT          0.001

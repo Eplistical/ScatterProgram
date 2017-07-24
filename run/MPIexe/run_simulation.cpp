@@ -65,6 +65,7 @@ VOID_T run_simulation(VOID_T)
 	// load init data
 	if (MPIer::master) 
 		io::loadinit();
+
 	MPIer::bcast(0, simulation::r0p0);
 
 	// load fef data, use shared memory. 
@@ -95,9 +96,9 @@ VOID_T run_simulation(VOID_T)
 				MPIer::recv(0, grid_obj.get_fef_ref());
 			}
 		}
-
 		MPIer::barrier();
 	}
+
 
 	if (MPIer::master) 
 		out_handler.info( "done. ", timer::toc());
@@ -117,7 +118,7 @@ VOID_T run_simulation(VOID_T)
 
 	MPIer::make_sm(0, fef_data_ptr, grid_obj.get_feflen());
 	grid_obj.set_fef_data_ptr(fef_data_ptr);
-
+	
 	MPIer::barrier();
 
 	if (MPIer::master) 

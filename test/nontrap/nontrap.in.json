@@ -14,13 +14,6 @@
             "datatype": "i",
             "datamodel": "s"
         },
-        "loaddat": {
-            "value": [
-                "1"
-            ],
-            "datatype": "b",
-            "datamodel": "s"
-        },
         "kt": {
             "value": [
                 "0.001"
@@ -109,14 +102,14 @@
         },
         "endt": {
             "value": [
-                "500000"
+                "50000"
             ],
             "datatype": "d",
             "datamodel": "s"
         },
         "nstep": {
             "value": [
-                "2000000"
+                "200000"
             ],
             "datatype": "i",
             "datamodel": "s"

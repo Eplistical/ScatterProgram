@@ -1,5 +1,5 @@
 $rem
-    jobname     easy
+    jobname     nontrap
     dim         2
 	hbar		1
     kT          0.001
@@ -7,9 +7,9 @@ $rem
 $end
 
 $grid
-	rmin		-2			-15 	
-	rmax		2			-0.22
-	Nr			20			50
+	rmin		-5			-15 	
+	rmax		5			5
+	Nr			100			200
 
 	#-- fef related --#
 
@@ -21,9 +21,9 @@ $end
 $simulation
     Ntraj       5000
     mass        14000		55000
-    EndT        500000
-    Nstep       2000000
-    Anastep     10000
+    EndT        5000
+    Nstep       20000
+    Anastep     100
 	Algorithms	CME BCME EF
 
 	#-- init state relateda --#
@@ -33,19 +33,18 @@ $simulation
 	elestate	0
     initmode    ring  	p_gaussian
 	initravg	0	  	-15
-	initpavg	0		20
+	initpavg	0		80
 $end
 
 $surfaces
     surfnum     	2
-	cutoff_gamma	0
 
-    surfmode   harmonic	morse harmonic newns
+    surfmode   harmonic morse harmonic fermi
 	@surfpara
 		0.896 	0 		0					# i = 0, d = 0
 		0.011	-0.011	0.64	-3.5		# i = 0, d = 1
 		0.896 	0 		0.2					# i = 1, d = 0
-		1 		0.2 	0.67	0			# i = 1, d = 1
+		0.2		0 	    -0.67  	-3.2		# i = 1, d = 1
 	@end
 
     gammamode	gaussian	fermi

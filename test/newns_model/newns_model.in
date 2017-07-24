@@ -1,6 +1,5 @@
 $rem
     jobname     newns_model
-	loaddat		true
     dim         2
 	hbar		1
     kT          0.001
@@ -39,7 +38,6 @@ $end
 
 $surfaces
     surfnum     	2
-	cutoff_gamma	0
 
     surfmode   harmonic	morse harmonic newns
 	@surfpara

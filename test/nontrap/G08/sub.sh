@@ -2,7 +2,7 @@
 #PBS -N L('w')D
 #PBS -l walltime=310:00:00
 #PBS -l mem=120GB
-#PBS -l nodes=2:ppn=48
+#PBS -l nodes=1:ppn=48
 cd $PBS_O_WORKDIR
 BIN=/data/home/Eplistical/code/ScatterProgram/install/bin
 SCRATCHDIR=/scratch/Eplistical/${PBS_JOBID}
@@ -13,21 +13,18 @@ if [ -f ".pbs.log" ]; then
 	rm .pbs.log
 fi
 
+function runcmd() {
+	# args: jobname, jobtype, nproc
+	infile=${1}.in
+	base=${1}.${2}
+	echo ${3}
+	CMD=`python3 $BIN/scatter_gen_cmd.py --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${2} --nproc ${3}`
+	echo $CMD
+	eval $CMD
+	mv $SCRATCHDIR/* .
+}
+
 jobname=nontrap
-infile=${jobname}.in
-
-jobtype=preparedat
-base=${jobname}.${jobtype}
-CMD=`python3 $BIN/scatter_gen_cmd.py --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`
-echo $CWD
-eval $CMD
-mv $SCRATCHDIR/* .
-
-<< EOF
 jobtype=simulation
-base=${jobname}.${jobtype}
-CMD=`python3 $BIN/scatter_gen_cmd.py --infile ${infile} --outdir ${SCRATCHDIR} --base=${base} --jobtype ${jobtype} --nproc ${PBS_NP}`
-echo $CWD
-eval $CMD
-mv $SCRATCHDIR/* .
-EOF
+nproc=${PBS_NP}
+runcmd ${jobname} ${jobtype} ${nproc}

@@ -278,10 +278,8 @@ namespace MPIer{
 	{
 		if (N == 0) return;
 
-		setup_sm();
-
 		INT_T disp_unit = sizeof(ParamType);
-		MPI_Aint WINSIZE = N * disp_unit;
+		MPI_Aint WINSIZE = static_cast<MPI_Aint>(N) * static_cast<MPI_Aint>(disp_unit); // cast to avoid overflow
 		win_vec.push_back(MPI_Win());
 		MPI_Win& win_sm = win_vec.back();
 		ParamType* orig = data_ptr;
