@@ -1,5 +1,7 @@
 v0.6 
 (in progress)
+- added boundary_rmin and boundary_rmax, as well as a bunch of functions in grid_t to tell the position of a trajectory
+    now it is possible to have some control on whether evolve or not in input file
 
 v0.5
 - removed rem::jobtype parameter, it is considered as redundent
