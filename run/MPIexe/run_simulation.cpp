@@ -189,6 +189,16 @@ VOID_T run_simulation(VOID_T)
 						(*dynamic_algorithms[it])(ptcl[it], index);
 					}
 				} catch (const scatter::ScatterError& e) {
+					std::cout << "r = " << ptcl[it].r[0] << ", " << ptcl[it].r[1] << "\n";
+					std::cout << "p = " << ptcl[it].p[0] << ", " << ptcl[it].p[1] << "\n";
+					std::cout << grid_obj.get_boundary_rmin(0) << "\n";
+					std::cout << grid_obj.get_boundary_rmin(1) << "\n";
+					std::cout << grid_obj.get_boundary_rmax(0) << "\n";
+					std::cout << grid_obj.get_boundary_rmax(1) << "\n";
+					std::cout << grid_obj.is_leaving_boundary(ptcl[it].r, ptcl[it].p, 0) << endl;
+					std::cout << grid_obj.is_leaving_boundary(ptcl[it].r, ptcl[it].p, 1) << endl;
+					std::cout << grid_obj.is_leaving_boundary(ptcl[it].r, ptcl[it].p) << endl;
+
 					std::cout 
 						<< "thread " << MPIer::rank 
 						<< ": catched ScatterError on traj " << index 

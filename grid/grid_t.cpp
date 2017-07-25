@@ -202,8 +202,8 @@ BOOL_T grid_t::is_leaving_boundary(const std::vector<DOUBLE_T>& r, const std::ve
 BOOL_T grid_t::is_leaving_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p) const
 {
 	for (UINT_T d = 0; d < _dim; ++d) 
-		if (!is_leaving_boundary(r, p, d)) return false;
-	return true;
+		if (is_leaving_boundary(r, p, d)) return true;
+	return false;
 }
 
 BOOL_T grid_t::is_entering_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p, UINT_T d) const
@@ -216,8 +216,8 @@ BOOL_T grid_t::is_entering_boundary(const std::vector<DOUBLE_T>& r, const std::v
 BOOL_T grid_t::is_entering_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p) const
 {
 	for (UINT_T d = 0; d < _dim; ++d) 
-		if (!is_entering_boundary(r, p, d)) return false;
-	return true;
+		if (is_entering_boundary(r, p, d)) return true;
+	return false;
 }
 
 // -- r_to_index -- //

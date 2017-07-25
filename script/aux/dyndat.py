@@ -54,6 +54,8 @@ class dyndat(object):
         self.Nstep = jsondata.Nstep
         self.dt = self.EndT / self.Nstep
         self.tarr = np.arange(self.Nrecord) * self.dt
+        self.boundary_rmin = jsondata.boundary_rmin
+        self.boundary_rmax = jsondata.boundary_rmax
 
 
 # END

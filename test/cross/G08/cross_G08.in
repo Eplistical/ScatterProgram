@@ -2,15 +2,15 @@ $rem
     jobname     cross_G08
     dim         2
 	hbar		1
-    kT          0.001
+    kT          1e-3
     Gamma0      0.08
 $end
 
 $grid
 	rmin		-3			-12 	
 	rmax		3			8
-    boundary_rmin   -100    -10
-    boundary_rmax   100     6
+    boundary_rmin   -100    -11
+    boundary_rmax   100     7
 	Nr			9000        15000
 
 	#-- fef related --#
@@ -30,11 +30,11 @@ $simulation
 
 	#-- init state relateda --#
 
-    initTemp    0.0005
+    initTemp    5e-4
     vibstate    15
 	elestate	0
     initmode    ring  	p_gaussian
-	initravg	0	  	-15
+	initravg	0	  	-10
 	initpavg	0		40
 $end
 

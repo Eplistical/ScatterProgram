@@ -6,7 +6,7 @@ function infile() {
     jobname     newns_G${1}
     dim         2
     hbar        1
-    kT          0.001
+    kT          1e-3
     Gamma0      0.${1}
 \$end
 
@@ -34,12 +34,12 @@ function infile() {
 
     #-- init state relateda --#
 
-    initTemp    0.0005
+    initTemp    5e-4
     vibstate    15
     elestate    0
     initmode    ring    p_gaussian
     initravg    0       -12
-    initpavg    0       20
+    initpavg    0       ${2}
 \$end
 
 \$surfaces
@@ -138,7 +138,7 @@ for G in ${Glist}; do
     echo now on G${G}
     mkdir -p G${G}
     cd G${G}
-    infile ${G}
+    infile ${G} ${v}
     subfile ${G} ; TOSUB=sub.sh
     cp ${CWD}/init/newns_v${v}.init newns_G${G}.init
     #subanalfile ${G} ; TOSUB=subanal.sh

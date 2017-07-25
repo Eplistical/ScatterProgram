@@ -16,7 +16,7 @@
         },
         "kt": {
             "value": [
-                "0.001"
+                "1e-3"
             ],
             "datatype": "d",
             "datamodel": "s"
@@ -49,6 +49,22 @@
             "value": [
                 "3",
                 "-0.22"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        },
+        "boundary_rmin": {
+            "value": [
+                "-100",
+                "-13"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        },
+        "boundary_rmax": {
+            "value": [
+                "100",
+                "6"
             ],
             "datatype": "d",
             "datamodel": "v"
@@ -123,7 +139,7 @@
         },
         "inittemp": {
             "value": [
-                "0.0005"
+                "5e-4"
             ],
             "datatype": "d",
             "datamodel": "s"
@@ -153,7 +169,7 @@
         "initravg": {
             "value": [
                 "0",
-                "-15"
+                "-12"
             ],
             "datatype": "d",
             "datamodel": "v"

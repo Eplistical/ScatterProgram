@@ -6,15 +6,15 @@ function infile() {
     jobname     cross_G${1}
     dim         2
 	hbar		1
-    kT          0.001
+    kT          1e-3
     Gamma0      0.${1}
 \$end
 
 \$grid
 	rmin		-3			-12 	
 	rmax		3			8
-    boundary_rmin   -100    -10
-    boundary_rmax   100     6
+    boundary_rmin   -100    -11
+    boundary_rmax   100     7
 	Nr			9000        15000
 
 	#-- fef related --#
@@ -34,11 +34,11 @@ function infile() {
 
 	#-- init state relateda --#
 
-    initTemp    0.0005
+    initTemp    5e-4
     vibstate    15
 	elestate	0
     initmode    ring  	p_gaussian
-	initravg	0	  	-15
+	initravg	0	  	-10
 	initpavg	0		${2}
 \$end
 
@@ -134,7 +134,7 @@ CWD=`pwd`
 Glist="01 03 05 08"
 v=40
 
-for G in ${Glist}; do
+for G in ${Glist} ; do
     echo now on G${G}
     mkdir -p G${G}
     cd G${G}
