@@ -1,7 +1,3 @@
-#ifdef _DEBUG
-#include "debugtools.hpp"
-#endif
-
 #include "types.hpp"
 #include <iostream>
 #include <cassert>

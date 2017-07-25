@@ -1,8 +1,3 @@
-#include "types.hpp"
-#ifdef _DEBUG
-#include "debugtools.hpp"
-#endif
-
 #include "vector.hpp"
 #include "rem.hpp"
 #include "fermi.hpp"

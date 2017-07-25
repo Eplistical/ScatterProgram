@@ -1,8 +1,4 @@
 #include "types.hpp"
-#ifdef _DEBUG
-#include "debugtools.hpp"
-#endif
-
 #include <vector>
 #include "rem.hpp"
 #include "io.hpp"
