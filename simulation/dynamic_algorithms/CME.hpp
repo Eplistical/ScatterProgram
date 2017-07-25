@@ -27,8 +27,7 @@ namespace scatter
 			hop_t& operator=(const hop_t& other) = default;
 		};
 
-		extern std::vector<hop_t> CME_hop_recorder;
-		extern std::vector<hop_t> BCME_hop_recorder;
+		extern std::unordered_map< enumspace::dynamic_mode_enum, std::vector<hop_t> > hop_recorder;
 
 		VOID_T CME(particle_t& ptcl, UINT_T trajID);
 		VOID_T BCME(particle_t& ptcl, UINT_T trajID);

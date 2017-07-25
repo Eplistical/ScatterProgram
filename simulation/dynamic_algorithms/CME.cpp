@@ -24,8 +24,12 @@ using simulation::dt;
 using surfaces::surfnum;
 
 // hopper counter for CME & BCME
-std::vector<hop_t> scatter::simulation::CME_hop_recorder;
-std::vector<hop_t> scatter::simulation::BCME_hop_recorder;
+std::unordered_map< enumspace::dynamic_mode_enum, std::vector<hop_t> > 
+scatter::simulation::hop_recorder 
+{
+	{ enumspace::dynamic_mode_enum::CME, std::vector<hop_t>() },
+	{ enumspace::dynamic_mode_enum::BCME, std::vector<hop_t>() },
+};
 
 static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dynamic_mode_enum mode)
 {
@@ -60,24 +64,22 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 	}
 	// get hop_to according to the probabilities
 	const UINT_T hop_to = randomer::discrete(Phop);
-	/*
+
+	// record when hop happens
 	if (hop_from != hop_to) {
+
 #if _DEBUG >= 4
 	log_handler.info(hop_from, " -> ", hop_to, "! ");
 #endif 
+
 		DOUBLE_T to_energy = surfaces_obj.fU(hop_to, ptcl.r);
-		// hopping happens
-		if(mode == enumspace::dynamic_mode_enum::CME){
-			CME_hop_recorder.push_back(hop_t(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p));
-		}
-		else if(mode == enumspace::dynamic_mode_enum::BCME){
-			BCME_hop_recorder.push_back(hop_t(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p));
-		}
+		hop_recorder[mode].emplace_back(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p);
 	}
-	*/
+
 #if _DEBUG >= 4
 	log_handler.info("done. ");
 #endif 
+
 	return hop_to;
 }
 
