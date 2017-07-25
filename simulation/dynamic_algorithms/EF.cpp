@@ -56,30 +56,6 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mod
 			}
 			else {
 				std::ostringstream errmsg;
-				std::cout << grid_obj.r_to_index(ptcl.r) << "\n";
-
-				std::cout << "r: \n"; 
-				for (auto& k : ptcl.r) {
-					std::cout << std::setprecision(16) <<  k << "\n";
-				}
-				std::cout << "efric: \n"; 
-				for (auto& k : efric) {
-					std::cout << std::setprecision(16) <<  k << "\n";
-				}
-				std::cout << "EFRIC: \n"; 
-				auto EFRIC = grid_obj.get_efric(ptcl.r);
-				for (auto& k : EFRIC) {
-					std::cout << std::setprecision(16) <<  k << "\n";
-				}
-				std::cout << "eva: \n"; 
-				for (auto& k : eva) {
-					std::cout << std::setprecision(16) <<  k << "\n";
-				}
-
-				std::cout << "evt: \n"; 
-				for (auto& k : evt) {
-					std::cout << std::setprecision(16) <<  k << "\n";
-				}
 				errmsg << "Negative eva found: " << it;
 				throw scatter::NegativeEigenValueError(errmsg.str());
 			}
@@ -100,4 +76,3 @@ static VOID_T _EF(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
 VOID_T scatter::simulation::EF(particle_t& ptcl, UINT_T trajID) {
 	_EF(ptcl, enumspace::dynamics_mode_enum::EF);
 }
-
