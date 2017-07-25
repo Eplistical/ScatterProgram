@@ -19,7 +19,7 @@
 namespace surfaces_collection {
 	class single_surf_t{
 		private:
-			std::vector<std::shared_ptr<basesurf>> surfptr;
+			std::vector< std::shared_ptr<basesurf> > surfptr;
 		public:
 			// --- setters --- //
 			VOID_T append_dim(enumspace::surfmode_enum mode, std::vector<DOUBLE_T> para){

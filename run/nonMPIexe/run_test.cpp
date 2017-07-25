@@ -27,7 +27,7 @@ VOID_T run_test(VOID_T){
 		r = grid_obj.index_to_r(i);
 		k = grid_obj.r_to_index(r);
 		if(i != k)
-			std::cout << i << " => " << r[0] << "\t" << r[1] << " =>> "
+			std::cout << i << " => " << r[0] << "\t" << r[1] << " => "
 				<< k  <<"\t" << (i == k) 
 				<< "\n" ;
 	}
