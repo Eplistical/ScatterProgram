@@ -1,7 +1,7 @@
 #ifndef _SURFACES_MORSE_HPP
 #define _SURFACES_MORSE_HPP
 // morse
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 #include <vector>
 #include <cmath>

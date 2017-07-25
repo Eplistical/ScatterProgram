@@ -3,7 +3,7 @@
 // helper functions in MPI
 #include <iostream>
 
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include <string>
 #include "MPIer.hpp"
 #include "vars.hpp"

@@ -1,7 +1,7 @@
 #ifndef _SCATTER_ANALMODE_HPP
 #define _SCATTER_ANALMODE_HPP
 // anal mode dict
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "enumspace.hpp"
 
 #include <boost/assign.hpp>

@@ -1,7 +1,7 @@
 #ifndef _DYNAMICS_MODE_HPP
 #define _DYNAMICS_MODE_HPP
 // dynamics mode dict
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "enumspace.hpp"
 
 #include <boost/assign.hpp>

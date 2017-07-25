@@ -1,7 +1,7 @@
 #ifndef _SCATTER_GRID_T_HPP
 #define _SCATTER_GRID_T_HPP
 // module for grid_t
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include <vector>
 
 namespace scatter{

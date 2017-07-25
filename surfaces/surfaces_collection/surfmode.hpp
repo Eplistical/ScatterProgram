@@ -1,7 +1,7 @@
 #ifndef _SURFMODE_HPP
 #define _SURFMODE_HPP
 // surfaces modes
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "enumspace.hpp"
 
 #include <boost/assign.hpp>

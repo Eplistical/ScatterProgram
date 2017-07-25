@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "dynamic_algorithms.hpp"
 
 using namespace scatter::simulation;

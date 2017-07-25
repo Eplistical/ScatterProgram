@@ -1,7 +1,7 @@
 #ifndef _SCATTER_SURFACES_T_HPP
 #define _SCATTER_SURFACES_T_HPP
 // API for surfaces_collection module
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include <vector>
 #include "surfaces_collection.hpp"
 

@@ -1,7 +1,7 @@
 #ifndef _SURFACES_HARMONIC_HPP
 #define _SURFACES_HARMONIC_HPP
 // harmonic surface
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 #include <vector>
 #include <cmath>

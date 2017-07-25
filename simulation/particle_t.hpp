@@ -1,7 +1,7 @@
 #ifndef _SCATTER_PARTICLE_T_HPP
 #define _SCATTER_PARTICLE_T_HPP
 // module for single particle class
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "vector.hpp"
 
 namespace scatter{

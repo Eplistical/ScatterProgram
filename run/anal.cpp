@@ -1,5 +1,5 @@
 #include <iterator>
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "vector.hpp"
 #include "io.hpp"
 #include "rem.hpp"

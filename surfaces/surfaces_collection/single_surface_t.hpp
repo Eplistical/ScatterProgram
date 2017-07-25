@@ -1,7 +1,7 @@
 #ifndef _SURFACES_TYPES_HPP
 #define _SURFACES_TYPES_HPP
 // class for a single surface
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 #include <vector>
 #include <memory>

@@ -1,7 +1,7 @@
 #ifndef _SURFACES_GAUSSIAN_HPP
 #define _SURFACES_GAUSSIAN_HPP
 // gaussian surface
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 #include <vector>
 #include <cmath>

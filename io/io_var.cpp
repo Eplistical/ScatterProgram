@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include <iostream>
 #include "boost/filesystem.hpp"
 #include "vars.hpp"

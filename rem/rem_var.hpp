@@ -1,7 +1,7 @@
 #ifndef _SCATTER_REM_VAR_HPP
 #define _SCATTER_REM_VAR_HPP
 // API module for rem in Scatter
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "json_toolkit.hpp"
 
 namespace scatter{

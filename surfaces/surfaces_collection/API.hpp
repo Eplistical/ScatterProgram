@@ -1,7 +1,7 @@
 #ifndef _SURFACES_COLLECTION_API_HPP
 #define _SURFACES_COLLECTION_API_HPP
 // surfaces collection API
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 namespace surfaces_collections{};
 namespace enumspace{};

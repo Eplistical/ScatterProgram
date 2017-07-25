@@ -1,7 +1,7 @@
 #ifndef _SURFACES_FERMI_HPP
 #define _SURFACES_FERMI_HPP
 // fermi surface
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 #include <vector>
 #include <cmath>

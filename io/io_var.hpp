@@ -1,7 +1,7 @@
 #ifndef _SCATTER_IO_VAR_HPP
 #define _SCATTER_IO_VAR_HPP
 // variables in io 
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "json_toolkit.hpp"
 #include "ioer.hpp"
 

@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include <vector>
 #include "rem.hpp"
 #include "io.hpp"

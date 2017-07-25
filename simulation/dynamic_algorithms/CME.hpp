@@ -1,7 +1,7 @@
 #ifndef _SCATTER_CME_HPP
 #define _SCATTER_CME_HPP
 // module for CME & bCME
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 #include <vector>
 #include "simulation.hpp"

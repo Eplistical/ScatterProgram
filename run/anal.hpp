@@ -1,7 +1,7 @@
 #ifndef _SCATTER_ANAL_HPP
 #define _SCATTER_ANAL_HPP
 // module for data analysis
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 #include <vector>
 #include "simulation.hpp"

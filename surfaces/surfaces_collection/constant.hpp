@@ -1,7 +1,7 @@
 #ifndef _SURFACES_CONSTANT_HPP
 #define _SURFACES_CONSTANT_HPP
 // constant surface
-#include "types.hpp"
+#include "scatter_basic.hpp"
 
 #include <vector>
 #include <cmath>

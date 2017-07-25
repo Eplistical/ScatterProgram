@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "json_toolkit.hpp"
 #include "io.hpp"
 #include "rem_var.hpp"

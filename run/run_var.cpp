@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "scatter_basic.hpp"
 #include "surfaces.hpp"
 #include "grid.hpp"
 #include "run_var.hpp"
