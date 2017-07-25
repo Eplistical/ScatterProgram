@@ -76,6 +76,16 @@ std::vector<DOUBLE_T> grid_t::get_dr(VOID_T) const noexcept
 	return _dr;
 }
 
+std::vector<DOUBLE_T> grid_t::get_boundary_rmin(VOID_T) const noexcept
+{
+	return _boundary_rmin;
+}
+
+std::vector<DOUBLE_T> grid_t::get_boundary_rmax(VOID_T) const noexcept
+{
+	return _boundary_rmax;
+}
+
 std::vector<UINT_T> grid_t::get_Nr(VOID_T) const noexcept
 {
 	return _Nr;
@@ -89,6 +99,16 @@ DOUBLE_T grid_t::get_rmin(UINT_T d) const
 DOUBLE_T grid_t::get_rmax(UINT_T d) const
 {
 	return _rmax.at(d);
+}
+
+DOUBLE_T grid_t::get_boundary_rmin(UINT_T d) const
+{
+	return _boundary_rmin.at(d);
+}
+
+DOUBLE_T grid_t::get_boundary_rmax(UINT_T d) const
+{
+	return _boundary_rmax.at(d);
 }
 
 DOUBLE_T grid_t::get_dr(UINT_T d) const

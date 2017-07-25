@@ -185,7 +185,7 @@ VOID_T run_simulation(VOID_T)
 				}
 				// evolve
 				try {
-					if (ptcl[it].r[1] >= -15 and ptcl[it].r[1] <= 6) { // THIS IS AD-HOC FOR CROSS!!
+					if (grid_obj.is_in_boundary(ptcl[it].r)) { 
 						(*dynamic_algorithms[it])(ptcl[it], index);
 					}
 				} catch (const scatter::ScatterError& e) {

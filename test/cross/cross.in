@@ -9,6 +9,8 @@ $end
 $grid
 	rmin		-3			-12 	
 	rmax		3			8
+    boundary_rmin   -100    -10
+    boundary_rmax   100     6
 	Nr			9000        15000
 
 	#-- fef related --#

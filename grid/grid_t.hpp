@@ -48,10 +48,14 @@ namespace scatter{
 			std::vector<DOUBLE_T> get_grid(UINT_T d) const;
 			std::vector<DOUBLE_T> get_rmin(VOID_T) const noexcept;
 			std::vector<DOUBLE_T> get_rmax(VOID_T) const noexcept;
+			std::vector<DOUBLE_T> get_boundary_rmin(VOID_T) const noexcept;
+			std::vector<DOUBLE_T> get_boundary_rmax(VOID_T) const noexcept;
 			std::vector<DOUBLE_T> get_dr(VOID_T) const noexcept;
 			std::vector<UINT_T> get_Nr(VOID_T) const noexcept;
 			DOUBLE_T get_rmin(UINT_T d) const;
 			DOUBLE_T get_rmax(UINT_T d) const;
+			DOUBLE_T get_boundary_rmin(UINT_T d) const;
+			DOUBLE_T get_boundary_rmax(UINT_T d) const;
 			DOUBLE_T get_dr(UINT_T d) const;
 			UINT_T get_Nr(UINT_T d) const;
 			UINT_T get_Ntot(VOID_T) const noexcept;

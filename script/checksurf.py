@@ -38,6 +38,12 @@ def checksurf():
 
             ax.plot(data[:,0], data[:,3], '--', label='d{}g'.format(d))
             ax.set_xlim(jsondata.rmin[d], jsondata.rmax[d])
+            # boundary
+            ax.set_ylim(ax.get_ylim())
+            ylim = ax.get_ylim()
+            ax.plot(np.ones(2) * jsondata.boundary_rmin[d], ylim, '-k')
+            ax.plot(np.ones(2) * jsondata.boundary_rmax[d], ylim, '-k')
+
 
     ## -- format plot -- ##
     plt.legend()
