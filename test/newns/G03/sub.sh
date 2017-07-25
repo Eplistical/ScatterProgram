@@ -26,7 +26,7 @@ function runcmd() {
 
 
 jobname=newns_G03
-jobtype=preparedat
+jobtype=simulation
 nproc=${PBS_NP}
 #nproc=1
 runcmd ${jobname} ${jobtype} ${nproc}

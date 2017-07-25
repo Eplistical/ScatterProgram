@@ -3,14 +3,14 @@ $rem
     dim         2
 	hbar		1
     kT          0.001
-    Gamma0      0.01
+    Gamma0      0.03
 $end
 
 $grid
 	rmin		-3			-15
 	rmax		3			-0.22
-    boundary_rmin   -100    -10
-    boundary_rmax   100     100
+    boundary_rmin   -100    -13
+    boundary_rmax   100     6
 	Nr			9000        10000
 
 	#-- fef related --#
@@ -34,7 +34,7 @@ $simulation
     vibstate    15
 	elestate	0
     initmode    ring  	p_gaussian
-	initravg	0	  	-15
+	initravg	0	  	-12
 	initpavg	0		80
 $end
 
