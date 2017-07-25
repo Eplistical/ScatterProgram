@@ -42,7 +42,7 @@ VOID_T run_simulation(VOID_T)
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: setting up grid_obj");
 #endif
-	grid_obj = grid_t(rmin, rmax, Nr);
+	grid_obj = grid_t(rmin, rmax, boundary_rmin, boundary_rmax, Nr);
 
 #if _DEBUG >= 2
 	if (MPIer::master) log_handler.info( "debug: setting up surfaces_obj");

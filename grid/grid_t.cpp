@@ -15,9 +15,13 @@ using scatter::rem::dim2;
 // constructor
 grid_t::grid_t( const std::vector<DOUBLE_T>& rmin, 
 				const std::vector<DOUBLE_T>& rmax, 
+				const std::vector<DOUBLE_T>& boundary_rmin, 
+				const std::vector<DOUBLE_T>& boundary_rmax, 
 				const std::vector<UINT_T>& Nr) :
 				_rmin(rmin), 
 				_rmax(rmax),
+				_boundary_rmin(boundary_rmin), 
+				_boundary_rmax(boundary_rmax),
 			   	_Nr(Nr)	
 {
 	const UINT_T Ntot = get_Ntot();
@@ -160,6 +164,14 @@ std::vector<DOUBLE_T> grid_t::get_fBCME(const std::vector<DOUBLE_T>& r) const
 	else {
 		return std::vector<DOUBLE_T>(_fef.begin() + begin, _fef.begin() + begin + dim);
 	}
+}
+
+BOOL_T grid_t::is_in_boundary(const std::vector<DOUBLE_T>& r) const
+{
+	for (UINT_T d = 0; d < rem::dim; ++d) {
+		if (r.at(d) < _boundary_rmin.at(d) or r.at(d) > _boundary_rmax.at(d)) return false; 
+	} 
+	return true;
 }
 
 // -- r_to_index -- //

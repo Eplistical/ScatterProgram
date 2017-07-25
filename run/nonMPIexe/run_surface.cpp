@@ -26,7 +26,7 @@ VOID_T run_surface(VOID_T){
 	using namespace grid;
 	using namespace surfaces;
 	DOUBLE_T U, F, G, Gder;
-	grid_obj = grid_t(rmin, rmax, Nr);
+	grid_obj = grid_t(rmin, rmax, boundary_rmin, boundary_rmax, Nr);
 	surfaces_obj = surfaces_t(surfnum);
 	surfaces_obj.set_abs_gamma_threash(gamma_cutoff);
 	surfaces_obj.set_gamma(gammamode, gammapara);

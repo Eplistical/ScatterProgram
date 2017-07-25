@@ -24,7 +24,7 @@ VOID_T run_test(VOID_T){
 	 *
 	 */
 	using namespace grid;
-	grid_obj = grid_t(rmin, rmax, Nr);
+	grid_obj = grid_t(rmin, rmax, boundary_rmin, boundary_rmax, Nr);
 	std::vector<DOUBLE_T> r;
 	UINT_T k;
 	for (UINT_T i = 0; i < grid_obj.get_Ntot(); ++i) {

@@ -35,7 +35,7 @@ VOID_T run_preparedat(VOID_T)
 	if (MPIer::master) 
 		out_handler.info_nonewline( "setting up grid_obj and surfaces_obj ... ");
 
-	grid_obj = grid_t(rmin, rmax, Nr);
+	grid_obj = grid_t(rmin, rmax, boundary_rmin, boundary_rmax, Nr);
 	surfaces_obj = surfaces_t(surfnum);
 	surfaces_obj.set_abs_gamma_threash(gamma_cutoff);
 	surfaces_obj.set_gamma(gammamode, gammapara);

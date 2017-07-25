@@ -13,6 +13,8 @@ function infile() {
 \$grid
 	rmin		-3			-12 	
 	rmax		3			8
+    boundary_rmin   -100    -10
+    boundary_rmax   100     6
 	Nr			9000        15000
 
 	#-- fef related --#
@@ -37,7 +39,7 @@ function infile() {
 	elestate	0
     initmode    ring  	p_gaussian
 	initravg	0	  	-15
-	initpavg	0		20
+	initpavg	0		${2}
 \$end
 
 \$surfaces
@@ -136,8 +138,8 @@ for G in ${Glist}; do
     echo now on G${G}
     mkdir -p G${G}
     cd G${G}
-    #infile ${G}
-    subfile ${G} ; TOSUB=sub.sh
+    infile ${G} ${v}
+    subfile ${G} ${v} ; TOSUB=sub.sh
     cp ${CWD}/init/cross_v${v}.init cross_G${G}.init
     #subanalfile ${G} ; TOSUB=subanal.sh
     if [ "$1" == "run" ];then

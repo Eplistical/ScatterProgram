@@ -10,6 +10,8 @@ namespace scatter{
 			// data 
 			std::vector<DOUBLE_T> _rmin;
 			std::vector<DOUBLE_T> _rmax;
+			std::vector<DOUBLE_T> _boundary_rmin;
+			std::vector<DOUBLE_T> _boundary_rmax;
 			std::vector<DOUBLE_T> _dr;
 			std::vector<UINT_T> _Nr;
 			std::vector<DOUBLE_T> _fef;
@@ -25,7 +27,9 @@ namespace scatter{
 			UINT_T _fBCMEoffset;
 		public:
 			// -- ctor/dtor/copy/move -- //
-			explicit grid_t(const std::vector<DOUBLE_T>& rmin, const std::vector<DOUBLE_T>& rmax, const std::vector<UINT_T>& Nr);
+			explicit grid_t(const std::vector<DOUBLE_T>& rmin, const std::vector<DOUBLE_T>& rmax, 
+							const std::vector<DOUBLE_T>& boundary_rmin, const std::vector<DOUBLE_T>& boundary_rmax,
+							const std::vector<UINT_T>& Nr);
 			grid_t() = default;
 			~grid_t() = default;
 			grid_t(const grid_t&) = default;
@@ -59,6 +63,7 @@ namespace scatter{
 			std::vector<DOUBLE_T> get_force(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_efric(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_fBCME(const std::vector<DOUBLE_T>& r) const;
+			BOOL_T is_in_boundary(const std::vector<DOUBLE_T>& r) const;
 
 			// -- conversion between r & index -- //
 			UINT_T r_to_index_raw(const std::vector<DOUBLE_T>& r) const;

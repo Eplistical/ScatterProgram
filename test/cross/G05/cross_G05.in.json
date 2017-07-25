@@ -53,6 +53,22 @@
             "datatype": "d",
             "datamodel": "v"
         },
+        "boundary_rmin": {
+            "value": [
+                "-100",
+                "-10"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        },
+        "boundary_rmax": {
+            "value": [
+                "100",
+                "6"
+            ],
+            "datatype": "d",
+            "datamodel": "v"
+        },
         "nr": {
             "value": [
                 "9000",
@@ -161,7 +177,7 @@
         "initpavg": {
             "value": [
                 "0",
-                "20"
+                "40"
             ],
             "datatype": "d",
             "datamodel": "v"
