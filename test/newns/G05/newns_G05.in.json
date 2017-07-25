@@ -2,7 +2,7 @@
     "rem": {
         "jobname": {
             "value": [
-                "newns_model"
+                "newns_G05"
             ],
             "datatype": "S",
             "datamodel": "s"
@@ -14,13 +14,6 @@
             "datatype": "i",
             "datamodel": "s"
         },
-        "loaddat": {
-            "value": [
-                "1"
-            ],
-            "datatype": "b",
-            "datamodel": "s"
-        },
         "kt": {
             "value": [
                 "0.001"
@@ -30,7 +23,7 @@
         },
         "gamma0": {
             "value": [
-                "0.03"
+                "0.05"
             ],
             "datatype": "d",
             "datamodel": "s"
@@ -46,7 +39,7 @@
     "grid": {
         "rmin": {
             "value": [
-                "-2",
+                "-3",
                 "-15"
             ],
             "datatype": "d",
@@ -54,7 +47,7 @@
         },
         "rmax": {
             "value": [
-                "2",
+                "3",
                 "-0.22"
             ],
             "datatype": "d",
@@ -62,7 +55,7 @@
         },
         "nr": {
             "value": [
-                "6000",
+                "9000",
                 "10000"
             ],
             "datatype": "i",
@@ -77,8 +70,8 @@
         },
         "derange": {
             "value": [
-                "3e-5",
-                "3e-6"
+                "3e-6",
+                "3e-5"
             ],
             "datatype": "d",
             "datamodel": "v"
@@ -254,13 +247,6 @@
             ],
             "datatype": "d",
             "datamodel": "b"
-        },
-        "cutoff_gamma": {
-            "value": [
-                "0"
-            ],
-            "datatype": "d",
-            "datamodel": "s"
         }
     }
 }

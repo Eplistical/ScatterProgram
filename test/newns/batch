@@ -1,9 +1,9 @@
 #!/bin/bash
 
 function infile() {
-    cat > cross_G${1}.in << EOF
+    cat > newns_G${1}.in << EOF
 \$rem
-    jobname     cross_G${1}
+    jobname     newns_G${1}
     dim         2
 	hbar		1
     kT          0.001
@@ -11,9 +11,9 @@ function infile() {
 \$end
 
 \$grid
-	rmin		-3			-12 	
-	rmax		3			8
-	Nr			9000        15000
+	rmin		-3			-15
+	rmax		3			-0.22
+	Nr			9000        10000
 
 	#-- fef related --#
 
@@ -43,18 +43,18 @@ function infile() {
 \$surfaces
     surfnum     	2
 
-    surfmode   harmonic fermi harmonic fermi
+    surfmode   harmonic	morse harmonic newns
 	@surfpara
 		0.896 	0 		0					# i = 0, d = 0
-		0.2 	0       0.67	0   		# i = 0, d = 1
+		0.011	-0.011	0.64	-3.5		# i = 0, d = 1
 		0.896 	0 		0.2					# i = 1, d = 0
-	    0.2 	0    	-0.67  	-3.2   		# i = 1, d = 1
+		1 		0.2 	0.67	0			# i = 1, d = 1
 	@end
 
-    gammamode	gaussian	gaussian
+    gammamode	gaussian	fermi
 	@gammapara
 		1		1		4		0
-		1		0		0.5     -1.6
+        2       0       0.64    0
 	@end
 \$end
 EOF
@@ -89,8 +89,8 @@ function runcmd() {
 }
 
 
-jobname=cross_G${G}
-jobtype=simulation
+jobname=newns_G${G}
+jobtype=preparedat
 nproc=\${PBS_NP}
 #nproc=1
 runcmd \${jobname} \${jobtype} \${nproc}
@@ -116,7 +116,7 @@ if [ -f ".pbs.log" ]; then
 	rm .pbs.log
 fi
 
-jobname=cross_G${G}
+jobname=newns_G${G}
 infile=\${jobname}.in
 
 python3 \$BIN/checkfefdat.py \${infile} --savedir=\${SCRATCHDIR}
@@ -130,15 +130,15 @@ EOF
 
 CWD=`pwd`
 Glist="01 03 05 08"
-v=40
+v=20
 
 for G in ${Glist}; do
     echo now on G${G}
     mkdir -p G${G}
     cd G${G}
-    #infile ${G}
+    infile ${G}
     subfile ${G} ; TOSUB=sub.sh
-    cp ${CWD}/init/cross_v${v}.init cross_G${G}.init
+    cp ${CWD}/init/newns_v${v}.init newns_G${G}.init
     #subanalfile ${G} ; TOSUB=subanal.sh
     if [ "$1" == "run" ];then
         qsub -o .pbs.out -j oe ${TOSUB}

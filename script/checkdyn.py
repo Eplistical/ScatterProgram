@@ -30,16 +30,21 @@ def checkdyn():
     fig, axes = plt.subplots(2,2)
     vibfig, vibaxes = plt.subplots(1,1)
     for i in range(dyn.Nalgorithm):
+        print(i)
         # dynamic
         dyn_Nout = np.zeros(dyn.Nrecord)
         for j in range(dyn.Nrecord):
-            dyn_Nout[j] = sum((1 if (k < -20 or k > 3) else 0
+            dyn_Nout[j] = sum((1 if (k < -10 or k > 5) else 0
                                    for k in dyn.dyn_r[i,:,j,1]))
 
         final_E_dist = dyn.final_Ek_dist + dyn.final_Ep_dist
 
         # 
-        final_Ex_dist_filt = final_E_dist[i,:,0][np.where(dyn.final_r_dist[i,:,1] < -20)]
+        final_Ex_dist_filt = \
+            final_E_dist[i,:,0][np.where(np.logical_or(
+                            dyn.final_r_dist[i,:,1] < -9,
+                            dyn.final_r_dist[i,:,1] > 4)
+                            )]
         final_n_vib_dist = np.round((final_Ex_dist_filt / 0.008) - 0.5)
 
         axes[0,0].plot(dyn.tarr, dyn.dyn_ravg[i,:,0])

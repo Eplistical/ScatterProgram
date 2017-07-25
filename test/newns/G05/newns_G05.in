@@ -1,20 +1,20 @@
 $rem
-    jobname     newns_model
+    jobname     newns_G05
     dim         2
 	hbar		1
     kT          0.001
-    Gamma0      0.03
+    Gamma0      0.05
 $end
 
 $grid
-	rmin		-2			-15 	
-	rmax		2			-0.22
-	Nr			6000		10000
+	rmin		-3			-15
+	rmax		3			-0.22
+	Nr			9000        10000
 
 	#-- fef related --#
 
 	bandwidth	1.5
-	derange		3e-5	3e-6
+	derange		3e-6	3e-5
 	gamma_cutoff 6e-4
 $end
 
@@ -50,6 +50,6 @@ $surfaces
     gammamode	gaussian	fermi
 	@gammapara
 		1		1		4		0
-		2		0		0.64	0
+        2       0       0.64    0
 	@end
 $end

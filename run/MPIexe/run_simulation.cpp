@@ -185,7 +185,9 @@ VOID_T run_simulation(VOID_T)
 				}
 				// evolve
 				try {
-					(*dynamic_algorithms[it])(ptcl[it], index);
+					if (ptcl[it].r[1] >= -15 and ptcl[it].r[1] <= 6) { // THIS IS AD-HOC FOR CROSS!!
+						(*dynamic_algorithms[it])(ptcl[it], index);
+					}
 				} catch (const scatter::ScatterError& e) {
 					std::cout 
 						<< "thread " << MPIer::rank 
