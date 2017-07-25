@@ -1,12 +1,10 @@
 #!/bin/bash
 #PBS -N L('w')D
-#PBS -l walltime=100:00:00
-#PBS -l mem=60GB
-#PBS -l nodes=2:ppn=10
-
+#PBS -l walltime=310:00:00
+#PBS -l mem=120GB
+#PBS -l nodes=1:ppn=48
 cd $PBS_O_WORKDIR
-ROOT=/data/home/Eplistical/code/ScatterProgram
-BIN=$ROOT/install/bin
+BIN=/data/home/Eplistical/code/ScatterProgram/install/bin
 SCRATCHDIR=/scratch/Eplistical/${PBS_JOBID}
 
 mkdir -p $SCRATCHDIR
@@ -26,17 +24,10 @@ function runcmd() {
 	mv $SCRATCHDIR/* .
 }
 
-jobname=easy
-nproc=1
 
-<<EOF
-jobtype=prepareinit
-runcmd ${jobname} ${jobtype} ${nproc}
-
-jobtype=surface
-runcmd ${jobname} ${jobtype} ${nproc}
-EOF
-
+jobname=cross_G05
 jobtype=simulation
 nproc=${PBS_NP}
+#nproc=1
 runcmd ${jobname} ${jobtype} ${nproc}
+

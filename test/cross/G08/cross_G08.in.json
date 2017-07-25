@@ -2,7 +2,7 @@
     "rem": {
         "jobname": {
             "value": [
-                "nontrap"
+                "cross_G08"
             ],
             "datatype": "S",
             "datamodel": "s"
@@ -23,7 +23,7 @@
         },
         "gamma0": {
             "value": [
-                "0.03"
+                "0.08"
             ],
             "datatype": "d",
             "datamodel": "s"
@@ -39,24 +39,24 @@
     "grid": {
         "rmin": {
             "value": [
-                "-5",
-                "-15"
+                "-3",
+                "-12"
             ],
             "datatype": "d",
             "datamodel": "v"
         },
         "rmax": {
             "value": [
-                "5",
-                "5"
+                "3",
+                "8"
             ],
             "datatype": "d",
             "datamodel": "v"
         },
         "nr": {
             "value": [
-                "100",
-                "200"
+                "9000",
+                "15000"
             ],
             "datatype": "i",
             "datamodel": "v"
@@ -70,8 +70,8 @@
         },
         "derange": {
             "value": [
-                "3e-5",
-                "3e-6"
+                "3e-6",
+                "3e-5"
             ],
             "datatype": "d",
             "datamodel": "v"
@@ -102,21 +102,21 @@
         },
         "endt": {
             "value": [
-                "5"
+                "500000"
             ],
             "datatype": "d",
             "datamodel": "s"
         },
         "nstep": {
             "value": [
-                "20"
+                "2000000"
             ],
             "datatype": "i",
             "datamodel": "s"
         },
         "anastep": {
             "value": [
-                "1"
+                "10000"
             ],
             "datatype": "i",
             "datamodel": "s"
@@ -161,7 +161,7 @@
         "initpavg": {
             "value": [
                 "0",
-                "80"
+                "20"
             ],
             "datatype": "d",
             "datamodel": "v"
@@ -187,7 +187,7 @@
         "surfmode": {
             "value": [
                 "harmonic",
-                "morse",
+                "fermi",
                 "harmonic",
                 "fermi"
             ],
@@ -202,10 +202,10 @@
                     "0"
                 ],
                 [
-                    "0.011",
-                    "-0.011",
-                    "0.64",
-                    "-3.5"
+                    "0.2",
+                    "0",
+                    "0.67",
+                    "0"
                 ],
                 [
                     "0.896",
@@ -225,7 +225,7 @@
         "gammamode": {
             "value": [
                 "gaussian",
-                "fermi"
+                "gaussian"
             ],
             "datatype": "s",
             "datamodel": "v"
@@ -239,10 +239,10 @@
                     "0"
                 ],
                 [
-                    "2",
+                    "1",
                     "0",
-                    "0.64",
-                    "0"
+                    "0.5",
+                    "-1.6"
                 ]
             ],
             "datatype": "d",

@@ -6,7 +6,7 @@ from .ScatterJson import *
 
 class fefdat(object):
     """class to load & parse .fef.dat data in the scatter program"""
-    def __init__(self, paths):
+    def __init__(self, paths, rawdata=False):
         """init, paths must be a ScatterPath object"""
         assert isinstance(paths, ScatterPath)
         jsondata = ScatterJson(paths.jsondata)
@@ -62,15 +62,16 @@ class fefdat(object):
             self.fBCME = np.fromfile(f, DOUBLE_T, self.dim * Ntot)
 
         ## -- reshape -- ##
-        forceshape = [self.dim] + self.Nr.tolist()
-        forceshape.reverse()
-        efricshape = [self.dim**2] + self.Nr.tolist()
-        efricshape.reverse()
-        fBCMEshape = [self.dim] + self.Nr.tolist()
-        fBCMEshape.reverse()
+        if not rawdata:
+            forceshape = [self.dim] + self.Nr.tolist()
+            forceshape.reverse()
+            efricshape = [self.dim**2] + self.Nr.tolist()
+            efricshape.reverse()
+            fBCMEshape = [self.dim] + self.Nr.tolist()
+            fBCMEshape.reverse()
 
-        self.force = self.force.reshape(forceshape)
-        self.efric = self.efric.reshape(efricshape)
-        self.fBCME = self.fBCME.reshape(fBCMEshape)
+            self.force = self.force.reshape(forceshape)
+            self.efric = self.efric.reshape(efricshape)
+            self.fBCME = self.fBCME.reshape(fBCMEshape)
 
 # END

@@ -38,7 +38,7 @@ def checkinit():
         plt.show()
     else:
         saveto = 'init.png' if not args.save else args.save
-        fig.savefig(args.saveto, dpi=fig.dpi * 2)
+        fig.savefig(saveto, dpi=fig.dpi * 2)
 
 
 if __name__ == '__main__':

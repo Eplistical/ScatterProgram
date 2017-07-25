@@ -1,0 +1,11 @@
+#!/bin/bash
+
+Vlist="20 40 60 80"
+lastv=20
+
+for v in ${Vlist}; do
+    sed -i s/"initpavg\([\t ]\+\)0\([\t ]\+\)${lastv}"/"initpavg\10\2${v}"/ cross.in 
+    bash ../../install/bin/scatter_exe.sh cross.in prepareinit
+    mv cross.init ./init/cross_v${v}.init
+    lastv=${v}
+done

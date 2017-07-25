@@ -25,12 +25,6 @@ def checkfefdat():
     args = parse_args()
     paths = ScatterPath(args.infile)
     fef = fefdat(paths)
-    for k in range(5000, 5500):
-        for l in range(5000, 5500):
-            assert(fef.efric[k,l,:].T == fef.efric[k,l,:]).all() 
-            if k % 50 == 0 and l % 50 == 0:
-                print(fef.efric[k,l,:])
-    adsf
 
     rarr = tuple(np.linspace(a, b, c, endpoint=False)
                     for a, b, c in zip(fef.rmin, fef.rmax, fef.Nr))
