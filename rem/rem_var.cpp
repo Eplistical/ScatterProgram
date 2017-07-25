@@ -12,7 +12,7 @@ STRING_T scatter::rem::infile;
 // job control parameters
 STRING_T scatter::rem::jobname;
 
-// basic parameters for the system(useful both for structure & dynamics)
+// basic parameters for the system(useful both for structure & dynamic)
 UINT_T scatter::rem::dim;
 UINT_T scatter::rem::dim2;
 DOUBLE_T scatter::rem::hbar;

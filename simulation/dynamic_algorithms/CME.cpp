@@ -6,7 +6,7 @@
 #include "simulation.hpp"
 #include "run.hpp"
 #include "evolve.hpp"
-#include "dynamics_mode.hpp"
+#include "dynamic_mode.hpp"
 #include "fermi.hpp"
 using scatter::io::log_handler;
 
@@ -27,7 +27,7 @@ using surfaces::surfnum;
 std::vector<hop_t> scatter::simulation::CME_hop_recorder;
 std::vector<hop_t> scatter::simulation::BCME_hop_recorder;
 
-static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode)
+static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dynamic_mode_enum mode)
 {
 	// deal with hopping & ptclomentum adjustment
 #if _DEBUG >= 4
@@ -67,10 +67,10 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 #endif 
 		DOUBLE_T to_energy = surfaces_obj.fU(hop_to, ptcl.r);
 		// hopping happens
-		if(mode == enumspace::dynamics_mode_enum::CME){
+		if(mode == enumspace::dynamic_mode_enum::CME){
 			CME_hop_recorder.push_back(hop_t(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p));
 		}
-		else if(mode == enumspace::dynamics_mode_enum::BCME){
+		else if(mode == enumspace::dynamic_mode_enum::BCME){
 			BCME_hop_recorder.push_back(hop_t(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p));
 		}
 	}
@@ -81,13 +81,13 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 	return hop_to;
 }
 
-static std::vector<DOUBLE_T> _CME_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
+static std::vector<DOUBLE_T> _CME_get_Force(const particle_t& ptcl, enumspace::dynamic_mode_enum mode) {
 	// calc force on the particle
 #if _DEBUG >= 4
 	log_handler.info_nonewline("Getting force ... ");
 #endif 
 	std::vector<DOUBLE_T> force = surfaces_obj.fF(ptcl.surf, ptcl.r);
-	if(mode == enumspace::dynamics_mode_enum::BCME) {
+	if(mode == enumspace::dynamic_mode_enum::BCME) {
 		force = force + grid_obj.get_fBCME(ptcl.r);
 	}
 	return force;
@@ -96,9 +96,9 @@ static std::vector<DOUBLE_T> _CME_get_Force(const particle_t& ptcl, enumspace::d
 #endif 
 }
 
-static VOID_T _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enum mode) {
+static VOID_T _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamic_mode_enum mode) {
 #if _DEBUG >= 4
-	log_handler.info_nonewline("debug: _CME: dynamic mode is ", enumspace::dynamics_mode_dict.right.at(mode), ". ");
+	log_handler.info_nonewline("debug: _CME: dynamic mode is ", enumspace::dynamic_mode_dict.right.at(mode), ". ");
 #endif
 
  	ptcl.hop( _CME_hopper(ptcl, trajID, mode) );
@@ -111,9 +111,9 @@ static VOID_T _CME(particle_t& ptcl, UINT_T trajID, enumspace::dynamics_mode_enu
 
 // API
 VOID_T scatter::simulation::CME(particle_t& ptcl, UINT_T trajID) {
-	 _CME(ptcl, trajID, enumspace::dynamics_mode_enum::CME);
+	 _CME(ptcl, trajID, enumspace::dynamic_mode_enum::CME);
 }
 
 VOID_T scatter::simulation::BCME(particle_t& ptcl, UINT_T trajID) {
-	 _CME(ptcl, trajID, enumspace::dynamics_mode_enum::BCME);
+	 _CME(ptcl, trajID, enumspace::dynamic_mode_enum::BCME);
 }

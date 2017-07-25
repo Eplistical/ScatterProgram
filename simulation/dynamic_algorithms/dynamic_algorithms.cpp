@@ -3,10 +3,10 @@
 
 using namespace scatter::simulation;
 
-std::unordered_map<enumspace::dynamics_mode_enum, DynamicFunctionPtrType>
+std::unordered_map<enumspace::dynamic_mode_enum, DynamicFunctionPtrType>
 scatter::simulation::dynamic_algorithms
 {
-	{ enumspace::dynamics_mode_enum::CME, &CME },
-	{ enumspace::dynamics_mode_enum::BCME, &BCME },
-	{ enumspace::dynamics_mode_enum::EF, &EF },
+	{ enumspace::dynamic_mode_enum::CME, &CME },
+	{ enumspace::dynamic_mode_enum::BCME, &BCME },
+	{ enumspace::dynamic_mode_enum::EF, &EF },
 };

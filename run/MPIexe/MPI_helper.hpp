@@ -59,9 +59,9 @@ namespace scatter
 
 		for (UINT_T i = 0; i < Nalgorithm; ++i) {
 			if (MPIer::master)
-				tmp = enumspace::dynamics_mode_dict.right.at(simulation::algorithms[i]);
+				tmp = enumspace::dynamic_mode_dict.right.at(simulation::algorithms[i]);
 			MPIer::bcast(0, tmp);
-			simulation::algorithms[i] = enumspace::dynamics_mode_dict.left.at(tmp);
+			simulation::algorithms[i] = enumspace::dynamic_mode_dict.left.at(tmp);
 		}
 	}
 };

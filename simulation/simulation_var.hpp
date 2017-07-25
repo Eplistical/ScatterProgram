@@ -6,7 +6,7 @@
 #include <vector>
 #include "json_toolkit.hpp"
 #include "initmode.hpp"
-#include "dynamic_algorithms/dynamics_mode.hpp"
+#include "dynamic_algorithms/dynamic_mode.hpp"
 
 namespace scatter{
 	namespace simulation{
@@ -18,7 +18,7 @@ namespace scatter{
 		extern DOUBLE_T EndT;
 		extern DOUBLE_T dt;
 		extern UINT_T Anastep;
-		extern std::vector<enumspace::dynamics_mode_enum> algorithms;
+		extern std::vector<enumspace::dynamic_mode_enum> algorithms;
 
 		// for init state
 		extern DOUBLE_T inittemp;

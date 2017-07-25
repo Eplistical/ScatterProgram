@@ -11,7 +11,7 @@ using scatter::io::out_handler;
 // variables in scatter::simulation
 namespace NS = scatter::simulation;
 using enumspace::initmode_enum;
-using enumspace::dynamics_mode_enum;
+using enumspace::dynamic_mode_enum;
 
 std::vector<DOUBLE_T> NS::mass;
 std::vector<DOUBLE_T> NS::omega;
@@ -20,7 +20,7 @@ UINT_T NS::Nstep;
 DOUBLE_T NS::EndT;
 DOUBLE_T NS::dt;
 UINT_T NS::Anastep;
-std::vector<dynamics_mode_enum> NS::algorithms;
+std::vector<dynamic_mode_enum> NS::algorithms;
 
 // for init state
 DOUBLE_T NS::inittemp;
@@ -64,7 +64,7 @@ VOID_T scatter::simulation::load_var(const rapidjson::Document& doc){
 		("vibstate", vibstate)
 		("elestate", elestate)
 		("initmode", initmode, enumspace::initmode_dict)
-		("algorithms", algorithms, enumspace::dynamics_mode_dict)
+		("algorithms", algorithms, enumspace::dynamic_mode_dict)
 		;
 	dt = EndT / Nstep;
 	// init omega
@@ -90,7 +90,7 @@ VOID_T scatter::simulation::print_var(VOID_T){
 		("vibstate", vibstate)
 		("elestate", elestate)
 		("initmode", enumspace::mode_to_string(initmode, enumspace::initmode_dict))
-		("algorithms", enumspace::mode_to_string(algorithms, enumspace::dynamics_mode_dict))
+		("algorithms", enumspace::mode_to_string(algorithms, enumspace::dynamic_mode_dict))
 		;
 	out_handler.drawline('-');
 }

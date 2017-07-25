@@ -25,9 +25,9 @@ using simulation::dynamic_algorithms;
 
 // type for info recorder
 template<typename ParamType>
-	using InfoRecoderType = unordered_map<enumspace::dynamics_mode_enum, vector<ParamType> >;
+	using InfoRecoderType = unordered_map<enumspace::dynamic_mode_enum, vector<ParamType> >;
 
-using ParticleCollectionType = unordered_map<enumspace::dynamics_mode_enum, particle_t>;
+using ParticleCollectionType = unordered_map<enumspace::dynamic_mode_enum, particle_t>;
 
 VOID_T run_simulation(VOID_T)
 {
@@ -192,7 +192,7 @@ VOID_T run_simulation(VOID_T)
 					std::cout 
 						<< "thread " << MPIer::rank 
 						<< ": catched ScatterError on traj " << index 
-						<< " with algorithm " << enumspace::dynamics_mode_dict.right.at(it)
+						<< " with algorithm " << enumspace::dynamic_mode_dict.right.at(it)
 						<< ".\nerrmsg:"
 						<< e.what() 
 						<< "\n";

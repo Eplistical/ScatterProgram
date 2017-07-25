@@ -9,7 +9,7 @@
 #include "rem.hpp"
 #include "simulation.hpp"
 #include "evolve.hpp"
-#include "dynamics_mode.hpp"
+#include "dynamic_mode.hpp"
 #include "run.hpp"
 
 using scatter::grid_obj;
@@ -22,7 +22,7 @@ using simulation::mass;
 using simulation::dt;
 using simulation::velocity_verlet;
 
-static std::vector<DOUBLE_T> _EF_get_Force(const particle_t& ptcl, enumspace::dynamics_mode_enum mode) 
+static std::vector<DOUBLE_T> _EF_get_Force(const particle_t& ptcl, enumspace::dynamic_mode_enum mode) 
 {
     // force
     std::vector<DOUBLE_T>&& force = grid_obj.get_force(ptcl.r);
@@ -31,7 +31,7 @@ static std::vector<DOUBLE_T> _EF_get_Force(const particle_t& ptcl, enumspace::dy
     return force - efric_p / mass + ptcl.ranforce;
 }
 
-static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mode)
+static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamic_mode_enum mode)
 {
     std::vector<DOUBLE_T>&& force = grid_obj.get_force(ptcl.r);
     std::vector<DOUBLE_T>&& efric = grid_obj.get_efric(ptcl.r);
@@ -67,12 +67,12 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamics_mode_enum mod
     ptcl.ranforce =  matrixop::matvec(evt, eva);
 }
 
-static VOID_T _EF(particle_t& ptcl, enumspace::dynamics_mode_enum mode) {
+static VOID_T _EF(particle_t& ptcl, enumspace::dynamic_mode_enum mode) {
     _EF_get_Ranforce(ptcl, mode);
     velocity_verlet(ptcl, mode, _EF_get_Force);
 }
 
 // API
 VOID_T scatter::simulation::EF(particle_t& ptcl, UINT_T trajID) {
-	_EF(ptcl, enumspace::dynamics_mode_enum::EF);
+	_EF(ptcl, enumspace::dynamic_mode_enum::EF);
 }

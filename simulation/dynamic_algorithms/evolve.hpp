@@ -7,9 +7,9 @@
 
 namespace scatter{
 	namespace simulation{
-		using forcefunc_t = std::vector<DOUBLE_T> (&)(const particle_t&, enumspace::dynamics_mode_enum);
+		using forcefunc_t = std::vector<DOUBLE_T> (&)(const particle_t&, enumspace::dynamic_mode_enum);
 
-		VOID_T velocity_verlet( particle_t& ptcl, enumspace::dynamics_mode_enum mode, forcefunc_t forcefunc );
+		VOID_T velocity_verlet( particle_t& ptcl, enumspace::dynamic_mode_enum mode, forcefunc_t forcefunc );
 	};
 };
 
