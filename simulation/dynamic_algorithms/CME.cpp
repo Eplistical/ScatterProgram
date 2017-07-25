@@ -73,7 +73,7 @@ static UINT_T _CME_hopper(const particle_t& ptcl, UINT_T trajID, enumspace::dyna
 #endif 
 
 		DOUBLE_T to_energy = surfaces_obj.fU(hop_to, ptcl.r);
-		hop_recorder[mode].emplace_back(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p);
+		hop_recorder.at(mode).emplace_back(trajID, hop_from, hop_to, to_energy - from_energy, gamma, ptcl.r, ptcl.p);
 	}
 
 #if _DEBUG >= 4
