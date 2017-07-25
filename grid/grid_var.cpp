@@ -8,6 +8,8 @@ using scatter::io::out_handler;
 
 std::vector<DOUBLE_T> scatter::grid::rmin;
 std::vector<DOUBLE_T> scatter::grid::rmax;
+std::vector<DOUBLE_T> scatter::grid::boundary_rmin;
+std::vector<DOUBLE_T> scatter::grid::boundary_rmax;
 std::vector<UINT_T> scatter::grid::Nr;
 
 // fef related
@@ -22,6 +24,8 @@ VOID_T scatter::grid::load_var(const rapidjson::Document& doc){
 	load_param(doc, "grid")
 		("rmin", rmin)
 		("rmax", rmax)
+		("boundary_rmin", boundary_rmin)
+		("boundary_rmax", boundary_rmax)
 		("Nr", Nr)
 		("bandwidth", bandwidth)
 		("derange", derange)
@@ -38,6 +42,8 @@ VOID_T scatter::grid::print_var(VOID_T){
 	out_handler.keyval()
 		("rmin", rmin)
 		("rmax", rmax)
+		("boundary_rmin", boundary_rmin)
+		("boundary_rmax", boundary_rmax)
 		("Nr", Nr)
 		("bandwidth", bandwidth)
 		("derange", derange)

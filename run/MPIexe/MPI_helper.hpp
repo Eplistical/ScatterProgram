@@ -19,7 +19,7 @@ namespace scatter
 		// broadcast rem para
 		MPIer::bcast(0, rem::jobname, rem::dim, rem::dim2, rem::hbar, rem::kT, rem::Gamma0);
 		// broadcast grid para
-		MPIer::bcast(0, grid::rmin, grid::rmax, grid::Nr, grid::bandwidth, grid::derange, grid::gamma_cutoff);
+		MPIer::bcast(0, grid::rmin, grid::rmax, grid::boundary_rmin, grid::boundary_rmax, grid::Nr, grid::bandwidth, grid::derange, grid::gamma_cutoff);
 		// broadcast surfaces para
 		MPIer::bcast(0, surfaces::surfnum);
 

@@ -25,7 +25,7 @@ def adhoc():
     args = parse_args()
     paths = ScatterPath(args.infile)
     fef = fefdat(paths, rawdata=True)
-    Gamma=8e-2
+    Gamma=5e-2
     data = np.array([
        2.00000000e+00,   1.00000000e+00,   2.00000000e-01,  -6.70000000e-01,
        0.00000000e+00,   1.00000000e+00,   2.00000000e-01,   6.70000000e-01,

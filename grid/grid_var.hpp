@@ -9,6 +9,8 @@ namespace scatter{
     namespace grid{
 		extern std::vector<DOUBLE_T> rmin;
 		extern std::vector<DOUBLE_T> rmax;
+		extern std::vector<DOUBLE_T> boundary_rmin;
+		extern std::vector<DOUBLE_T> boundary_rmax;
 		extern std::vector<UINT_T> Nr;
 
 		// fef related 
