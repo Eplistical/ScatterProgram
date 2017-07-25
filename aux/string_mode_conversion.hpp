@@ -20,8 +20,8 @@ namespace enumspace{
 	}
 
 	template<typename ParamType>
-	std::vector<std::vector<ParamType>> string_to_mode(const std::vector<std::vector<std::string>>& key, const boost::bimap<std::string, ParamType>& Dict){
-		std::vector<std::vector<ParamType>> rst;
+	std::vector< std::vector<ParamType> > string_to_mode(const std::vector< std::vector<std::string> >& key, const boost::bimap<std::string, ParamType>& Dict){
+		std::vector< std::vector<ParamType> > rst;
 		for(size_t ivec = 0, Nvec = key.size(); ivec < Nvec; ++ivec){
 			rst.push_back(std::vector<ParamType>());
 			for(size_t j = 0, N = key.at(ivec).size(); j < N; ++j){
@@ -45,8 +45,8 @@ namespace enumspace{
 	}
 
 	template<typename ParamType>
-	std::vector<std::vector<std::string>> mode_to_string(const std::vector<std::vector<ParamType>>& mode, const boost::bimap<std::string, ParamType>& Dict){
-		std::vector<std::vector<std::string>> rst;
+	std::vector< std::vector<std::string> > mode_to_string(const std::vector< std::vector<ParamType> >& mode, const boost::bimap<std::string, ParamType>& Dict){
+		std::vector< std::vector<std::string> > rst;
 		/*
 		for(size_t ivec = 0, Nvec = mode.size(); ivec < Nvec; ++ivec){
 			rst.push_back(std::vector<std::string>());

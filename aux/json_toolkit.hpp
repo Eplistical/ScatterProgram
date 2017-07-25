@@ -108,7 +108,7 @@ namespace json{
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
-				std::vector<std::vector<ParamType> > rst;
+				std::vector< std::vector<ParamType> > rst;
 				for(size_t ivec = 0, Nvec = data.Size(); ivec < Nvec; ++ivec){
 					rst.push_back(std::vector<ParamType>());
 					for (size_t j = 0, N = data[ivec].Size(); j < N; ++j){
@@ -128,7 +128,7 @@ namespace json{
 				const char* tag = lower(key).c_str();
 				const auto& data = Obj[tag]["value"];
 				std::string tmpstr;
-				std::vector<std::vector<ParamType> > rst;
+				std::vector< std::vector<ParamType> > rst;
 				for(size_t ivec = 0, Nvec = data.Size(); ivec < Nvec; ++ivec){
 					rst.push_back(std::vector<ParamType>());
 					for (size_t j = 0, N = data[ivec].Size(); j < N; j++){
@@ -136,7 +136,7 @@ namespace json{
 						rst[ivec].push_back(Dict.left.at(tmpstr));
 					}
 				}
-				const_cast<std::vector<std::vector<ParamType> >&>(param) = rst;
+				const_cast< std::vector< std::vector<ParamType> >& >(param) = rst;
 				return *this;
 			}
 	};
