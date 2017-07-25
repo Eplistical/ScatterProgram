@@ -185,7 +185,7 @@ VOID_T run_simulation(VOID_T)
 				}
 				// evolve
 				try {
-					if (grid_obj.is_in_boundary(ptcl[it].r)) { 
+					if (!grid_obj.is_leaving_boundary(ptcl[it].r, ptcl[it].p)) { 
 						(*dynamic_algorithms[it])(ptcl[it], index);
 					}
 				} catch (const scatter::ScatterError& e) {

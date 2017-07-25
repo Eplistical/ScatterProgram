@@ -1,17 +1,9 @@
-#include "types.hpp"
-#ifdef _DEBUG
-#include "debugtools.hpp"
-#endif
-
 #include <sstream>
 #include "scatter_exceptions.hpp"
 #include "vector.hpp"
-#include "rem.hpp"
 #include "grid_t.hpp"
 
 using namespace scatter;
-using scatter::rem::dim;
-using scatter::rem::dim2;
 // constructor
 grid_t::grid_t( const std::vector<DOUBLE_T>& rmin, 
 				const std::vector<DOUBLE_T>& rmax, 
@@ -26,9 +18,11 @@ grid_t::grid_t( const std::vector<DOUBLE_T>& rmin,
 {
 	const UINT_T Ntot = get_Ntot();
 	_dr = (_rmax - _rmin) / _Nr;
-	_forcelen = dim * Ntot;
-	_efriclen = dim2 * Ntot;
-	_fBCMElen = dim * Ntot;
+	_dim = _Nr.size();
+	_dim2 = _dim * _dim;
+	_forcelen = _dim * Ntot;
+	_efriclen = _dim2 * Ntot;
+	_fBCMElen = _dim * Ntot;
 	_forceoffset = 0;
 	_efricoffset = _forcelen;
 	_fBCMEoffset = _forcelen + _efriclen;
@@ -155,42 +149,74 @@ DOUBLE_T* grid_t::set_fef_data_ptr(VOID_T) const noexcept
 
 std::vector<DOUBLE_T> grid_t::get_force(const std::vector<DOUBLE_T>& r) const
 {
-	const UINT_T begin = r_to_index(r) * dim;
+	const UINT_T begin = r_to_index(r) * _dim;
 	if (_fef_data_ptr != nullptr) {
-		return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + dim);
+		return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + _dim);
 	}
 	else {
-		return std::vector<DOUBLE_T>(_fef.begin() + begin, _fef.begin() + begin + dim);
+		return std::vector<DOUBLE_T>(_fef.begin() + begin, _fef.begin() + begin + _dim);
 	}
 }
 
 std::vector<DOUBLE_T> grid_t::get_efric(const std::vector<DOUBLE_T>& r) const
 {
-	const UINT_T begin = _efricoffset + r_to_index(r) * dim2;
+	const UINT_T begin = _efricoffset + r_to_index(r) * _dim2;
 	if (_fef_data_ptr != nullptr) {
-		return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + dim2);
+		return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + _dim2);
 	}
 	else {
-		return std::vector<DOUBLE_T>(_fef.begin() + begin, _fef.begin() + begin + dim2);
+		return std::vector<DOUBLE_T>(_fef.begin() + begin, _fef.begin() + begin + _dim2);
 	}
 }
 
 std::vector<DOUBLE_T> grid_t::get_fBCME(const std::vector<DOUBLE_T>& r) const
 {
-	const UINT_T begin = _fBCMEoffset + r_to_index(r) * dim;
+	const UINT_T begin = _fBCMEoffset + r_to_index(r) * _dim;
 	if (_fef_data_ptr != nullptr) {
-		return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + dim);
+		return std::vector<DOUBLE_T>(_fef_data_ptr + begin, _fef_data_ptr + begin + _dim);
 	}
 	else {
-		return std::vector<DOUBLE_T>(_fef.begin() + begin, _fef.begin() + begin + dim);
+		return std::vector<DOUBLE_T>(_fef.begin() + begin, _fef.begin() + begin + _dim);
 	}
+}
+
+BOOL_T grid_t::is_in_boundary(const std::vector<DOUBLE_T>& r, UINT_T d) const
+{
+	return r.at(d) > _boundary_rmin.at(d) and r.at(d) < _boundary_rmax.at(d);
 }
 
 BOOL_T grid_t::is_in_boundary(const std::vector<DOUBLE_T>& r) const
 {
-	for (UINT_T d = 0; d < rem::dim; ++d) {
-		if (r.at(d) < _boundary_rmin.at(d) or r.at(d) > _boundary_rmax.at(d)) return false; 
-	} 
+	for (UINT_T d = 0; d < _dim; ++d) 
+		if (!is_in_boundary(r, d)) return false;
+	return true;
+}
+
+BOOL_T grid_t::is_leaving_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p, UINT_T d) const
+{
+	if (r.at(d) <= _boundary_rmin.at(d) and p.at(d) <= 0) return true; 
+	if (r.at(d) >= _boundary_rmax.at(d) and p.at(d) >= 0) return true; 
+	return false;
+}
+
+BOOL_T grid_t::is_leaving_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p) const
+{
+	for (UINT_T d = 0; d < _dim; ++d) 
+		if (!is_leaving_boundary(r, p, d)) return false;
+	return true;
+}
+
+BOOL_T grid_t::is_entering_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p, UINT_T d) const
+{
+	if (r.at(d) <= _boundary_rmin.at(d) and p.at(d) >= 0) return true; 
+	if (r.at(d) >= _boundary_rmax.at(d) and p.at(d) <= 0) return true; 
+	return false;
+}
+
+BOOL_T grid_t::is_entering_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p) const
+{
+	for (UINT_T d = 0; d < _dim; ++d) 
+		if (!is_entering_boundary(r, p, d)) return false;
 	return true;
 }
 
@@ -201,7 +227,7 @@ UINT_T grid_t::r_to_index_raw(const std::vector<DOUBLE_T>& r) const
 	UINT_T rst = 0;
 	INT_T coef = 1;
 	INT_T d_index;
-	for (UINT_T d = 0; d < rem::dim; ++d) {
+	for (UINT_T d = 0; d < _dim; ++d) {
 		d_index = static_cast<INT_T>((r.at(d) - _rmin.at(d)) / _dr.at(d) + 0.5);
 		// throw if out of range
 		if (d_index >= _Nr.at(d) or d_index < 0) {
@@ -230,9 +256,9 @@ UINT_T grid_t::r_to_index(const std::vector<DOUBLE_T>& r) const
 std::vector<DOUBLE_T> grid_t::index_to_r_raw(UINT_T index) const
 {
 	UINT_T coef = get_Ntot();
-	std::vector<DOUBLE_T> rst(rem::dim);
+	std::vector<DOUBLE_T> rst(_dim);
 	INT_T d_index;
-	for (INT_T d = rem::dim - 1; d >= 0; --d) {
+	for (INT_T d = _dim - 1; d >= 0; --d) {
 		coef /= _Nr.at(d);
 		d_index = static_cast<INT_T>(index / coef + 0.5);
 		// throw if out of range

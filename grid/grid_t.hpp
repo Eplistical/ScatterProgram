@@ -8,6 +8,8 @@ namespace scatter{
 	class grid_t{
 		protected:
 			// data 
+			UINT_T _dim;
+			UINT_T _dim2;
 			std::vector<DOUBLE_T> _rmin;
 			std::vector<DOUBLE_T> _rmax;
 			std::vector<DOUBLE_T> _boundary_rmin;
@@ -67,7 +69,14 @@ namespace scatter{
 			std::vector<DOUBLE_T> get_force(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_efric(const std::vector<DOUBLE_T>& r) const;
 			std::vector<DOUBLE_T> get_fBCME(const std::vector<DOUBLE_T>& r) const;
+
+			// -- relation to then boundary -- //
+			BOOL_T is_in_boundary(const std::vector<DOUBLE_T>& r, UINT_T d) const;
 			BOOL_T is_in_boundary(const std::vector<DOUBLE_T>& r) const;
+			BOOL_T is_leaving_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p, UINT_T d) const;
+			BOOL_T is_leaving_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p) const;
+			BOOL_T is_entering_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p, UINT_T d) const;
+			BOOL_T is_entering_boundary(const std::vector<DOUBLE_T>& r, const std::vector<DOUBLE_T>& p) const;
 
 			// -- conversion between r & index -- //
 			UINT_T r_to_index_raw(const std::vector<DOUBLE_T>& r) const;
