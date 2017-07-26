@@ -60,7 +60,7 @@ std::vector<DOUBLE_T> scatter::extract_info(const particle_t& ptcl)
 	return rst;
 }
 
-std::vector<DOUBLE_T> extract_info(const hop_t& hop)
+std::vector<DOUBLE_T> scatter::extract_info(const hop_t& hop)
 {
 	std::vector<DOUBLE_T> rst;
 
@@ -73,6 +73,21 @@ std::vector<DOUBLE_T> extract_info(const hop_t& hop)
 	rst.insert(rst.end(), hop.p.begin(), hop.p.end());
 	rst.push_back(hop.gamma);
 	rst.push_back(hop.energy_gap);
+
+	return rst;
+}
+
+std::vector<DOUBLE_T> scatter::extract_info(const std::vector<hop_t>& hops)
+{
+	std::vector<DOUBLE_T> tmp;
+	std::vector<DOUBLE_T> rst;
+	for (const auto& hop : hops) {
+		tmp = extract_info(hop);
+		rst.insert(rst.end(),
+					std::make_move_iterator(tmp.begin()),
+					std::make_move_iterator(tmp.end())
+					);
+	}
 
 	return rst;
 }

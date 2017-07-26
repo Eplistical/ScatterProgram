@@ -23,6 +23,8 @@ using namespace scatter;
 using simulation::algorithms;
 using simulation::dynamic_algorithms;
 using simulation::particle_t;
+using simulation::hop_t;
+using simulation::hop_recorder;
 
 // type for info recorder
 template<typename ParamType>
@@ -218,12 +220,16 @@ VOID_T run_simulation(VOID_T)
 
 	vector<UINT_T> mybatch_buf; 
 	vector<DOUBLE_T> dyn_buf; 
+	vector<DOUBLE_T> hop_buf;
 
 	for (UINT_T r = 1; r < MPIer::size; ++r) {
 		if (MPIer::rank == r) {
 			MPIer::send(0, mybatch);
 			for (const auto& it : algorithms) {
 				MPIer::send(0, dyn[it]);
+				if (hop_recorder.find(it) != hop_recorder.end()) {
+					
+				}
 			}
 		}
 		else if (MPIer::master) {
@@ -281,8 +287,8 @@ VOID_T run_simulation(VOID_T)
 		std::vector<UINT_T> Nhops;
 		UINT_T Nalgorithm = algorithms.size();
 		for (const auto& it : algorithms) {
-			if (simulation::hop_recorder.find(it) != simulation::hop_recorder.end()) {
-				Nhops.push_back(simulation::hop_recorder.at(it).size());
+			if (hop_recorder.find(it) != hop_recorder.end()) {
+				Nhops.push_back(hop_recorder.at(it).size());
 			}
 			else {
 				Nhops.push_back(0);
@@ -295,7 +301,7 @@ VOID_T run_simulation(VOID_T)
 							Nhops
 							);
 		for (const auto& it : algorithms) {
-			if (simulation::hop_recorder.find(it) != simulation::hop_recorder.end()) {
+			if (hop_recorder.find(it) != hop_recorder.end()) {
 				// NOT FINISHED YET
 			}
 		}
