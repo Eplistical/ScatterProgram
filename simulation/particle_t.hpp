@@ -4,9 +4,10 @@
 #include "scatter_basic.hpp"
 #include "vector.hpp"
 
-namespace scatter{
-	class particle_t{
-		public:
+namespace scatter {
+	namespace simulation {
+		struct particle_t
+		{
 			std::vector<DOUBLE_T> r;
 			std::vector<DOUBLE_T> p;
 			std::vector<DOUBLE_T> ranforce;
@@ -21,7 +22,7 @@ namespace scatter{
 
 			// setter
 			VOID_T hop(UINT_T s) noexcept {surf = s;}
+		};
 	};
 };
-
 #endif

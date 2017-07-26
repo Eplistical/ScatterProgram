@@ -7,7 +7,8 @@
 #include "simulation.hpp"
 
 namespace scatter{
-	std::vector<DOUBLE_T> extract_info(const particle_t& ptcl);
+	std::vector<DOUBLE_T> extract_info(const simulation::particle_t& ptcl);
+	std::vector<DOUBLE_T> extract_info(const simulation::hop_t& hop);
 };
 
 #endif

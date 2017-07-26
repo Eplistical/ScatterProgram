@@ -3,7 +3,6 @@
 // basic headers for scatter
 
 #include "types.hpp"
-
 #include "scatter_exceptions.hpp"
 
 #endif

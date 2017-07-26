@@ -10,8 +10,10 @@
 #include "anal.hpp"
 
 using namespace scatter;
+using scatter::simulation::particle_t;
+using scatter::simulation::hop_t;
 
-static std::vector<DOUBLE_T> _get_Ep(const particle_t ptcl) 
+static std::vector<DOUBLE_T> _get_Ep(const particle_t& ptcl) 
 {
 	std::vector<DOUBLE_T> rst(rem::dim);
 	for (UINT_T d = 0; d < rem::dim; ++d) {
@@ -20,7 +22,7 @@ static std::vector<DOUBLE_T> _get_Ep(const particle_t ptcl)
 	return rst;
 }
 
-static std::vector<DOUBLE_T> _get_Ek(const particle_t ptcl) 
+static std::vector<DOUBLE_T> _get_Ek(const particle_t& ptcl) 
 {
 	std::vector<DOUBLE_T> rst(rem::dim);
 	for (UINT_T d = 0; d < rem::dim; ++d) {
@@ -35,8 +37,6 @@ std::vector<DOUBLE_T> scatter::extract_info(const particle_t& ptcl)
 {
 	std::vector<DOUBLE_T> rst;
 
-	std::vector<DOUBLE_T> r = ptcl.r;
-	std::vector<DOUBLE_T> p = ptcl.p;
 	std::vector<DOUBLE_T>&& Ek = _get_Ek(ptcl);
 	std::vector<DOUBLE_T>&& Ep = _get_Ep(ptcl);
 
@@ -44,15 +44,8 @@ std::vector<DOUBLE_T> scatter::extract_info(const particle_t& ptcl)
 
 	rst.push_back(static_cast<DOUBLE_T>(ptcl.surf));
 
-	rst.insert(rst.end(), 
-				std::make_move_iterator(r.begin()), 
-				std::make_move_iterator(r.end())
-				);
-
-	rst.insert(rst.end(),
-				std::make_move_iterator(r.begin()), 
-				std::make_move_iterator(r.end())
-				);
+	rst.insert(rst.end(), ptcl.r.begin(), ptcl.r.end()); 
+	rst.insert(rst.end(), ptcl.p.begin(), ptcl.p.end()); 
 
 	rst.insert(rst.end(),
 				std::make_move_iterator(Ep.begin()), 
@@ -63,6 +56,23 @@ std::vector<DOUBLE_T> scatter::extract_info(const particle_t& ptcl)
 				std::make_move_iterator(Ek.begin()), 
 				std::make_move_iterator(Ek.end())
 				);
+
+	return rst;
+}
+
+std::vector<DOUBLE_T> extract_info(const hop_t& hop)
+{
+	std::vector<DOUBLE_T> rst;
+
+	// rst: (traj_ID, from, to, r, p, gamma, energy_gap) 
+	// 	[all cast to DOUBLE_T]
+	rst.push_back(static_cast<DOUBLE_T>(hop.id));
+	rst.push_back(static_cast<DOUBLE_T>(hop.from));
+	rst.push_back(static_cast<DOUBLE_T>(hop.to));
+	rst.insert(rst.end(), hop.r.begin(), hop.r.end());
+	rst.insert(rst.end(), hop.p.begin(), hop.p.end());
+	rst.push_back(hop.gamma);
+	rst.push_back(hop.energy_gap);
 
 	return rst;
 }

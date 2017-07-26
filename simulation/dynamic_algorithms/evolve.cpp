@@ -4,8 +4,9 @@
 #include "simulation.hpp"
 #include "evolve.hpp"
 
-using namespace scatter::simulation;
-using scatter::particle_t;
+using scatter::simulation::particle_t;
+using scatter::simulation::mass;
+using scatter::simulation::dt;
 
 // API
 VOID_T scatter::simulation::velocity_verlet(particle_t& ptcl, enumspace::dynamic_mode_enum mode, forcefunc_t forcefunc){

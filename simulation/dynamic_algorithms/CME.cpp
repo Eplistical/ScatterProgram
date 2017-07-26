@@ -21,6 +21,7 @@ using rem::Gamma0;
 using rem::dim;
 
 using simulation::dt;
+using simulation::particle_t;
 using surfaces::surfnum;
 
 // hopper counter for CME & BCME

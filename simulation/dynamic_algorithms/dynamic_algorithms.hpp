@@ -2,7 +2,6 @@
 #define _SCATTER_DYNAMIC_ALGORITHMS_HPP
 // module for dynamic algorithms
 #include "scatter_basic.hpp"
-
 #include <unordered_map>
 #include "dynamic_mode.hpp"
 #include "evolve.hpp"

@@ -18,6 +18,7 @@ using namespace scatter;
 using rem::dim;
 using rem::kT;
 
+using simulation::particle_t;
 using simulation::mass;
 using simulation::dt;
 using simulation::velocity_verlet;
