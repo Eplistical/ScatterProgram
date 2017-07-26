@@ -4,6 +4,7 @@
 
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <unordered_map>
 #include "ioer_macros.hpp"
@@ -56,9 +57,10 @@ namespace ioer
 					if (path_exist(path))
 						return;
 					_fpdict[path] = fstream(path, mode);
-					if(not _fpdict.at(path).is_open()){
-						throw FileNotOpenedError
-							("Unable to open file " + path);
+					if (not _fpdict.at(path).is_open()){
+						ostringstream errmsg;
+						errmsg << "ioer::io_base_t::open : Unable to open file " << path << ".";
+						throw FileNotOpenedError(errmsg.str());
 					}
 				}
 			}
@@ -81,20 +83,21 @@ namespace ioer
 			}
 
 			// access to ostream object
-			iostream& operator[](const string& path)
+			iostream& operator[](const string& path) 
 			{
 				return static_cast<iostream&>
-					( (is_stdio(path)?cout:_fpdict[path]) );
+					( (is_stdio(path) ? cout : _fpdict[path]) );
 			}
 
 			iostream& at(const string& path)
 			{
 				try {
 					return static_cast<iostream&>
-						( (is_stdio(path)?cout:_fpdict.at(path)) );
+						( (is_stdio(path) ? cout : _fpdict.at(path)) );
 				} catch(const out_of_range& e) {
-					throw FileNotOpenedError 
-						("at: file not opened");
+					ostringstream errmsg;
+					errmsg << "ioer::io_base_t::at : " << path << " not opened.";
+					throw FileNotOpenedError(errmsg.str());
 				}
 			}
 	};

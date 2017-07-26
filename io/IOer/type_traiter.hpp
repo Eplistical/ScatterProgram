@@ -63,10 +63,10 @@ namespace type_traiter
 	struct is_c_string<T> 
 	{
 		// char*
-		static constexpr bool value = is_same<char*, typename remove_cv<T>::type>::value;
+		static constexpr bool value = is_same<char*, typename remove_cv<T>::type>::value ||
+                                        is_same<const char*, typename remove_cv<T>::type>::value;
 		static constexpr size_t size = 0;
 	};
-
 
 	// -- is_complex -- //
 	template<typename T, typename ... Types>
@@ -103,8 +103,7 @@ namespace type_traiter
 				|| is_string<T>::value
 				|| is_c_string<T>::value
 				|| is_complex<T>::value
-				|| is_same<char*, typename remove_cv<T>::type>::value
-				|| is_same<const char*, typename remove_cv<T>::type>::value;
+				|| is_same<char*, typename remove_cv<T>::type>::value;
 		};
 
 	// -- is_deque -- //

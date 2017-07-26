@@ -6,6 +6,7 @@
  */
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 #include <vector>
 #include "type_traiter.hpp"
 #include "ioer_macros.hpp"
@@ -28,6 +29,7 @@ namespace ioer
 			bool _keyfirst;
 			bool _nonewline;
 			bool _flush;
+
 		public:
 			explicit _pair_output_functor_t(const string& path, const string& dlm, size_t width, bool keyfirst, bool nonewline, bool flush) 
 				: _path(path), _dlm(dlm), _width(width), _keyfirst(keyfirst), _nonewline(nonewline), _flush(flush) {  }
@@ -42,7 +44,7 @@ namespace ioer
 			_pair_output_functor_t& operator=(const _pair_output_functor_t&) = delete;
 
 			// setter
-			void config(const string& path, const string& dlm, size_t width, bool keyfirst, bool nonewline, bool flush) 
+			void config(const string& path, const string& dlm, size_t width, bool keyfirst, bool nonewline, bool flush) noexcept
 			{
 				_path = path;
 				_dlm = dlm;
@@ -57,12 +59,13 @@ namespace ioer
 				typename enable_if< is_direct_outputable< ValType >::value, const _pair_output_functor_t&>::type
 				operator()(const KeyType& key, const ValType& val) const
 				{
-					if(_keyfirst) 
-						io_base_obj[_path] << setw(_width) << key << _dlm << setw(_width) << val;
+					iostream& dest = io_base_obj.at(_path);
+					if (_keyfirst) 
+						dest << setw(_width) << key << _dlm << setw(_width) << val;
 					else 
-						io_base_obj[_path] <<  setw(_width) << val << _dlm << setw(_width) << key;
-					if(!_nonewline) io_base_obj[_path] <<  "\n";
-					if (_flush) io_base_obj[_path] << flush;
+						dest <<  setw(_width) << val << _dlm << setw(_width) << key;
+					if (!_nonewline) dest <<  "\n";
+					if (_flush) dest << flush;
 					return *this;
 				}
 
@@ -70,16 +73,17 @@ namespace ioer
 				typename enable_if< is_sequence_container<ValType>::value, const _pair_output_functor_t& >::type
 				operator()(const KeyType& key, const ValType& val) const
 				{
+					iostream& dest = io_base_obj.at(_path);
 					if(_keyfirst) {
-						io_base_obj[_path] <<  setw(_width) << key << _dlm;
-						for(auto& it : val) io_base_obj[_path] <<  setw(_width) << it;
+						dest <<  setw(_width) << key << _dlm;
+						for(auto& it : val) dest <<  setw(_width) << it;
 					}
 					else{
-						for(auto& it : val) io_base_obj[_path] <<  setw(_width) << it;
-						io_base_obj[_path] <<  _dlm << setw(_width) << key ;
+						for(auto& it : val) dest <<  setw(_width) << it;
+						dest <<  _dlm << setw(_width) << key ;
 					}
-					if(!_nonewline) io_base_obj[_path] <<  "\n";
-					if (_flush) io_base_obj[_path] << flush;
+					if(!_nonewline) dest <<  "\n";
+					if (_flush) dest << flush;
 					return *this;
 				}
 	}; // class _pair_output_functor_t
@@ -100,7 +104,7 @@ namespace ioer
 			explicit output_t(const string& path = STDIO_PATH, ios::openmode mode = ios::out)
 				: 	_path(path), _pair_output_functor_obj(STDIO_PATH, _dlm, _width, true, false, false)
 			{ 
-				io_base_obj.open(path, mode | ios::out);
+				open(path, mode | ios::out);
 			}
 
 			virtual ~output_t() = default;
@@ -114,33 +118,33 @@ namespace ioer
 			output_t& operator=(const output_t&) = delete;
 			
 			// getter
-			size_t width(void)
+			size_t width(void) const noexcept
 			{
 				return _width; 
 			}
 
-			string dlm(void) 
+			string dlm(void) const noexcept
 			{
 				return _dlm; 
 			}
 
-			bool is_flush(void) 
+			bool is_flush(void) const noexcept
 			{
 				return _flush; 
 			}
 
 			// setter
-			void set_width(size_t width) 
+			void set_width(size_t width) noexcept
 			{
 				_width = width; 
 			}
 
-			void set_dlm(const string& dlm) 
+			void set_dlm(const string& dlm) noexcept
 			{
 				_dlm = dlm; 
 			}
 
-			void set_flush(bool flush) 
+			void set_flush(bool flush) noexcept
 			{
 				_flush = flush; 
 			}
@@ -152,7 +156,7 @@ namespace ioer
 				_path = path;
 			}
 
-			void close(void) 
+			void close(void) noexcept
 			{
 				io_base_obj.close(_path);
 				_path = ioer::STDIO_PATH;
@@ -315,7 +319,6 @@ namespace ioer
 				void _write(const ParamType& x, const Types& ... otherx) 
 				{
 					_write(x);
-					if (_flush) io_base_obj.at(_path) << flush;
 					_write(otherx ...);
 				}
 
@@ -326,7 +329,7 @@ namespace ioer
 				}
 	}; // class output_t
 
-	// non-class functions for standard output
+	// -- non-class functions for standard output -- //
 	extern output_t STDOUT;
 
 	inline void newline(void) 
@@ -344,30 +347,36 @@ namespace ioer
 		{
 			STDOUT.info_nonewline(x ...);
 		}
+
 	template<typename ... Types>
 		inline void info(const Types& ... x) 
 		{
 			STDOUT.info(x ...);
 		}
+
 	template<typename ... Types>
 		inline void tabout(const Types& ... x) 
 		{
 			STDOUT.tabout(x ...);
 		}
+
 	template<typename ... Types>
 		inline void tabout_nonewline(const Types& ... x) 
 		{
 			STDOUT.tabout_nonewline(x ...);
 		}
+
 	template<typename ... Types>
 		inline void write(const Types& ... x) 
 		{
 			STDOUT.write(x ...);
 		}
+
 	inline const _pair_output_functor_t&
 		keyval(bool _keyfirst = true, bool _nonewline = false)
 		{
 			return STDOUT.keyval(_keyfirst, _nonewline);
 		}
 };
-#endif
+
+#endif // _IOER_OUTPUT_T_HPP
