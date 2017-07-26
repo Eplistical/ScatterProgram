@@ -61,12 +61,12 @@ std::vector<DOUBLE_T> scatter::extract_info(const particle_t& ptcl)
 }
 
 
-UINT_T scatter::get_dyn_info_piece_size(VOID_T)
+UINT_T scatter::get_dyn_info_piece_size(VOID_T) noexcept
 {
 	return 1 + 4 * rem::dim;
 }
 
-std::vector<DOUBLE_T> scatter::extract_info(const hop_t& hop)
+std::vector<DOUBLE_T> scatter::extract_info(const hop_t& hop) noexcept
 {
 	std::vector<DOUBLE_T> rst;
 
@@ -83,7 +83,7 @@ std::vector<DOUBLE_T> scatter::extract_info(const hop_t& hop)
 	return rst;
 }
 
-std::vector<DOUBLE_T> scatter::extract_info(const std::vector<hop_t>& hops)
+std::vector<DOUBLE_T> scatter::extract_info(const std::vector<hop_t>& hops) noexcept
 {
 	std::vector<DOUBLE_T> tmp;
 	std::vector<DOUBLE_T> rst;
@@ -98,7 +98,7 @@ std::vector<DOUBLE_T> scatter::extract_info(const std::vector<hop_t>& hops)
 	return rst;
 }
 
-UINT_T scatter::get_hop_info_piece_size(VOID_T)
+UINT_T scatter::get_hop_info_piece_size(VOID_T) noexcept
 {
 	return 5 + 2 * rem::dim;
 }

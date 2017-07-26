@@ -7,11 +7,11 @@
 
 namespace scatter{
 	std::vector<DOUBLE_T> extract_info(const simulation::particle_t& ptcl);
-	UINT_T get_dyn_info_piece_size(VOID_T);
+	UINT_T get_dyn_info_piece_size(VOID_T) noexcept;
 
-	std::vector<DOUBLE_T> extract_info(const simulation::hop_t& hop);
-	std::vector<DOUBLE_T> extract_info(const std::vector<simulation::hop_t>& hops);
-	UINT_T get_hop_info_piece_size(VOID_T);
+	std::vector<DOUBLE_T> extract_info(const simulation::hop_t& hop) noexcept;
+	std::vector<DOUBLE_T> extract_info(const std::vector<simulation::hop_t>& hops) noexcept;
+	UINT_T get_hop_info_piece_size(VOID_T) noexcept;
 };
 
 #endif
