@@ -137,9 +137,10 @@ VOID_T run_simulation(VOID_T)
 	particle_t init_ptcl;
 
 	// containers for info
-	InfoRecoderType<DOUBLE_T> dyn;
+	InfoRecoderType<DOUBLE_T> dyn, hop;
 	for (const auto& it : algorithms) {
 		dyn[it] = std::vector<DOUBLE_T>();
+		hop[it] = std::vector<DOUBLE_T>();
 	}
 
 	// particle collections
@@ -180,16 +181,16 @@ VOID_T run_simulation(VOID_T)
 			for (const auto& it : algorithms) {
 				// record particle info 
 				if (step % Anastep == 0) {
-					tmp = extract_info(ptcl[it]);
-					dyn[it].insert(dyn[it].end(), 
+					tmp = extract_info(ptcl.at(it));
+					dyn.at(it).insert(dyn.at(it).end(), 
 										std::make_move_iterator(tmp.begin()), 
 										std::make_move_iterator(tmp.end())
 										);
 				}
 				// evolve
 				try {
-					if (!grid_obj.is_leaving_boundary(ptcl[it].r, ptcl[it].p)) { 
-						(*dynamic_algorithms[it])(ptcl[it], index);
+					if (!grid_obj.is_leaving_boundary(ptcl.at(it).r, ptcl.at(it).p)) { 
+						(*dynamic_algorithms.at(it))(ptcl.at(it), index);
 					}
 				} catch (const scatter::ScatterError& e) {
 					std::cout 
@@ -212,6 +213,13 @@ VOID_T run_simulation(VOID_T)
 		}
 	}
 
+	// convert hop info
+	for (const auto& it : algorithms) {
+		if (hop_recorder.find(it) != hop_recorder.end()) {
+			hop[it] = extract_info(hop_recorder.at(it));
+		}
+	}
+	
 	MPIer::barrier();
 
 	// -- collect recorded data -- //
@@ -226,9 +234,9 @@ VOID_T run_simulation(VOID_T)
 		if (MPIer::rank == r) {
 			MPIer::send(0, mybatch);
 			for (const auto& it : algorithms) {
-				MPIer::send(0, dyn[it]);
-				if (hop_recorder.find(it) != hop_recorder.end()) {
-					
+				MPIer::send(0, dyn.at(it));
+				if (hop.find(it) != hop.end()) {
+					MPIer::send(0, hop.at(it));
 				}
 			}
 		}
@@ -237,6 +245,7 @@ VOID_T run_simulation(VOID_T)
 #if _DEBUG >= 2
 			if (MPIer::master) log_handler.info( "debug: receiving data from thread ", r);
 #endif
+
 			MPIer::recv(r, mybatch_buf);
 			mybatch.insert(mybatch.end(), 
 							std::make_move_iterator(mybatch_buf.begin()), 
@@ -244,10 +253,17 @@ VOID_T run_simulation(VOID_T)
 							);
 			for (const auto& it : algorithms) {
 				MPIer::recv(r, dyn_buf);
-				dyn[it].insert(dyn[it].end(), 
+				dyn.at(it).insert(dyn.at(it).end(), 
 									std::make_move_iterator(dyn_buf.begin()), 
 									std::make_move_iterator(dyn_buf.end())
 									);
+				if (hop.find(it) != hop.end()) {
+					MPIer::recv(r, hop_buf);
+					hop.at(it).insert(hop.at(it).end(), 
+										std::make_move_iterator(hop_buf.begin()), 
+										std::make_move_iterator(hop_buf.end())
+										);
+				}
 			}
 		}
 		MPIer::barrier();
@@ -263,22 +279,21 @@ VOID_T run_simulation(VOID_T)
 	if (MPIer::master) {
 		STRING_T dyn_file = io::outdir + rem::jobname + STRING_T(".dyn.dat");
 		UINT_T Nalgorithm = algorithms.size();
-		UINT_T single_traj_info_size = dyn[algorithms[0]].size() / Ntraj;
+		UINT_T dyn_info_piece_size = get_dyn_info_piece_size();
 
 		io::save_noclose( dyn_file, 
 							dim, Ntraj,
 							Nalgorithm,
-							single_traj_info_size,
+							dyn_info_piece_size,
 							mybatch);
 		for (const auto& it : algorithms) {
-			io::save_noclose(dyn_file, dyn[it]);
+			io::save_noclose(dyn_file, dyn.at(it));
 		}
 
 		out_handler.info("done. ", timer::toc());
 	}
 
 	// -- save hop data to <jobname>.hop.dat -- //
-	/*
 	if (MPIer::master) 
 		out_handler.info_nonewline( "saving hop data to ", io::outdir + rem::jobname + STRING_T(".hop.dat ... "));
 
@@ -286,29 +301,26 @@ VOID_T run_simulation(VOID_T)
 		STRING_T hop_file = io::outdir + rem::jobname + STRING_T(".hop.dat");
 		std::vector<UINT_T> Nhops;
 		UINT_T Nalgorithm = algorithms.size();
+		UINT_T hop_info_piece_size = get_hop_info_piece_size();
+		
 		for (const auto& it : algorithms) {
-			if (hop_recorder.find(it) != hop_recorder.end()) {
-				Nhops.push_back(hop_recorder.at(it).size());
-			}
-			else {
-				Nhops.push_back(0);
-			}
+			Nhops.push_back((hop.find(it) == hop.end()) ? 0 : hop.at(it).size());
 		}
 
 		io::save_noclose( hop_file, 
 							dim, Ntraj,
 							Nalgorithm,
-							Nhops
-							);
+							hop_info_piece_size,
+							Nhops);
+
 		for (const auto& it : algorithms) {
-			if (hop_recorder.find(it) != hop_recorder.end()) {
-				// NOT FINISHED YET
+			if (hop.find(it) != hop.end()) {
+				io::save_noclose(hop_file, hop.at(it));
 			}
 		}
 
 		out_handler.info("done. ", timer::toc());
 	}
-	*/
 
 	if (MPIer::master) 
 		out_handler.info("done. ", timer::toc());
