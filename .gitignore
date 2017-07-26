@@ -8,6 +8,7 @@
 **/*.pyc
 **/*.png
 install/
+test/
 1.sh
 build/
 sync_version.py
