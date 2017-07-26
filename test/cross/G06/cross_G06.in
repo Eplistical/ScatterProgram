@@ -1,9 +1,9 @@
 $rem
-    jobname     cross
+    jobname     cross_G06
     dim         2
 	hbar		1
     kT          1e-3
-    Gamma0      0.01
+    Gamma0      0.06
 $end
 
 $grid
@@ -35,7 +35,7 @@ $simulation
 	elestate	0
     initmode    ring  	p_gaussian
 	initravg	0	  	-10
-	initpavg	0		90
+	initpavg	0		20
 $end
 
 $surfaces

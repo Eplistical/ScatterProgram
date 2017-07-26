@@ -92,9 +92,8 @@ function runcmd() {
 
 
 jobname=cross_G${G}
-jobtype=simulation
+jobtype=preparedat
 nproc=\${PBS_NP}
-#nproc=1
 runcmd \${jobname} \${jobtype} \${nproc}
 
 EOF
@@ -131,8 +130,8 @@ EOF
 
 
 CWD=`pwd`
-Glist="01 03 05 08"
-v=40
+Glist="005 02 04 06 07 09 1"
+v=20
 
 for G in ${Glist} ; do
     echo now on G${G}
@@ -140,7 +139,7 @@ for G in ${Glist} ; do
     cd G${G}
     infile ${G} ${v}
     subfile ${G} ${v} ; TOSUB=sub.sh
-    cp ${CWD}/init/cross_v${v}.init cross_G${G}.init
+    #cp ${CWD}/init/cross_v${v}.init cross_G${G}.init
     #subanalfile ${G} ; TOSUB=subanal.sh
     if [ "$1" == "run" ];then
         qsub -o .pbs.out -j oe ${TOSUB}
