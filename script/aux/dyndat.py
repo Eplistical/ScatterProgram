@@ -11,7 +11,7 @@ class dyndat(object):
         assert isinstance(paths, ScatterPath)
         jsondata = ScatterJson(paths.jsondata)
 
-        # load data in fef.dat file
+        # load data in dyn.dat file
         with open(paths.dyn_file, "r") as f:
             ## -- check header -- ##
             self.dim = np.fromfile(f, UINT_T, 1)[0]
@@ -24,10 +24,9 @@ class dyndat(object):
 
             ## -- load data -- ##
             self.Nrecord = UINT_T(jsondata.Nstep / jsondata.Anastep)
-            self.single_traj_info_size = np.fromfile(f, UINT_T, 1)[0]
-            self.infopiece_size = UINT_T(self.single_traj_info_size / self.Nrecord)
+            self.infopiece_size = np.fromfile(f, UINT_T, 1)[0]
             self.batch = np.fromfile(f, UINT_T, self.Ntraj)
-            data = np.fromfile(f, DOUBLE_T, self.Ntraj * self.single_traj_info_size * self.Nalgorithm)
+            data = np.fromfile(f, DOUBLE_T, self.Ntraj * self.Nrecord * self.infopiece_size * self.Nalgorithm)
             data = data.reshape(self.Nalgorithm, self.Ntraj, self.Nrecord, self.infopiece_size)
 
         ## -- extract from data -- ##

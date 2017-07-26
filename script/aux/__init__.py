@@ -7,3 +7,4 @@ from .ScatterJson import *
 from .fefdat import *
 from .initdat import *
 from .dyndat import *
+from .hopdat import *

@@ -8,8 +8,8 @@ from .qctojson import datatyperange, datamodelrange
 
 class ScatterJson(object):
     """class to retrive data in the Scatter json tree"""
-    flatten_data = dict()
     def __init__(self, jsondata):
+        self.flatten_data = dict()
         for _, category in jsondata.items():
             for name, piece in category.items():
                 if name in self.flatten_data:
