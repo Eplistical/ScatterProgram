@@ -3,7 +3,6 @@
 #include <stdexcept>
 #include "vars.hpp"
 #include "parser.hpp"
-#include "scatter_exceptions.hpp"
 #include "boost/program_options.hpp"
 #include "boost/filesystem.hpp"
 

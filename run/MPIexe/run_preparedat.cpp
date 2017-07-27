@@ -194,7 +194,7 @@ int main(int argc, char** argv)
 
 	// parse infile 
 	if(MPIer::master) {
-		if(setup(argc, argv) != 0) return 0; 
+		if(setup(argc, argv) != 0) MPIer::abort(); 
 	}
 
 	// -- program begin -- //

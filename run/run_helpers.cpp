@@ -37,7 +37,12 @@ int scatter::setup(int argc, char** argv)
 		return -1;
 	}
 	// parse infile 
-	infile_parser();
+	try {
+		infile_parser();
+	} catch (const FileNotFoundError& e) {
+		log_handler.info("Cannot find input file: ", io::indir + rem::infile);
+		return -1;
+	}
 	// parse arg again to override infile
 	arg_parser(argc, argv);
 

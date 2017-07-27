@@ -66,14 +66,28 @@ VOID_T run_simulation(VOID_T)
 #endif
 
 	// load init data
-	if (MPIer::master) 
-		io::loadinit();
+	if (MPIer::master) {
+		try {
+			io::loadinit();
+		} catch (const scatter::FileNotOpenedError& e) {
+			out_handler.info(e.what());
+			out_handler.info("Please make sure you ran prepareinit before simulation.");
+			MPIer::abort();
+		}
+	}
 
 	MPIer::bcast(0, simulation::r0p0);
 
 	// load fef data, use shared memory. 
-	if (MPIer::master) 
-		io::loaddat();
+	if (MPIer::master) {
+		try {
+			io::loaddat();
+		} catch (const scatter::FileNotOpenedError& e) {
+			out_handler.info(e.what());
+			out_handler.info("Please make sure you ran preparedat before simulation.");
+			MPIer::abort();
+		}
+	}
 
 	if (MPIer::master)
 		out_handler.info_nonewline("sending fef data to sub-commmunicator leaders ... ");
@@ -342,7 +356,7 @@ int main(int argc, char** argv)
 	// parse infile 
 	if(MPIer::master) {
 		// parse infile 
-		if(setup(argc, argv) != 0) return 0; 
+		if(setup(argc, argv) != 0) MPIer::abort(); 
 	}
 
 	// -- program begin -- //

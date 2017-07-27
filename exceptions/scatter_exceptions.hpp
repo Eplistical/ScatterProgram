@@ -42,6 +42,16 @@ namespace scatter
 			~FileNotFoundError() = default;
 	};
 
+	class FileNotOpenedError : public ScatterError
+	{
+		public:
+			explicit FileNotOpenedError(const std::string& msg = ""){
+				_title = "FileNotOpenedError"; 
+				_msg = (msg == "")?_title:(_title + ":" + msg);
+			} 
+			~FileNotOpenedError() = default;
+	};
+
 	class NegativeEigenValueError : public ScatterError
 	{
 		public:

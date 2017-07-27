@@ -1,5 +1,6 @@
 #include "scatter_basic.hpp"
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <stdexcept>
 #include <cassert>
@@ -141,7 +142,17 @@ VOID_T scatter::io::savedat(VOID_T){
 
 VOID_T scatter::io::loaddat(VOID_T){
     out_handler.info_nonewline("loading data from " + io::indir + io::datfile + " ...  ");
-    rwdat('r');
+
+	try{
+    	rwdat('r');
+	} catch (const ioer::FileNotOpenedError& e) {
+		std::ostringstream errmsg;
+		errmsg 	<< "scatter::io::loadinit: cannot open dat file: " 
+				<< io::indir << io::datfile
+				<< "\n";
+		throw scatter::FileNotOpenedError(errmsg.str());
+	}
+
     out_handler.info("done");
 }
 
@@ -153,6 +164,16 @@ VOID_T scatter::io::saveinit(VOID_T){
 
 VOID_T scatter::io::loadinit(VOID_T){
     out_handler.info_nonewline("loading r0p0 from " + io::indir + io::initfile + " ...  ");
-    rwinit('r');
+
+	try{
+		rwinit('r');
+	} catch (const ioer::FileNotOpenedError& e) {
+		std::ostringstream errmsg;
+		errmsg 	<< "scatter::io::loadinit: cannot open init file: " 
+				<< io::indir << io::initfile 
+				<< "\n";
+		throw scatter::FileNotOpenedError(errmsg.str());
+	}
+
     out_handler.info("done");
 }
