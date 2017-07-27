@@ -39,3 +39,6 @@ class ScatterPath(object):
 
     def __getattr__(self, name):
         return self.pathdict[name]
+
+    def __setattr__(self, name, val):
+        self.pathdict[name] = val
