@@ -73,8 +73,7 @@ def main():
                         )
     nproc = args.nproc
     EXE = BIN_DIR + '/run_' + jobtype
-    if nproc > 1:
-        assert(jobtype in ('simulation', 'preparedat',))
+    if nproc > 1 and jobtype in ('simulation', 'preparedat'):
         EXE = 'mpirun -n {} '.format(nproc) + EXE
 
     if not args.base:
