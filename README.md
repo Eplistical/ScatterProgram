@@ -5,7 +5,7 @@ Program for high dimensional scattering problem, comparing behaviours of
 * Electronic friction (EF).
 
 Require:
-* A C++ compiler supporting C++11 feature.
+* C++ compiler supporting C++11 feature.
 * MPI library, e.g. [OpenMPI](https://www.open-mpi.org/)
 * [Boost C++ library](http://www.boost.org/)
 
