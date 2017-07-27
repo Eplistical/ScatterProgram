@@ -10,8 +10,6 @@ Require:
 * [Boost C++ library](http://www.boost.org/) with version >= 1.44.0
 
 
-v0.6 (beta)
-
 To install:
 ```
  git clone https://github.com/Eplistical/ScatterProgram.git

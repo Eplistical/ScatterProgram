@@ -1,8 +1,14 @@
-v0.6 
+v0.7
 (in progress)
+
+
+v0.6 
 - added boundary_rmin and boundary_rmax, as well as a bunch of functions in grid_t to tell the position of a trajectory
     now it is possible to have some control on whether evolve or not in input file
 - added hop-related feature, now simulation will generate another dat file <jobname>.hop.dat 
+- add two examples
+- added more python script for data processing
+- reduced install requirement from C++14 to C++11
 
 v0.5
 - removed rem::jobtype parameter, it is considered as redundent
