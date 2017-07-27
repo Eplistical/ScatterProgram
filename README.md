@@ -7,7 +7,7 @@ Program for high dimensional scattering problem, comparing behaviours of
 Require:
 * C++ compiler supporting C++11 feature.
 * MPI library, e.g. [OpenMPI](https://www.open-mpi.org/)
-* [Boost C++ library](http://www.boost.org/)
+* [Boost C++ library](http://www.boost.org/) with version >= 1.44.0
 
 
 v0.6 (beta)
