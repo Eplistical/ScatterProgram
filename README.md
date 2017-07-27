@@ -22,7 +22,7 @@ To install:
 
  cd build
 
- cmake -DCMAKE_INSTALL_PREFIX=<install_prefix>
+ cmake -DCMAKE_INSTALL_PREFIX=<install_prefix> ..
 
  make
 
