@@ -8,6 +8,7 @@ Require:
 * C++ compiler supporting C++11 feature.
 * MPI library, e.g. [OpenMPI](https://www.open-mpi.org/)
 * [Boost C++ library](http://www.boost.org/) with version >= 1.44.0
+* Python3 (for data post-processing scripts)
 
 
 To install:
