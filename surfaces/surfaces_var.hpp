@@ -3,12 +3,14 @@
 // module for variables in surfaces
 #include "scatter_basic.hpp"
 #include <cstdio>
-#include <vector>
+#include "vector.hpp"
 #include "json_toolkit.hpp"
 #include "surfaces_collection.hpp"
 
-namespace scatter {
-	namespace surfaces {
+namespace scatter 
+{
+	namespace surfaces 
+	{
 		using enumspace::surfmode_enum;
 		extern UINT_T surfnum;
 		extern DOUBLE_T cutoff_gamma;
