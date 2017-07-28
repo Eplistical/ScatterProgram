@@ -2,10 +2,12 @@
 #define _SCATTER_GRID_T_HPP
 // module for grid_t
 #include "scatter_basic.hpp"
-#include <vector>
+#include "vector.hpp"
 
-namespace scatter{
-	class grid_t{
+namespace scatter
+{
+	class grid_t
+	{
 		protected:
 			// data 
 			UINT_T _dim;
@@ -40,10 +42,10 @@ namespace scatter{
 			grid_t& operator=(grid_t&&) = default;
 
 			// -- setters --//
-			std::vector<DOUBLE_T>& get_fef_ref(VOID_T);
-			VOID_T set_fef_data_ptr(DOUBLE_T* ptr);
+			std::vector<DOUBLE_T>& get_fef_ref(VOID_T) noexcept;
+			VOID_T set_fef_data_ptr(DOUBLE_T* ptr) noexcept;
 
-			VOID_T alloc_fef_space(VOID_T);
+			VOID_T alloc_fef_space(VOID_T) noexcept;
 			VOID_T calc_fef(UINT_T S0, UINT_T S1, UINT_T index, DOUBLE_T * const force, DOUBLE_T * const efric, DOUBLE_T * const fBCME);
 
 			// -- getters -- //

@@ -2,11 +2,13 @@
 #define _SCATTER_GRID_VAR_HPP
 // variables in grid
 #include "scatter_basic.hpp"
-#include <vector>
+#include "vector.hpp"
 #include "json_toolkit.hpp"
 
-namespace scatter{
-    namespace grid{
+namespace scatter
+{
+    namespace grid
+	{
 		extern std::vector<DOUBLE_T> rmin;
 		extern std::vector<DOUBLE_T> rmax;
 		extern std::vector<DOUBLE_T> boundary_rmin;

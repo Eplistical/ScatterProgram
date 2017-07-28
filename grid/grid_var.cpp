@@ -18,7 +18,8 @@ std::vector<DOUBLE_T> scatter::grid::derange;
 DOUBLE_T scatter::grid::gamma_cutoff;
 
 // init grid parameters 
-VOID_T scatter::grid::load_var(const rapidjson::Document& doc){
+VOID_T scatter::grid::load_var(const rapidjson::Document& doc)
+{
 	using namespace scatter::grid;
 	using json::load_param;
 	load_param(doc, "grid")
@@ -35,7 +36,8 @@ VOID_T scatter::grid::load_var(const rapidjson::Document& doc){
 }
 
 // prINT_T out grid parameters
-VOID_T scatter::grid::print_var(VOID_T){
+VOID_T scatter::grid::print_var(VOID_T)
+{
 	using namespace scatter::grid;
 	out_handler.info("grid info");
 	out_handler.drawline('-');
@@ -52,4 +54,3 @@ VOID_T scatter::grid::print_var(VOID_T){
 
 	out_handler.drawline('-');
 }
-

@@ -30,17 +30,17 @@ grid_t::grid_t( const std::vector<DOUBLE_T>& rmin,
 }
 
 // setter
-std::vector<DOUBLE_T>& grid_t::get_fef_ref(VOID_T) 
+std::vector<DOUBLE_T>& grid_t::get_fef_ref(VOID_T) noexcept
 {
 	return _fef;
 }
 
-VOID_T grid_t::set_fef_data_ptr(DOUBLE_T* ptr)
+VOID_T grid_t::set_fef_data_ptr(DOUBLE_T* ptr) noexcept
 {
 	_fef_data_ptr = ptr;
 }
 
-VOID_T grid_t::alloc_fef_space(VOID_T)
+VOID_T grid_t::alloc_fef_space(VOID_T) noexcept
 {
 	_fef.assign(get_feflen(), 0.0);
 }
