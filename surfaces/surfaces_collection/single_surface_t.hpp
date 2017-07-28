@@ -79,12 +79,12 @@ namespace surfaces_collection {
 			}
 
 			// STRING_T for all dimensions
-			STRING_T get_expr(VOID_T) const
+			STRING_T get_expr(VOID_T) const noexcept
 			{
 				std::stringstream expr;
-				for(UINT_T d = 0; d < dim(); ++d){
+				for(UINT_T d = 0, N = dim(); d < N; ++d){
 					expr << "dim " << d << ":" << std::endl;
-					expr << surfptr.at(d)->get_expr() << std::endl;
+					expr << surfptr[d]->get_expr() << std::endl;
 				}
 				return expr.str();
 			}

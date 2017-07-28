@@ -7,6 +7,7 @@
 #include "surfaces_t.hpp"
 
 using namespace scatter;
+using scatter::rem::dim;
 
 // constructor and para initializer
 surfaces_t::surfaces_t(UINT_T Nsurf) 
@@ -24,7 +25,7 @@ VOID_T surfaces_t::set_gamma(const std::vector<enumspace::surfmode_enum>& modes,
 							const std::vector<std::vector<DOUBLE_T> >& paras)
 {
 	_gamma.clear();
-	for(UINT_T d = 0; d < rem::dim; ++d){
+	for(UINT_T d = 0; d < dim; ++d){
 		_gamma.append_dim(modes.at(d), paras.at(d));
 	}
 }
@@ -35,8 +36,8 @@ VOID_T surfaces_t::set_energy(const std::vector<enumspace::surfmode_enum>& modes
 	UINT_T index = 0;
 	for(UINT_T i = 0; i < _Nsurf; ++i) {
 		_energy.at(i).clear();
-		for(UINT_T d = 0; d < rem::dim; ++d) {
-			index = i * rem::dim + d;
+		for(UINT_T d = 0; d < dim; ++d) {
+			index = i * dim + d;
 			_energy.at(i).append_dim(modes.at(index), paras.at(index));
 		}
 	}
@@ -48,12 +49,12 @@ VOID_T surfaces_t::set_abs_gamma_threash(DOUBLE_T x)
 }
 
 // getter
-UINT_T surfaces_t::get_surf_number(VOID_T) const
+UINT_T surfaces_t::get_surf_number(VOID_T) const noexcept
 {
 	return _Nsurf; 
 }
 
-STRING_T surfaces_t::get_gamma_expr(VOID_T) const
+STRING_T surfaces_t::get_gamma_expr(VOID_T) const noexcept
 {
 	return _gamma.get_expr();
 }
@@ -67,7 +68,7 @@ STRING_T surfaces_t::get_energy_expr(VOID_T) const
 	return rst;
 }
 
-single_surf_t surfaces_t::get_gamma(VOID_T) const
+single_surf_t surfaces_t::get_gamma(VOID_T) const noexcept
 {
 	return _gamma; 
 }
@@ -91,7 +92,7 @@ std::vector<std::vector<DOUBLE_T> > surfaces_t::get_gamma_para_blank(VOID_T) con
 {
 	std::vector<std::vector<DOUBLE_T> > rst(1);
 	UINT_T N = 0;
-	for (UINT_T d = 0; d < rem::dim; ++d) {
+	for (UINT_T d = 0; d < dim; ++d) {
 		N += _gamma.get_Npara(d);
 	}
 	rst[0].resize(N);
@@ -104,7 +105,7 @@ std::vector<std::vector<DOUBLE_T> > surfaces_t::get_energy_para_blank(VOID_T) co
 	UINT_T N = 0;
 	for(UINT_T i = 0; i < _Nsurf; ++i) {
 		N = 0;
-		for (UINT_T d = 0; d < rem::dim; ++d) {
+		for (UINT_T d = 0; d < dim; ++d) {
 			N += _energy.at(i).get_Npara(d);
 		}
 		rst[i].resize(N);
@@ -170,7 +171,6 @@ std::vector<DOUBLE_T> surfaces_t::fGammader(const std::vector<DOUBLE_T>& r, DOUB
 {
 	const std::vector<DOUBLE_T> tmp_gamma = vGamma(r);
 	const std::vector<DOUBLE_T> tmp_gammader = vGammader(r);
-	const UINT_T dim = scatter::rem::dim;
 	std::vector<DOUBLE_T> rst(dim);
 	// tmp = (g1,g2,..)
 	std::vector<DOUBLE_T> tmp = tmp_gamma;
