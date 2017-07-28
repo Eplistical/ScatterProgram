@@ -1,9 +1,9 @@
 #include "scatter_basic.hpp"
 #include <iostream>
 #include <sstream>
-#include <vector>
 #include <stdexcept>
 #include <cassert>
+#include "vector.hpp"
 #include "ioer.hpp"
 #include "io_var.hpp"
 #include "rem.hpp"
@@ -52,7 +52,8 @@ VOID_T rwinit(CHAR_T op)
 	}
 }
 
-VOID_T rwdat(CHAR_T op){
+VOID_T rwdat(CHAR_T op)
+{
 	/**
 	 * datfile structure:
 	 * 	 dim (uint64)
@@ -134,13 +135,15 @@ VOID_T rwdat(CHAR_T op){
 }
 
 // API
-VOID_T scatter::io::savedat(VOID_T){
+VOID_T scatter::io::savedat(VOID_T)
+{
     out_handler.info_nonewline("saving data to " + io::outdir + io::datfile + " ...  ");
     rwdat('w');
     out_handler.info("done");
 }
 
-VOID_T scatter::io::loaddat(VOID_T){
+VOID_T scatter::io::loaddat(VOID_T)
+{
     out_handler.info_nonewline("loading data from " + io::indir + io::datfile + " ...  ");
 
 	try{
@@ -156,13 +159,15 @@ VOID_T scatter::io::loaddat(VOID_T){
     out_handler.info("done");
 }
 
-VOID_T scatter::io::saveinit(VOID_T){
+VOID_T scatter::io::saveinit(VOID_T)
+{
     out_handler.info_nonewline("saving r0p0 to " + io::outdir + io::initfile + " ...  ");
     rwinit('w');
     out_handler.info("done");
 }
 
-VOID_T scatter::io::loadinit(VOID_T){
+VOID_T scatter::io::loadinit(VOID_T)
+{
     out_handler.info_nonewline("loading r0p0 from " + io::indir + io::initfile + " ...  ");
 
 	try{

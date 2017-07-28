@@ -4,8 +4,10 @@
 #include "scatter_basic.hpp"
 #include "ioer.hpp"
 
-namespace scatter{
-	namespace io{
+namespace scatter
+{
+	namespace io
+	{
 		VOID_T savedat(VOID_T);
 		VOID_T loaddat(VOID_T);
 		VOID_T saveinit(VOID_T);

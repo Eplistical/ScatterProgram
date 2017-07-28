@@ -10,7 +10,8 @@ namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 using namespace scatter;
 
-static po::variables_map _parse_arg(INT_T argc, char** argv){
+static po::variables_map _parse_arg(INT_T argc, char** argv)
+{
 	// setup
 	po::options_description desc("Options");
 	desc.add_options()
@@ -30,34 +31,34 @@ static po::variables_map _parse_arg(INT_T argc, char** argv){
 			<< "Basic usage: " << std::endl
 			<< desc << std::endl;
 	}
-
 	return vm;
 }
 
 // API
-BOOL_T scatter::arg_parser(INT_T argc, char** argv){
+BOOL_T scatter::arg_parser(INT_T argc, char** argv)
+{
 	po::variables_map&& vm = _parse_arg(argc, argv);
-	if(vm.count("help")){
+	if(vm.count("help")) {
 		return false;
 	}
-	if(vm.count("infile")){
+	if(vm.count("infile")) {
 		rem::infile = vm["infile"].as<STRING_T>();
 		// check if infile exists
 		fs::path tmp(rem::infile);
-		if(not fs::exists(tmp)){
+		if(not fs::exists(tmp)) {
 			throw scatter::FileNotFoundError("arg parser: input file not exists!");
 		}
 	}
-	if(vm.count("nproc")){
+	if(vm.count("nproc")) {
 		rem::threadNum = vm["nproc"].as<UINT_T>();
 	}
-	if(vm.count("outfile")){
+	if(vm.count("outfile")) {
 		io::arg_outfile = vm["outfile"].as<STRING_T>();
 	}
-	if(vm.count("logfile")){
+	if(vm.count("logfile")) {
 		io::arg_logfile = vm["logfile"].as<STRING_T>();
 	}
-	if(vm.count("outdir")){
+	if(vm.count("outdir")) {
 		io::arg_outdir = vm["outdir"].as<STRING_T>();
 	}
 	return true;

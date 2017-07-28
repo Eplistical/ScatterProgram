@@ -3,7 +3,8 @@
 // module for parser
 #include "scatter_basic.hpp"
 
-namespace scatter{
+namespace scatter
+{
 	BOOL_T arg_parser(INT_T argc, char** argv);
 }
 

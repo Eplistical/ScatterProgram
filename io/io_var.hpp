@@ -5,8 +5,10 @@
 #include "json_toolkit.hpp"
 #include "ioer.hpp"
 
-namespace scatter{
-    namespace io{
+namespace scatter
+{
+    namespace io
+	{
         extern STRING_T jsonfile;
         extern STRING_T datfile;
         extern STRING_T initfile;
