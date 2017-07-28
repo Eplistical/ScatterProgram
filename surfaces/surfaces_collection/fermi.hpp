@@ -36,12 +36,12 @@ namespace surfaces_collection{
 
         DOUBLE_T U(DOUBLE_T x) const{
             DOUBLE_T tmp = exp(-C * (x - D));
-            return B + isinf(tmp)?0.0:A / (1.0 + tmp);
+            return B + (isinf(tmp) ? 0.0 : A / (1.0 + tmp));
         }
 
         DOUBLE_T dUdx(DOUBLE_T x) const{
             DOUBLE_T tmp = exp(-C * (x - D));
-            return isinf(tmp)?0.0:A * C * tmp / pow(1.0 + tmp, 2);
+            return isinf(tmp) ? 0.0 : A * C * tmp / pow(1.0 + tmp, 2);
         }
     };
 };
