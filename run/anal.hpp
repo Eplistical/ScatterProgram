@@ -5,7 +5,8 @@
 #include "vector.hpp"
 #include "simulation.hpp"
 
-namespace scatter{
+namespace scatter
+{
 	std::vector<DOUBLE_T> extract_info(const simulation::particle_t& ptcl);
 	UINT_T get_dyn_info_piece_size(VOID_T) noexcept;
 

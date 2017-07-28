@@ -5,7 +5,8 @@
 #include "surfaces.hpp"
 #include "grid.hpp"
 
-namespace scatter{
+namespace scatter
+{
 	extern grid_t grid_obj;
 	extern surfaces_t surfaces_obj;
 };

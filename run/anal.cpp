@@ -6,17 +6,18 @@
 #include "simulation.hpp"
 #include "surfaces.hpp"
 #include "run_var.hpp"
-#include "analmode.hpp"
 #include "anal.hpp"
 
 using namespace scatter;
 using scatter::simulation::particle_t;
 using scatter::simulation::hop_t;
+using scatter::simulation::mass;
+using scatter::rem::dim;
 
 static std::vector<DOUBLE_T> _get_Ep(const particle_t& ptcl) 
 {
-	std::vector<DOUBLE_T> rst(rem::dim);
-	for (UINT_T d = 0; d < rem::dim; ++d) {
+	std::vector<DOUBLE_T> rst(dim);
+	for (UINT_T d = 0; d < dim; ++d) {
 		rst[d] = surfaces_obj.fU(ptcl.surf, d, ptcl.r[d]);
 	} 
 	return rst;
@@ -24,9 +25,9 @@ static std::vector<DOUBLE_T> _get_Ep(const particle_t& ptcl)
 
 static std::vector<DOUBLE_T> _get_Ek(const particle_t& ptcl) 
 {
-	std::vector<DOUBLE_T> rst(rem::dim);
-	for (UINT_T d = 0; d < rem::dim; ++d) {
-		rst[d] = pow(ptcl.p[d], 2) / 2 / simulation::mass[d] ;
+	std::vector<DOUBLE_T> rst(dim);
+	for (UINT_T d = 0; d < dim; ++d) {
+		rst[d] = pow(ptcl.p.at(d), 2) / 2 / mass.at(d);
 	} 
 	return rst;
 }
@@ -63,7 +64,7 @@ std::vector<DOUBLE_T> scatter::extract_info(const particle_t& ptcl)
 
 UINT_T scatter::get_dyn_info_piece_size(VOID_T) noexcept
 {
-	return 1 + 4 * rem::dim;
+	return 1 + 4 * dim;
 }
 
 std::vector<DOUBLE_T> scatter::extract_info(const hop_t& hop) noexcept
@@ -100,5 +101,5 @@ std::vector<DOUBLE_T> scatter::extract_info(const std::vector<hop_t>& hops) noex
 
 UINT_T scatter::get_hop_info_piece_size(VOID_T) noexcept
 {
-	return 5 + 2 * rem::dim;
+	return 5 + 2 * dim;
 }
