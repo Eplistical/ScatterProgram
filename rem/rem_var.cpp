@@ -21,7 +21,8 @@ DOUBLE_T scatter::rem::Gamma0;
 
 
 // load rem parameters from Document Obj
-VOID_T scatter::rem::load_var(const rapidjson::Document& doc){
+VOID_T scatter::rem::load_var(const rapidjson::Document& doc)
+{
 	using namespace scatter::rem;
 	using json::load_param;
 	load_param(doc, "rem")
@@ -35,7 +36,8 @@ VOID_T scatter::rem::load_var(const rapidjson::Document& doc){
 }
 
 // prINT_T out rem parameters
-VOID_T scatter::rem::print_var(VOID_T){
+VOID_T scatter::rem::print_var(VOID_T)
+{
 	using namespace scatter::rem;
 	out_handler.info("rem info");
 	out_handler.drawline('-');

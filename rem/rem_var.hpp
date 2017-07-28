@@ -4,8 +4,10 @@
 #include "scatter_basic.hpp"
 #include "json_toolkit.hpp"
 
-namespace scatter{
-	namespace rem{
+namespace scatter
+{
+	namespace rem
+	{
 		// args passed by command line
 		extern STRING_T infile;
 		extern UINT_T threadNum;
@@ -17,7 +19,6 @@ namespace scatter{
 		extern DOUBLE_T hbar;
 		extern DOUBLE_T kT;
 		extern DOUBLE_T Gamma0;
-
 
 		VOID_T load_var(const rapidjson::Document& doc);
 		VOID_T print_var(VOID_T);
