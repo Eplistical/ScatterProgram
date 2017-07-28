@@ -3,8 +3,10 @@
 // module for initstate 
 #include "scatter_basic.hpp"
 
-namespace scatter{
-	namespace simulation{
+namespace scatter
+{
+	namespace simulation
+    {
 		VOID_T generate_initstate(VOID_T);
 	};
 };

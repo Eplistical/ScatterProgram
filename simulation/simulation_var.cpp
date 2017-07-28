@@ -10,6 +10,7 @@ using scatter::io::out_handler;
 
 // variables in scatter::simulation
 namespace NS = scatter::simulation;
+using scatter::rem::dim;
 using enumspace::initmode_enum;
 using enumspace::dynamic_mode_enum;
 
@@ -34,14 +35,15 @@ std::vector<DOUBLE_T> NS::r0p0;
 
 
 // helper function
-static VOID_T extract_omega(VOID_T){
+static VOID_T extract_omega(VOID_T)
+{
 	// extract omega for all harmonic surfaces
 	using namespace scatter;
 	std::vector<DOUBLE_T> tmp;
-	for(UINT_T i = 0; i < surfaces::surfnum; ++i){
-		for(UINT_T d = 0; d < rem::dim; ++d){
-			if(surfaces::surfmode.at(d + i * rem::dim) == enumspace::surfmode_enum::HARMONIC){
-				tmp.push_back( pow(surfaces::surfpara.at(d + i * rem::dim).at(0) / simulation::mass.at(d), 0.5) );
+	for(UINT_T i = 0; i < surfaces::surfnum; ++i) {
+		for(UINT_T d = 0; d < dim; ++d) {
+			if(surfaces::surfmode.at(d + i * dim) == enumspace::surfmode_enum::HARMONIC) {
+				tmp.push_back( pow(surfaces::surfpara.at(d + i * dim).at(0) / simulation::mass.at(d), 0.5) );
 			}
 		}
 	}

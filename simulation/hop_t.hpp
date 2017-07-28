@@ -4,8 +4,10 @@
 #include "scatter_basic.hpp"
 #include "vector.hpp"
 
-namespace scatter{
-    namespace simulation{
+namespace scatter 
+{
+    namespace simulation
+    {
         struct hop_t
         {
             UINT_T id;

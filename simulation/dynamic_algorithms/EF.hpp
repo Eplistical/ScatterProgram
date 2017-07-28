@@ -2,11 +2,12 @@
 #define _SCATTER_CME_HPP
 // module for CME & bCME
 #include "scatter_basic.hpp"
-
 #include "simulation.hpp"
 
-namespace scatter{
-	namespace simulation{
+namespace scatter
+{
+	namespace simulation
+    {
 		VOID_T EF(particle_t& ptcl, UINT_T trajID);
 	};
 };

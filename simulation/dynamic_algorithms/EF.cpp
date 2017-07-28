@@ -68,12 +68,14 @@ static void _EF_get_Ranforce(particle_t& ptcl, enumspace::dynamic_mode_enum mode
     ptcl.ranforce =  matrixop::matvec(evt, eva);
 }
 
-static VOID_T _EF(particle_t& ptcl, enumspace::dynamic_mode_enum mode) {
+static VOID_T _EF(particle_t& ptcl, enumspace::dynamic_mode_enum mode) 
+{
     _EF_get_Ranforce(ptcl, mode);
     velocity_verlet(ptcl, mode, _EF_get_Force);
 }
 
 // API
-VOID_T scatter::simulation::EF(particle_t& ptcl, UINT_T trajID) {
+VOID_T scatter::simulation::EF(particle_t& ptcl, UINT_T trajID) 
+{
 	_EF(ptcl, enumspace::dynamic_mode_enum::EF);
 }

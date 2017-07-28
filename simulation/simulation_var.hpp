@@ -2,14 +2,15 @@
 #define _SCATTER_SIMULATION_VAR_HPP
 // module for variables in simulation
 #include "scatter_basic.hpp"
-
-#include <vector>
+#include "vector.hpp"
 #include "json_toolkit.hpp"
 #include "initmode.hpp"
 #include "dynamic_algorithms/dynamic_mode.hpp"
 
-namespace scatter{
-	namespace simulation{
+namespace scatter
+{
+	namespace simulation
+	{
 		// simulation control parameters
 		extern std::vector<DOUBLE_T> mass;
 		extern std::vector<DOUBLE_T> omega;

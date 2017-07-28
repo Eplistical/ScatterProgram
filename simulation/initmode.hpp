@@ -3,12 +3,13 @@
 // init mode dict
 #include "scatter_basic.hpp"
 #include "enumspace.hpp"
-
 #include <boost/assign.hpp>
 #include <boost/bimap.hpp>
 
-namespace enumspace{
-	enum class initmode_enum {
+namespace enumspace
+{
+	enum class initmode_enum 
+	{
 		DELTA, 
 		RING, 
 		RP_GAUSSIAN,
@@ -18,6 +19,7 @@ namespace enumspace{
 		First = DELTA,
 		Last = P_GAUSSIAN_NON_NEGATIVE,
 	};
+
 	const boost::bimap<std::string, initmode_enum> initmode_dict = 
 		boost::assign::list_of<boost::bimap<std::string, initmode_enum>::relation>
 		("delta", initmode_enum::DELTA)
