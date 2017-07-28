@@ -7,8 +7,10 @@
 #include <boost/assign.hpp>
 #include <boost/bimap.hpp>
 
-namespace enumspace {
-	enum class surfmode_enum {
+namespace enumspace 
+{
+	enum class surfmode_enum 
+	{
         CONSTANT,
         STEP,
         HARMONIC,

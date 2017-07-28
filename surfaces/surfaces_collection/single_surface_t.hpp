@@ -47,7 +47,7 @@ namespace surfaces_collection {
 				}
 			}
 
-			VOID_T clear(VOID_T)
+			VOID_T clear(VOID_T) noexcept
 			{ 
 				surfptr.clear(); 
 			}
@@ -55,7 +55,7 @@ namespace surfaces_collection {
 			// --- getters --- //
 			
 			// dimension num
-			UINT_T dim(VOID_T) const 
+			UINT_T dim(VOID_T) const noexcept
 			{ 
 				return surfptr.size(); 
 			}
@@ -92,8 +92,9 @@ namespace surfaces_collection {
 			// U(r) for given dimension
 			DOUBLE_T get_U(INT_T d, DOUBLE_T x) const
 			{
-				return surfptr[d]->U(x);
+				return surfptr.at(d)->U(x);
 			}
+
 			// U(r) as a vector
 			std::vector<DOUBLE_T> get_U(const std::vector<DOUBLE_T>& r) const
 			{
@@ -106,8 +107,9 @@ namespace surfaces_collection {
 
 			// U'(r) for given dimension
 			DOUBLE_T get_dUdx(INT_T d, DOUBLE_T x) const{
-				return surfptr[d]->dUdx(x);
+				return surfptr.at(d)->dUdx(x);
 			}
+
 			// U'(r) as a vector
 			std::vector<DOUBLE_T> get_dUdx(const std::vector<DOUBLE_T>& r) const
 			{

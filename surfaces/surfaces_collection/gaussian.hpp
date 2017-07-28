@@ -8,16 +8,19 @@
 #include <sstream>
 #include "basesurf.hpp"
 
-namespace surfaces_collection{
-    class gaussian : public basesurf{
+namespace surfaces_collection
+{
+    class gaussian : public basesurf
+	{
         private:
-        DOUBLE_T A;
-        DOUBLE_T B;
-        DOUBLE_T C;
-        DOUBLE_T D;
+			DOUBLE_T A;
+			DOUBLE_T B;
+			DOUBLE_T C;
+			DOUBLE_T D;
         
         public:
-        explicit gaussian(const std::vector<DOUBLE_T>& paralist){
+        explicit gaussian(const std::vector<DOUBLE_T>& paralist)
+		{
             Npara = 4;
             para = std::vector<DOUBLE_T>(paralist.begin(), paralist.begin() + Npara);
             A = para.at(0);
@@ -34,14 +37,14 @@ namespace surfaces_collection{
                  ;
         }
 
-        DOUBLE_T U(DOUBLE_T x) const{
-            x -= D;
-            return A * exp(-C * pow(x, 2)) + B;
+        DOUBLE_T U(DOUBLE_T x) const noexcept
+		{
+            return A * exp(-C * pow(x - D, 2)) + B;
         }
 
-        DOUBLE_T dUdx(DOUBLE_T x) const{
-            x -= D;
-            return -2.0 * A * C * x * exp(-para.at(2) * pow(x, 2));
+        DOUBLE_T dUdx(DOUBLE_T x) const noexcept
+		{
+            return -2.0 * A * C * x * exp(B * pow(x - D, 2));
         }
     };
 };

@@ -3,9 +3,6 @@
 // surfaces collection API
 #include "scatter_basic.hpp"
 
-namespace surfaces_collections{};
-namespace enumspace{};
-
 #include "basesurf.hpp"
 #include "surfmode.hpp"
 #include "single_surface_t.hpp"
